@@ -1,8 +1,15 @@
 import Fastify, { type FastifyBaseLogger, type FastifyInstance } from "fastify";
+import { registerSessionPlugin } from "./auth/session.js";
 import type { AppConfig } from "./config.js";
 import type { Database } from "./db/client.js";
 import { createMetrics } from "./metrics.js";
+import { registerAuditRoutes } from "./routes/audit.js";
+import { type createSessionStore, registerAuthRoutes } from "./routes/auth.js";
+import { registerBranchRoutes } from "./routes/branches.js";
+import { registerPaymentMethodRoutes } from "./routes/payment-methods.js";
 import { registerProductRoutes } from "./routes/products.js";
+import { registerProductCrudRoutes } from "./routes/products-crud.js";
+import { registerStaffRoutes } from "./routes/staff.js";
 
 /** A dependency probe. Resolves when healthy, rejects when not. */
 export interface Readiness {
@@ -14,6 +21,8 @@ export interface BuildAppOptions {
   readonly logger: FastifyBaseLogger;
   readonly readiness: Readiness;
   readonly database?: Database;
+  readonly sessionStore?: ReturnType<typeof createSessionStore>;
+  readonly isProduction?: boolean;
   readonly version?: string;
 }
 
@@ -24,6 +33,10 @@ export interface BuildAppOptions {
 export async function buildApp(options: BuildAppOptions): Promise<FastifyInstance> {
   const app = Fastify({ loggerInstance: options.logger });
   const metrics = createMetrics(options.version ?? "0.1.0");
+
+  if (options.sessionStore) {
+    await registerSessionPlugin(app, process.env.SESSION_SECRET ?? "dev-secret-only");
+  }
 
   app.get("/health/live", async () => ({ status: "ok" }));
 
@@ -45,6 +58,20 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
 
   if (options.database) {
     registerProductRoutes(app, options.database);
+    registerProductCrudRoutes(app, options.database);
+    registerBranchRoutes(app, options.database);
+    registerStaffRoutes(app, options.database);
+    registerPaymentMethodRoutes(app, options.database);
+    registerAuditRoutes(app, options.database);
+
+    if (options.sessionStore) {
+      registerAuthRoutes(
+        app,
+        options.database,
+        options.sessionStore,
+        options.isProduction ?? false,
+      );
+    }
   }
 
   return app;

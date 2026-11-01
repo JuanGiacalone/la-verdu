@@ -2,6 +2,9 @@ import { buildApp } from "./app.js";
 import { loadConfig } from "./config.js";
 import { createDatabase } from "./db/client.js";
 import { createLogger } from "./logging.js";
+import { createSessionStore } from "./routes/auth.js";
+
+// registerSessionPlugin is called inside buildApp
 
 /**
  * Process entrypoint. Config is validated before anything else starts, and the
@@ -11,13 +14,18 @@ async function main(): Promise<void> {
   const config = loadConfig(process.env);
   const logger = createLogger({ level: config.logLevel });
   const database = createDatabase(config.databaseUrl);
+  const sessionStore = createSessionStore();
 
   const app = await buildApp({
     config,
     logger,
     readiness: { check: () => database.check() },
     database: database.db,
+    sessionStore,
+    isProduction: config.nodeEnv === "production",
   });
+
+  // Session plugin is registered inside buildApp.
 
   const shutdown = async (signal: string) => {
     logger.info({ signal }, "shutting down");

@@ -386,3 +386,14 @@ export const agentSession = pgTable("agent_session", {
   lastSeenAt: timestamp("last_seen_at", { withTimezone: true }),
   printerStatus: varchar("printer_status", { length: 40 }),
 });
+
+export const adminRole = pgEnum("admin_role", ["OWNER", "OPERATOR"]);
+
+export const adminUser = pgTable("admin_user", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  username: varchar("username", { length: 40 }).notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  role: adminRole("role").notNull(),
+  active: boolean("active").notNull().default(true),
+  ...timestamps,
+});
