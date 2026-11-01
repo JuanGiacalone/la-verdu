@@ -1,0 +1,22 @@
+# dependencies and builds
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# local development state (databases, printouts, spool)
+.dev/
+
+# secrets and local env
+.env
+.env.*
+!.env.example
+
+# editor and OS
+.DS_Store
+.idea/
+.vscode/
+
+# agent-local tracking and memory caches
+.atl/
