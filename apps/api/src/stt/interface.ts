@@ -8,6 +8,13 @@ export interface SttProvider {
   transcribe(audio: Buffer, mimeType: string): Promise<SttResult>;
 }
 
+import type { AppConfig } from "../config.js";
+
+export function createSttProvider(config: AppConfig): SttProvider {
+  // For now, use hosted STT. Local STT can be swapped in for profile A.
+  return createHostedStt(config.sttApiKey, config.sttBaseUrl, config.sttModel);
+}
+
 /**
  * Hosted STT (OpenAI-compatible Whisper API).
  */

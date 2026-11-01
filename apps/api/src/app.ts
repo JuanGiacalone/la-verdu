@@ -89,7 +89,43 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
         appSecret: options.config.whatsappAppSecret,
         verifyToken: options.config.whatsappVerifyToken,
         onMessage: async (msg) => {
-          console.log("Received message from", msg.phoneE164, msg.type);
+          const { createSttProvider } = await import("./stt/interface.js");
+          const stt = createSttProvider(options.config);
+          if (msg.isStaff) {
+            const { handleStaffMessage } = await import("./conversations/handler.js");
+            await handleStaffMessage(
+              {
+                database: options.database as Database,
+                channel,
+                stt,
+                llmBaseUrl: options.config.llmBaseUrl,
+                llmApiKey: options.config.llmApiKey,
+                llmModel: options.config.llmModel,
+              },
+              msg.phoneE164,
+              msg.waMessageId,
+              msg.type,
+              msg.text,
+              msg.mediaId,
+            );
+          } else {
+            const { handleCustomerMessage } = await import("./customers/handler.js");
+            await handleCustomerMessage(
+              {
+                database: options.database as Database,
+                channel,
+                stt,
+                llmBaseUrl: options.config.llmBaseUrl,
+                llmApiKey: options.config.llmApiKey,
+                llmModel: options.config.llmModel,
+              },
+              msg.phoneE164,
+              msg.waMessageId,
+              msg.type,
+              msg.text,
+              msg.mediaId,
+            );
+          }
         },
       });
     }

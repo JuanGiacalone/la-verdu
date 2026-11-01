@@ -20,6 +20,7 @@ export interface WebhookDeps {
     text?: string;
     mediaId?: string;
     contactName?: string;
+    isStaff: boolean;
   }) => Promise<void>;
 }
 
@@ -92,6 +93,14 @@ export function registerWhatsAppWebhook(app: FastifyInstance, deps: WebhookDeps)
         });
       }
 
+      // Check if sender is staff.
+      const staffCheck = await deps.database
+        .select({ id: schema.staff.id })
+        .from(schema.staff)
+        .where(eq(schema.staff.phoneE164, msg.from))
+        .limit(1);
+      const senderIsStaff = staffCheck.length > 0;
+
       // Process the message.
       try {
         await deps.onMessage({
@@ -101,6 +110,7 @@ export function registerWhatsAppWebhook(app: FastifyInstance, deps: WebhookDeps)
           text: msg.text,
           mediaId: msg.mediaId,
           contactName: msg.contactName,
+          isStaff: senderIsStaff,
         });
       } catch (error) {
         // Log but don't crash; the message is already stored.
