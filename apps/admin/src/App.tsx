@@ -49,9 +49,8 @@ export function App() {
       <h1>La Verdu - Administración</h1>
       <h2>Cargar productos desde CSV</h2>
       <p>
-        El archivo debe ser un export del POS con las columnas{" "}
-        <code>Descripción</code> y <code>Tipo de Venta</code>. Se aceptan
-        archivos en ISO-8859 o UTF-8.
+        El archivo debe ser un export del POS con las columnas <code>Descripción</code> y{" "}
+        <code>Tipo de Venta</code>. Se aceptan archivos en ISO-8859 o UTF-8.
       </p>
 
       <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "1rem" }}>
@@ -60,16 +59,12 @@ export function App() {
           accept=".csv,text/csv"
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
         />
-        <button onClick={handleImport} disabled={!file || loading}>
+        <button type="button" onClick={handleImport} disabled={!file || loading}>
           {loading ? "Importando..." : "Importar"}
         </button>
       </div>
 
-      {error && (
-        <div style={{ color: "#b00020", marginBottom: "1rem" }}>
-          {error}
-        </div>
-      )}
+      {error && <div style={{ color: "#b00020", marginBottom: "1rem" }}>{error}</div>}
 
       {result && (
         <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: 4 }}>
@@ -81,8 +76,8 @@ export function App() {
           </p>
           {result.errors.length > 0 && (
             <ul style={{ color: "#b00020" }}>
-              {result.errors.map((e, i) => (
-                <li key={i}>{e}</li>
+              {result.errors.map((e, _i) => (
+                <li key={e}>{e}</li>
               ))}
             </ul>
           )}
