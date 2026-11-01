@@ -1,6 +1,8 @@
 import Fastify, { type FastifyBaseLogger, type FastifyInstance } from "fastify";
 import type { AppConfig } from "./config.js";
+import type { Database } from "./db/client.js";
 import { createMetrics } from "./metrics.js";
+import { registerProductRoutes } from "./routes/products.js";
 
 /** A dependency probe. Resolves when healthy, rejects when not. */
 export interface Readiness {
@@ -11,6 +13,7 @@ export interface BuildAppOptions {
   readonly config: AppConfig;
   readonly logger: FastifyBaseLogger;
   readonly readiness: Readiness;
+  readonly database?: Database;
   readonly version?: string;
 }
 
@@ -39,6 +42,10 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     reply.header("content-type", metrics.registry.contentType);
     return reply.send(await metrics.registry.metrics());
   });
+
+  if (options.database) {
+    registerProductRoutes(app, options.database);
+  }
 
   return app;
 }

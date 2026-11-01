@@ -28,6 +28,16 @@ services:
       retries: 30
     restart: unless-stopped
 
+  admin:
+    <<: *node
+    command: ["npm", "run", "dev", "-w", "@la-verdu/admin"]
+    environment:
+      VITE_API_URL: http://api:3000
+    ports:
+      - "127.0.0.1:5173:5173"
+    depends_on:
+      - api
+
   api:
     <<: *node
     command:

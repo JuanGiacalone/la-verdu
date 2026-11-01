@@ -206,6 +206,8 @@ Cada requisito incluye sus criterios de aceptación. Los escenarios E2E de la se
 - **RF-35 Privacidad.** Aviso de privacidad al alta (M-01). Atención de derechos ARCO (acceso, rectificación, supresión y oposición) desde el admin (sección 16.3).
 - **RF-36 Auditoría.** Todo cambio de configuración, precio, disponibilidad, personal y pedido se registra con actor, acción, entidad, antes, después y fecha.
 - **RF-34 Entrada de audio.** Cliente y personal pueden enviar audios de hasta 120 s (P). Un audio más largo se rechaza con M-14.
+- **RF-38 Importación de productos por CSV.** El dueño puede subir un archivo CSV con los productos del negocio. El sistema lee las columnas "Descripción" (nombre oficial) y "Tipo de Venta" ("Peso" → KG, "Unidad" → UNIT). Los productos cuyo nombre ya existe se saltean y se reportan. El archivo puede estar en ISO-8859 o UTF-8. El panel muestra un resumen: importados, saltados y errores.
+  - Criterio: un CSV con 118 productos se importa en menos de 5 s. Los duplicados no se sobrescriben. Los errores de fila se reportan con número de fila.
 
 ## 8. Modelo de dominio y datos
 

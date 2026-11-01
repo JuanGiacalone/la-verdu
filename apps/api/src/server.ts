@@ -16,6 +16,7 @@ async function main(): Promise<void> {
     config,
     logger,
     readiness: { check: () => database.check() },
+    database: database.db,
   });
 
   const shutdown = async (signal: string) => {
