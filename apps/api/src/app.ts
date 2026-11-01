@@ -7,6 +7,7 @@ import { createMetrics } from "./metrics.js";
 import { registerAuditRoutes } from "./routes/audit.js";
 import { type createSessionStore, registerAuthRoutes } from "./routes/auth.js";
 import { registerBranchRoutes } from "./routes/branches.js";
+import { registerOrderRoutes } from "./routes/orders.js";
 import { registerPaymentMethodRoutes } from "./routes/payment-methods.js";
 import { registerPrintRoutes } from "./routes/print.js";
 import { registerProductRoutes } from "./routes/products.js";
@@ -66,6 +67,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     registerStaffRoutes(app, options.database);
     registerPaymentMethodRoutes(app, options.database);
     registerAuditRoutes(app, options.database);
+    registerOrderRoutes(app, options.database);
     registerPrintRoutes(app, options.database);
 
     if (options.sessionStore) {
