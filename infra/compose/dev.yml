@@ -1,0 +1,86 @@
+# Local development stack (PRD 19.1). Run through podman compose; see the Makefile.
+# Every credential here is a development-only placeholder and is never used outside this file.
+name: la-verdu-dev
+
+x-node: &node
+  image: docker.io/library/node:22-bookworm-slim
+  working_dir: /workspace
+  volumes:
+    - ../../:/workspace
+  restart: unless-stopped
+
+services:
+  db:
+    image: docker.io/library/postgres:16-alpine
+    environment:
+      POSTGRES_USER: laverdu
+      POSTGRES_PASSWORD: laverdu_dev_only
+      POSTGRES_DB: laverdu_dev
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U laverdu -d laverdu_dev"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+  api:
+    <<: *node
+    command:
+      - sh
+      - -c
+      - npm run db:migrate -w @la-verdu/api && npm run dev -w @la-verdu/api
+    environment:
+      NODE_ENV: development
+      PORT: "3000"
+      DATABASE_URL: postgres://laverdu:laverdu_dev_only@db:5432/laverdu_dev
+      TZ_APP: America/Argentina/Buenos_Aires
+      LOG_LEVEL: info
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  printer-sim:
+    <<: *node
+    command: ["node", "infra/simulators/printer-sim.mjs"]
+    environment:
+      PRINTER_SIM_PORT: "9100"
+      PRINTER_SIM_OUT: /workspace/.dev/printouts
+    ports:
+      - "127.0.0.1:9100:9100"
+
+  whatsapp-sim:
+    <<: *node
+    command: ["node", "infra/simulators/whatsapp-sim.mjs"]
+    environment:
+      WHATSAPP_SIM_PORT: "8081"
+      WHATSAPP_APP_SECRET: local_dev_app_secret_only
+      WHATSAPP_SIM_WEBHOOK_URL: http://api:3000/webhooks/whatsapp
+      WHATSAPP_SIM_OUT: /workspace/.dev/whatsapp-outbox.jsonl
+    ports:
+      - "127.0.0.1:8081:8081"
+
+  llm-stub:
+    <<: *node
+    command: ["node", "infra/simulators/llm-stub.mjs"]
+    environment:
+      LLM_STUB_PORT: "8082"
+    ports:
+      - "127.0.0.1:8082:8082"
+
+  stt-stub:
+    <<: *node
+    command: ["node", "infra/simulators/stt-stub.mjs"]
+    environment:
+      STT_STUB_PORT: "8083"
+    ports:
+      - "127.0.0.1:8083:8083"
+
+volumes:
+  db-data:
