@@ -1,3 +1,5 @@
+import type { AppConfig } from "../config.js";
+
 export interface SttResult {
   readonly text: string;
   readonly language?: string;
@@ -6,13 +8,6 @@ export interface SttResult {
 
 export interface SttProvider {
   transcribe(audio: Buffer, mimeType: string): Promise<SttResult>;
-}
-
-import type { AppConfig } from "../config.js";
-
-export function createSttProvider(config: AppConfig): SttProvider {
-  // For now, use hosted STT. Local STT can be swapped in for profile A.
-  return createHostedStt(config.sttApiKey, config.sttBaseUrl, config.sttModel);
 }
 
 /**
@@ -28,7 +23,7 @@ export function createHostedStt(apiKey: string, baseUrl: string, model: string):
 
       const response = await fetch(`${baseUrl}/audio/transcriptions`, {
         method: "POST",
-        headers: { authorization: `Bearer ${apiKey}` },
+        headers: apiKey ? { authorization: `Bearer ${apiKey}` } : {},
         body: formData,
       });
 
@@ -48,4 +43,18 @@ export function createHostedStt(apiKey: string, baseUrl: string, model: string):
       };
     },
   };
+}
+
+/**
+ * Local STT (profile A). Uses the same OpenAI-compatible Whisper API but
+ * points to a local server (faster-whisper, whisper.cpp) without an API key.
+ */
+export function createLocalStt(baseUrl: string, model: string): SttProvider {
+  return createHostedStt("", baseUrl, model);
+}
+
+export function createSttProvider(config: AppConfig): SttProvider {
+  // For profile B (hosted), use hosted STT.
+  // For profile A (local), use createLocalStt.
+  return createHostedStt(config.sttApiKey, config.sttBaseUrl, config.sttModel);
 }
