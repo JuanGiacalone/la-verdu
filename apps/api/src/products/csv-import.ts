@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { type Database } from "../db/client.js";
+import type { Database } from "../db/client.js";
 import * as schema from "../db/schema.js";
 
 export interface CsvImportResult {
@@ -102,10 +102,8 @@ export function extractProducts(rows: string[][]): {
     return { products, errors: ["El archivo CSV está vacío."] };
   }
   const header = headerRow.map((h) => h.trim().toLowerCase());
-  const nameIndex = header.findIndex(
-    (h) => h === "descripción" || h === "descripcion",
-  );
-  const unitIndex = header.findIndex((h) => h === "tipo de venta");
+  const nameIndex = header.findIndex((h) => h === "descripción" || h === "descripcion");
+  const unitIndex = header.indexOf("tipo de venta");
 
   if (nameIndex === -1) {
     return {
@@ -135,9 +133,7 @@ export function extractProducts(rows: string[][]): {
 
     const unit = UNIT_MAP[unitRaw];
     if (!unit) {
-      errors.push(
-        `Fila ${i + 1}: "${name}" tiene tipo de venta desconocido "${unitRaw}".`,
-      );
+      errors.push(`Fila ${i + 1}: "${name}" tiene tipo de venta desconocido "${unitRaw}".`);
       continue;
     }
 

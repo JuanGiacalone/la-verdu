@@ -1,5 +1,6 @@
 import Fastify, { type FastifyBaseLogger, type FastifyInstance } from "fastify";
 import { registerSessionPlugin } from "./auth/session.js";
+import { createWhatsAppChannel } from "./channels/whatsapp.js";
 import type { AppConfig } from "./config.js";
 import type { Database } from "./db/client.js";
 import { createMetrics } from "./metrics.js";
@@ -10,6 +11,7 @@ import { registerPaymentMethodRoutes } from "./routes/payment-methods.js";
 import { registerProductRoutes } from "./routes/products.js";
 import { registerProductCrudRoutes } from "./routes/products-crud.js";
 import { registerStaffRoutes } from "./routes/staff.js";
+import { registerWhatsAppWebhook } from "./webhooks/whatsapp.js";
 
 /** A dependency probe. Resolves when healthy, rejects when not. */
 export interface Readiness {
@@ -71,6 +73,25 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
         options.sessionStore,
         options.isProduction ?? false,
       );
+    }
+
+    // WhatsApp webhook (only if configured).
+    if (options.config.whatsappAppSecret) {
+      const channel = createWhatsAppChannel({
+        accessToken: options.config.whatsappAccessToken,
+        phoneNumberId: options.config.whatsappPhoneNumberId,
+        apiVersion: options.config.whatsappApiVersion,
+        appSecret: options.config.whatsappAppSecret,
+      });
+      registerWhatsAppWebhook(app, {
+        database: options.database,
+        channel,
+        appSecret: options.config.whatsappAppSecret,
+        verifyToken: options.config.whatsappVerifyToken,
+        onMessage: async (msg) => {
+          console.log("Received message from", msg.phoneE164, msg.type);
+        },
+      });
     }
   }
 

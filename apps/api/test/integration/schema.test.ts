@@ -5,6 +5,7 @@ import { resetDatabase, runMigrations } from "../../src/db/migrate.js";
 const testDatabaseUrl = process.env.TEST_DATABASE_URL;
 
 const EXPECTED_TABLES = [
+  "admin_user",
   "alert",
   "agent_session",
   "audit_log",

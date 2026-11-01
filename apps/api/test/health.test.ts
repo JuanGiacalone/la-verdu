@@ -10,6 +10,17 @@ const config: AppConfig = {
   databaseUrl: "postgres://unused",
   timezone: "America/Argentina/Buenos_Aires",
   logLevel: "silent",
+  whatsappAppSecret: "",
+  whatsappVerifyToken: "",
+  whatsappAccessToken: "",
+  whatsappPhoneNumberId: "",
+  whatsappApiVersion: "v22.0",
+  llmBaseUrl: "http://localhost:8082",
+  llmApiKey: "",
+  llmModel: "llm-stub",
+  sttBaseUrl: "http://localhost:8083",
+  sttApiKey: "",
+  sttModel: "stt-stub",
 };
 
 describe("health and metrics routes", () => {

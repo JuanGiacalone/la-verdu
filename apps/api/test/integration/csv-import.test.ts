@@ -1,10 +1,10 @@
+import type { FastifyInstance } from "fastify";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { buildApp } from "../../src/app.js";
+import type { AppConfig } from "../../src/config.js";
 import { createDatabase } from "../../src/db/client.js";
 import { resetDatabase, runMigrations } from "../../src/db/migrate.js";
-import { type FastifyInstance } from "fastify";
 import { createLogger } from "../../src/logging.js";
-import type { AppConfig } from "../../src/config.js";
 
 const testDatabaseUrl = process.env.TEST_DATABASE_URL;
 
@@ -14,6 +14,17 @@ const config: AppConfig = {
   databaseUrl: testDatabaseUrl ?? "postgres://unused",
   timezone: "America/Argentina/Buenos_Aires",
   logLevel: "silent",
+  whatsappAppSecret: "",
+  whatsappVerifyToken: "",
+  whatsappAccessToken: "",
+  whatsappPhoneNumberId: "",
+  whatsappApiVersion: "v22.0",
+  llmBaseUrl: "http://localhost:8082",
+  llmApiKey: "",
+  llmModel: "llm-stub",
+  sttBaseUrl: "http://localhost:8083",
+  sttApiKey: "",
+  sttModel: "stt-stub",
 };
 
 describe.skipIf(!testDatabaseUrl)("CSV product import (integration)", () => {
@@ -64,20 +75,16 @@ describe.skipIf(!testDatabaseUrl)("CSV product import (integration)", () => {
       total: 3,
     });
 
-    const rows = await handle.db.select().from(
-      (await import("../../src/db/schema.js")).product,
-    );
+    const rows = await handle.db.select().from((await import("../../src/db/schema.js")).product);
     expect(rows).toHaveLength(3);
     expect(rows.find((r) => r.officialName === "Lechuga Manteca")?.unit).toBe("KG");
     expect(rows.find((r) => r.officialName === "Maple Huevo Color")?.unit).toBe("UNIT");
   });
 
   it("skips duplicates and reports them", async () => {
-    const csv = [
-      "Descripción,Tipo de Venta",
-      "Lechuga Manteca,Peso",
-      "Nueva Fruta,Peso",
-    ].join("\n");
+    const csv = ["Descripción,Tipo de Venta", "Lechuga Manteca,Peso", "Nueva Fruta,Peso"].join(
+      "\n",
+    );
 
     const response = await app.inject({
       method: "POST",
@@ -104,10 +111,7 @@ describe.skipIf(!testDatabaseUrl)("CSV product import (integration)", () => {
   });
 
   it("reports row-level errors for unknown sale types", async () => {
-    const csv = [
-      "Descripción,Tipo de Venta",
-      "Producto X,Kilo",
-    ].join("\n");
+    const csv = ["Descripción,Tipo de Venta", "Producto X,Kilo"].join("\n");
 
     const response = await app.inject({
       method: "POST",

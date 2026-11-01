@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { type Database } from "../db/client.js";
+import type { Database } from "../db/client.js";
 import { importProductsFromCsv } from "../products/csv-import.js";
 
 const importBodySchema = z.string().min(1, "El CSV no puede estar vacío");

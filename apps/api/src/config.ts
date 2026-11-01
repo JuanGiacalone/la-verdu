@@ -13,6 +13,17 @@ export interface AppConfig {
   readonly databaseUrl: string;
   readonly timezone: string;
   readonly logLevel: "fatal" | "error" | "warn" | "info" | "debug" | "trace" | "silent";
+  readonly whatsappAppSecret: string;
+  readonly whatsappVerifyToken: string;
+  readonly whatsappAccessToken: string;
+  readonly whatsappPhoneNumberId: string;
+  readonly whatsappApiVersion: string;
+  readonly llmBaseUrl: string;
+  readonly llmApiKey: string;
+  readonly llmModel: string;
+  readonly sttBaseUrl: string;
+  readonly sttApiKey: string;
+  readonly sttModel: string;
 }
 
 function isValidTimezone(value: string): boolean {
@@ -37,6 +48,17 @@ const envSchema = z.object({
     .default("America/Argentina/Buenos_Aires")
     .refine(isValidTimezone, "must be a valid IANA timezone"),
   LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
+  WHATSAPP_APP_SECRET: z.string().default(""),
+  WHATSAPP_VERIFY_TOKEN: z.string().default(""),
+  WHATSAPP_ACCESS_TOKEN: z.string().default(""),
+  WHATSAPP_PHONE_NUMBER_ID: z.string().default(""),
+  WHATSAPP_API_VERSION: z.string().default("v22.0"),
+  CHAT_BASE_URL: z.string().default("http://localhost:8082"),
+  CHAT_API_KEY: z.string().default(""),
+  CHAT_MODEL: z.string().default("llm-stub"),
+  STT_BASE_URL: z.string().default("http://localhost:8083"),
+  STT_API_KEY: z.string().default(""),
+  STT_MODEL: z.string().default("stt-stub"),
 });
 
 /**
@@ -59,5 +81,16 @@ export function loadConfig(env: NodeJS.ProcessEnv): AppConfig {
     databaseUrl: values.DATABASE_URL,
     timezone: values.TZ_APP,
     logLevel: values.LOG_LEVEL,
+    whatsappAppSecret: values.WHATSAPP_APP_SECRET,
+    whatsappVerifyToken: values.WHATSAPP_VERIFY_TOKEN,
+    whatsappAccessToken: values.WHATSAPP_ACCESS_TOKEN,
+    whatsappPhoneNumberId: values.WHATSAPP_PHONE_NUMBER_ID,
+    whatsappApiVersion: values.WHATSAPP_API_VERSION,
+    llmBaseUrl: values.CHAT_BASE_URL,
+    llmApiKey: values.CHAT_API_KEY,
+    llmModel: values.CHAT_MODEL,
+    sttBaseUrl: values.STT_BASE_URL,
+    sttApiKey: values.STT_API_KEY,
+    sttModel: values.STT_MODEL,
   };
 }
