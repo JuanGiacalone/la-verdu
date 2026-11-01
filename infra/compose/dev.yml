@@ -94,3 +94,15 @@ services:
 
 volumes:
   db-data:
+
+  print-agent:
+    build:
+      context: ../../apps/print-agent
+      dockerfile: Dockerfile
+    environment:
+      PRINT_AGENT_CONFIG: /config.json
+    volumes:
+      - ./print-agent-config.json:/config.json:ro
+    depends_on:
+      - api
+    restart: unless-stopped
