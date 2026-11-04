@@ -6,7 +6,11 @@ import type { Database } from "./db/client.js";
 import { createMetrics } from "./metrics.js";
 import { registerAuditRoutes } from "./routes/audit.js";
 import { type createSessionStore, registerAuthRoutes } from "./routes/auth.js";
+import { registerAvailabilityRoutes } from "./routes/availability.js";
 import { registerBranchRoutes } from "./routes/branches.js";
+import { registerBusinessRoutes } from "./routes/business.js";
+import { registerConversationRoutes } from "./routes/conversations.js";
+import { registerCustomerRoutes } from "./routes/customers.js";
 import { registerOpsRoutes } from "./routes/health-ops.js";
 import { registerOrderRoutes } from "./routes/orders.js";
 import { registerPaymentMethodRoutes } from "./routes/payment-methods.js";
@@ -65,7 +69,11 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   if (options.database) {
     registerProductRoutes(app, options.database);
     registerProductCrudRoutes(app, options.database);
+    registerBusinessRoutes(app, options.database);
     registerBranchRoutes(app, options.database);
+    registerAvailabilityRoutes(app, options.database);
+    registerConversationRoutes(app, options.database);
+    registerCustomerRoutes(app, options.database);
     registerStaffRoutes(app, options.database);
     registerPaymentMethodRoutes(app, options.database);
     registerAuditRoutes(app, options.database);
