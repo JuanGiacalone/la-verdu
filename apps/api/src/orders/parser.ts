@@ -57,6 +57,7 @@ Reglas:
 - Si no podés interpretar un producto, omitilo.
 - Respondé SOLO con el JSON, sin texto adicional.`;
 
+  console.log("[parser] LLM request", { baseUrl, model, message });
   const response = await fetch(`${baseUrl}/chat/completions`, {
     method: "POST",
     headers: {
@@ -73,8 +74,10 @@ Reglas:
     }),
   });
 
+  console.log("[parser] LLM response status", response.status, response.statusText);
   if (!response.ok) {
     const body = await response.text().catch(() => "");
+    console.log("[parser] LLM error body", body.slice(0, 500));
     throw new Error(`LLM failed: ${response.status} ${body.slice(0, 300)}`.trim());
   }
 
