@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — Sidebar compacto</title>
+<style>
+  :root { --brand-50:#ecfdf5;--brand-100:#d1fae5;--brand-500:#10b981;--brand-600:#059669;--brand-700:#047857;--brand-900:#064e3b;--slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-300:#cbd5e1;--slate-400:#94a3b8;--slate-500:#64748b;--slate-700:#334155;--slate-800:#1e293b;--slate-900:#0f172a;--red-600:#dc2626;--white:#ffffff; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--slate-50);color:var(--slate-900);-webkit-font-smoothing:antialiased}
+  .app{display:flex;min-height:100vh}
+  .sidebar{width:64px;background:var(--slate-900);color:var(--slate-100);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:6px;flex-shrink:0}
+  .sidebar .mark{width:36px;height:36px;border-radius:8px;background:var(--brand-600);color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px;margin-bottom:8px}
+  .sidebar .ico{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;color:var(--slate-400);cursor:pointer;font-size:16px}
+  .sidebar .ico.active{background:var(--slate-800);color:var(--brand-500)}
+  .sidebar .ico:hover{background:var(--slate-800);color:#fff}
+  .sidebar .foot{margin-top:auto;width:40px;height:40px;border-radius:50%;background:var(--brand-100);color:var(--brand-700);display:grid;place-items:center;font-weight:700;font-size:13px}
+  .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+  .topbar{background:var(--white);border-bottom:1px solid var(--slate-300);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between}
+  .topbar h1{font-size:18px;font-weight:700}
+  .topbar .crumb{color:var(--slate-500);font-size:13px;margin-left:12px}
+  .content{flex:1;display:grid;grid-template-columns:1fr 360px;overflow:hidden}
+  .list{padding:20px 24px;overflow-y:auto;border-right:1px solid var(--slate-300)}
+  .list h2{font-size:16px;font-weight:600;margin-bottom:12px}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+  .card{background:var(--white);border:1px solid var(--slate-300);border-radius:8px;padding:12px}
+  .card .label{font-size:12px;color:var(--slate-500)}
+  .card .value{font-size:20px;font-weight:700;margin-top:4px}
+  .table{width:100%;border-collapse:collapse;font-size:13px;background:var(--white);border:1px solid var(--slate-300);border-radius:8px;overflow:hidden}
+  .table th{text-align:left;padding:8px 10px;background:var(--slate-100);font-weight:600;color:var(--slate-700);font-size:12px}
+  .table td{padding:8px 10px;border-top:1px solid var(--slate-100)}
+  .table tr.sel td{background:var(--brand-50)}
+  .badge{display:inline-block;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600}
+  .badge.ok{background:var(--brand-100);color:var(--brand-700)}
+  .badge.warn{background:#fef3c7;color:#92400e}
+  .detail{padding:20px 24px;overflow-y:auto;background:var(--white)}
+  .detail h2{font-size:16px;font-weight:600;margin-bottom:4px}
+  .detail .sub{color:var(--slate-500);font-size:13px;margin-bottom:16px}
+  .detail .row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--slate-100);font-size:13px}
+  .detail .row .k{color:var(--slate-500)}
+  .detail .row .v{font-weight:600}
+  .detail .section{margin-top:18px}
+  .detail .section h3{font-size:12px;font-weight:600;color:var(--slate-500);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+  .item{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px dashed var(--slate-100)}
+  .btn{background:var(--brand-600);color:#fff;border:none;padding:8px 14px;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer;width:100%;margin-top:12px}
+  .alert{background:var(--slate-50);border:1px solid var(--slate-300);border-radius:6px;padding:10px;font-size:12px;margin-top:12px}
+  .alert .kind{font-weight:600}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <svg width="28" height="28" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tomate"><path d="M16 6 C 14 3, 10 3, 9 6 C 8 8, 10 9, 12 8 C 13 7, 14 7, 16 6 Z" fill="#059669"/><path d="M16 6 C 18 3, 22 3, 23 6 C 24 8, 22 9, 20 8 C 19 7, 18 7, 16 6 Z" fill="#047857"/><path d="M16 6 C 15 4, 16 2, 17 3 C 18 4, 17 6, 16 6 Z" fill="#10b981"/><rect x="15" y="5" width="2" height="3" rx="1" fill="#064e3b"/><circle cx="16" cy="19" r="11" fill="#dc2626"/></svg>
+    <div class="ico active" title="Inicio">⌂</div>
+    <div class="ico" title="Catálogo">  </div>
+    <div class="ico" title="Sucursales">  </div>
+    <div class="ico" title="Pedidos">  </div>
+    <div class="ico" title="Conversaciones">  </div>
+    <div class="ico" title="Alertas">  </div>
+    <div class="ico" title="Configuración">  </div>
+    <div class="foot">D</div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div><h1>Inicio</h1><span class="crumb">Sucursal Centro</span></div>
+      <div style="display:flex;gap:8px">
+        <input placeholder="Buscar…" style="border:1px solid var(--slate-300);border-radius:6px;padding:6px 10px;font-size:13px;width:200px" />
+        <button style="background:var(--brand-600);color:#fff;border:none;padding:7px 12px;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer">+ Pedido</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="list">
+        <div class="kpis">
+          <div class="card"><div class="label">Pedidos hoy</div><div class="value">12</div></div>
+          <div class="card"><div class="label">En cola</div><div class="value">2</div></div>
+          <div class="card"><div class="label">Borradores</div><div class="value">1</div></div>
+        </div>
+        <h2>Pedidos recientes</h2>
+        <table class="table">
+          <thead><tr><th>#</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr class="sel"><td>1042</td><td>María G.</td><td>$ 4.820</td><td><span class="badge ok">impreso</span></td></tr>
+            <tr><td>1041</td><td>Juan P.</td><td>$ 2.150</td><td><span class="badge ok">impreso</span></td></tr>
+            <tr><td>1040</td><td>Lucía R.</td><td>$ 3.400</td><td><span class="badge warn">borrador</span></td></tr>
+            <tr><td>1039</td><td>Pedro M.</td><td>$ 1.980</td><td><span class="badge ok">impreso</span></td></tr>
+          </tbody>
+        </table>
+        <h2 style="margin-top:18px">Agentes</h2>
+        <table class="table">
+          <thead><tr><th>Sucursal</th><th>Versión</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>Centro</td><td>1.2.0</td><td><span class="badge ok">ok</span></td></tr>
+            <tr><td>Norte</td><td>1.2.0</td><td><span class="badge ok">ok</span></td></tr>
+            <tr><td>Sur</td><td>1.1.8</td><td><span class="badge warn">desact.</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="detail">
+        <h2>Pedido #1042</h2>
+        <div class="sub">María G. · Centro · 10:12</div>
+        <div class="row"><span class="k">Estado</span><span class="v" style="color:var(--brand-700)">Impreso</span></div>
+        <div class="row"><span class="k">Sucursal</span><span class="v">Centro</span></div>
+        <div class="row"><span class="k">Método de pago</span><span class="v">Efectivo</span></div>
+        <div class="row"><span class="k">Total</span><span class="v">$ 4.820</span></div>
+        <div class="section">
+          <h3>Items</h3>
+          <div class="item"><span>Tomate perita 1kg</span><span>$ 1.200</span></div>
+          <div class="item"><span>Lechuga criolla x2</span><span>$ 900</span></div>
+          <div class="item"><span>Palta Hass 500g</span><span>$ 2.720</span></div>
+        </div>
+        <div class="section">
+          <h3>Alertas</h3>
+          <div class="alert"><div class="kind">Stock bajo</div><div style="margin-top:2px">Tomate sin disponibilidad en Centro</div></div>
+        </div>
+        <button class="btn">Reimprimir</button>
+        <button class="btn" style="background:var(--slate-700)">Ver conversación</button>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

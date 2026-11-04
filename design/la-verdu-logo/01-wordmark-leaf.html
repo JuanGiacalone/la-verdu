@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Logo — Wordmark con hoja</title>
+<style>
+  :root { --brand-50:#ecfdf5;--brand-100:#d1fae5;--brand-500:#10b981;--brand-600:#059669;--brand-700:#047857;--brand-900:#064e3b;--slate-50:#f8fafc;--slate-900:#0f172a;--white:#ffffff; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--slate-50);color:var(--slate-900);-webkit-font-smoothing:antialiased;padding:48px}
+  h1{font-size:22px;font-weight:700;margin-bottom:6px}
+  .lede{color:#64748b;font-size:14px;margin-bottom:36px}
+  h2{font-size:14px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin:32px 0 14px}
+  .row{display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+  .tile{border-radius:12px;padding:40px 48px;display:flex;align-items:center;justify-content:center;min-width:320px;min-height:140px}
+  .tile.light{background:var(--white);border:1px solid #cbd5e1}
+  .tile.brand{background:var(--brand-600)}
+  .tile.dark{background:var(--brand-900)}
+  .tile.mono{background:#f1f5f9}
+  .notes{margin-top:40px;max-width:720px;font-size:14px;color:#475569;line-height:1.6}
+  .notes li{margin-bottom:6px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+  <h1>Logo 01 — Wordmark con hoja</h1>
+  <p class="lede">Marca tipográfica "La Verdu" con una hoja verde integrada en la V. Cálida, legible a tamaños pequeños (favicon, encabezado de ticket).</p>
+
+  <h2>Sobre claro</h2>
+  <div class="row">
+    <div class="tile light">
+      <svg viewBox="0 0 260 60" width="230" height="52" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La Verdu">
+        <g transform="translate(0,4)">
+          <path d="M14 8 C 14 2, 22 0, 28 4 C 34 8, 32 18, 24 22 C 16 26, 8 20, 10 12 Z" fill="#059669"/>
+          <path d="M20 12 C 22 14, 25 16, 27 19" stroke="#064e3b" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="40" y="42" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="34" font-weight="800" fill="#0f172a" letter-spacing="-0.5">La Verdu</text>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Sobre verde (brand)</h2>
+  <div class="row">
+    <div class="tile brand">
+      <svg viewBox="0 0 260 60" width="230" height="52" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La Verdu">
+        <g transform="translate(0,4)">
+          <path d="M14 8 C 14 2, 22 0, 28 4 C 34 8, 32 18, 24 22 C 16 26, 8 20, 10 12 Z" fill="#ffffff" opacity="0.95"/>
+          <path d="M20 12 C 22 14, 25 16, 27 19" stroke="#064e3b" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="40" y="42" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="34" font-weight="800" fill="#ffffff" letter-spacing="-0.5">La Verdu</text>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Sobre oscuro</h2>
+  <div class="row">
+    <div class="tile dark">
+      <svg viewBox="0 0 260 60" width="230" height="52" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La Verdu">
+        <g transform="translate(0,4)">
+          <path d="M14 8 C 14 2, 22 0, 28 4 C 34 8, 32 18, 24 22 C 16 26, 8 20, 10 12 Z" fill="#10b981"/>
+          <path d="M20 12 C 22 14, 25 16, 27 19" stroke="#064e3b" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="40" y="42" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="34" font-weight="800" fill="#ffffff" letter-spacing="-0.5">La Verdu</text>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Monocromo</h2>
+  <div class="row">
+    <div class="tile mono">
+      <svg viewBox="0 0 260 60" width="230" height="52" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La Verdu">
+        <g transform="translate(0,4)">
+          <path d="M14 8 C 14 2, 22 0, 28 4 C 34 8, 32 18, 24 22 C 16 26, 8 20, 10 12 Z" fill="#0f172a"/>
+        </g>
+        <text x="40" y="42" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="34" font-weight="800" fill="#0f172a" letter-spacing="-0.5">La Verdu</text>
+      </svg>
+    </div>
+  </div>
+
+  <ul class="notes">
+    <li><strong>Tradeoff:</strong> máxima legibilidad y bajo costo de reproducción; la hoja es un acento, no el protagonista. Funciona en tickets impresos y favicons.</li>
+    <li>Tipografía: system sans-serif bold, sin fuentes externas. La hoja es un path SVG escalable.</li>
+    <li>Contraste AA sobre claro y oscuro.</li>
+  </ul>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "chosen": "01-classic-sidebar.html",
+  "handoffs": {
+    "01-classic-sidebar.html": {
+      "status": "implemented",
+      "queued": false,
+      "sentAt": "2026-11-02T18:07:30.118Z",
+      "startedAt": "2026-11-02T18:07:34.822Z",
+      "implementedAt": "2026-11-02T18:07:38.353Z",
+      "previewUrl": "http://127.0.0.1:5173/"
+    },
+    "02-top-nav-dashboard.html": {
+      "status": "implemented",
+      "queued": true,
+      "sentAt": "2026-11-02T17:58:55.942Z",
+      "startedAt": "2026-11-02T18:00:33.391Z",
+      "implementedAt": "2026-11-02T18:00:48.349Z",
+      "previewUrl": "http://127.0.0.1:5173/"
+    },
+    "03-compact-sidebar-detail.html": {
+      "status": "implemented",
+      "queued": true,
+      "sentAt": "2026-11-02T17:58:57.074Z",
+      "startedAt": "2026-11-02T18:00:57.631Z",
+      "implementedAt": "2026-11-02T18:01:51.496Z",
+      "previewUrl": "http://127.0.0.1:5173/"
+    }
+  }
+}

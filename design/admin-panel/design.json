@@ -1,0 +1,9 @@
+{
+  "title": "Admin panel — UI directions",
+  "brief": "Rediseño del panel de administración de La Verdu (frutería/verdulería): layout, dashboard y páginas de operación. Tres direcciones distintas en estructura, no solo color.",
+  "artboards": [
+    { "file": "01-classic-sidebar.html", "title": "Sidebar clásico", "tradeoff": "Familiar y denso; sidebar fijo de 240px consume ancho en pantallas chicas", "width": 1440, "height": 900 },
+    { "file": "02-top-nav-dashboard.html", "title": "Top nav + dashboard", "tradeoff": "Más espacio horizontal y métricas arriba; menos navegación persistente", "width": 1440, "height": 900 },
+    { "file": "03-compact-sidebar-detail.html", "title": "Sidebar compacto + detalle", "tradeoff": "Split view eficiente para operar pedidos; sidebar de iconos requiere tooltips", "width": 1440, "height": 900 }
+  ]
+}

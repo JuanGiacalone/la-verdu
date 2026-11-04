@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Logo — Canasta de mercado</title>
+<style>
+  :root { --brand-50:#ecfdf5;--brand-100:#d1fae5;--brand-500:#10b981;--brand-600:#059669;--brand-700:#047857;--brand-900:#064e3b;--slate-50:#f8fafc;--slate-900:#0f172a;--white:#ffffff; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--slate-50);color:var(--slate-900);padding:48px}
+  h1{font-size:22px;font-weight:700;margin-bottom:6px}
+  .lede{color:#64748b;font-size:14px;margin-bottom:36px}
+  h2{font-size:14px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin:32px 0 14px}
+  .row{display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+  .tile{border-radius:12px;padding:32px 40px;display:flex;align-items:center;justify-content:center;min-width:260px;min-height:160px}
+  .tile.light{background:var(--white);border:1px solid #cbd5e1}
+  .tile.brand{background:var(--brand-600)}
+  .tile.dark{background:var(--brand-900)}
+  .notes{margin-top:40px;max-width:720px;font-size:14px;color:#475569;line-height:1.6}
+  .notes li{margin-bottom:6px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+  <h1>Logo 03 — Canasta de mercado</h1>
+  <p class="lede">Ilustración de una canasta con verduras y el wordmark debajo. Más expresivo, pensado para landing, portada de WhatsApp y papelería.</p>
+
+  <h2>Sobre claro</h2>
+  <div class="row">
+    <div class="tile light">
+      <svg viewBox="0 0 200 150" width="200" height="150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La Verdu">
+        <!-- basket -->
+        <path d="M30 90 L 40 130 L 160 130 L 170 90 Z" fill="#fef3c7" stroke="#92400e" stroke-width="2"/>
+        <path d="M30 90 L 170 90" stroke="#92400e" stroke-width="2"/>
+        <!-- weave lines -->
+        <path d="M45 95 L 52 125 M70 95 L 74 125 M95 95 L 95 125 M120 95 L 118 125 M145 95 L 140 125" stroke="#92400e" stroke-width="1" opacity="0.5"/>
+        <!-- veggies -->
+        <circle cx="60" cy="78" r="14" fill="#dc2626"/>
+        <path d="M60 64 C 62 60, 66 58, 68 62" stroke="#047857" stroke-width="2" fill="none"/>
+        <circle cx="95" cy="70" r="16" fill="#10b981"/>
+        <path d="M95 54 C 95 48, 100 46, 102 50" stroke="#064e3b" stroke-width="2" fill="none"/>
+        <circle cx="130" cy="80" r="12" fill="#f59e0b"/>
+        <path d="M130 68 C 128 62, 134 60, 136 64" stroke="#047857" stroke-width="2" fill="none"/>
+        <!-- wordmark -->
+        <text x="100" y="148" text-anchor="middle" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="20" font-weight="800" fill="#0f172a" letter-spacing="-0.3">La Verdu</text>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Sobre verde (brand)</h2>
+  <div class="row">
+    <div class="tile brand">
+      <svg viewBox="0 0 200 150" width="200" height="150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La Verdu">
+        <path d="M30 90 L 40 130 L 160 130 L 170 90 Z" fill="#ffffff" opacity="0.2" stroke="#ffffff" stroke-width="2"/>
+        <path d="M30 90 L 170 90" stroke="#ffffff" stroke-width="2"/>
+        <circle cx="60" cy="78" r="14" fill="#fca5a5"/>
+        <circle cx="95" cy="70" r="16" fill="#6ee7b7"/>
+        <circle cx="130" cy="80" r="12" fill="#fcd34d"/>
+        <text x="100" y="148" text-anchor="middle" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="20" font-weight="800" fill="#ffffff" letter-spacing="-0.3">La Verdu</text>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Sobre oscuro</h2>
+  <div class="row">
+    <div class="tile dark">
+      <svg viewBox="0 0 200 150" width="200" height="150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La Verdu">
+        <path d="M30 90 L 40 130 L 160 130 L 170 90 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M30 90 L 170 90" stroke="#94a3b8" stroke-width="2"/>
+        <circle cx="60" cy="78" r="14" fill="#f87171"/>
+        <circle cx="95" cy="70" r="16" fill="#34d399"/>
+        <circle cx="130" cy="80" r="12" fill="#fbbf24"/>
+        <text x="100" y="148" text-anchor="middle" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="20" font-weight="800" fill="#ffffff" letter-spacing="-0.3">La Verdu</text>
+      </svg>
+    </div>
+  </div>
+
+  <ul class="notes">
+    <li><strong>Tradeoff:</strong> más expresivo y memorable, pero complejo: pierde nitidez bajo 64px y es costoso de reproducir en tickets monocromáticos. Usar solo en portadas y papelería.</li>
+    <li>La canasta usa una paleta secundaria (rojo tomate, ámbar, verde) que complementa el verde brand sin reemplazarlo.</li>
+  </ul>
+</body>
+</html>

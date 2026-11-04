@@ -1,0 +1,7 @@
+{
+  "title": "Admin login",
+  "brief": "Pantalla de login del panel admin de La Verdu con fondo fotográfico (fyv.jpg) y card centrada con glassmorphism.",
+  "artboards": [
+    { "file": "01-login.html", "title": "Login con fondo fotográfico", "tradeoff": "Fondo inmersivo y cálido; requiere overlay para contraste AA", "width": 1440, "height": 900 }
+  ]
+}

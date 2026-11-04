@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La Verdu Admin — Design System</title>
+<style>
+  :root {
+    --brand-50: #ecfdf5; --brand-100: #d1fae5; --brand-500: #10b981; --brand-600: #059669; --brand-700: #047857; --brand-900: #064e3b;
+    --accent-50: #fff7ed; --accent-100: #ffedd5; --accent-500: #f97316; --accent-600: #ea580c; --accent-700: #c2410c;
+    --highlight-100: #fef9c3; --highlight-400: #facc15; --highlight-500: #eab308;
+    --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-300: #cbd5e1; --slate-400: #94a3b8; --slate-500: #64748b; --slate-700: #334155; --slate-800: #1e293b; --slate-900: #0f172a;
+    --red-600: #dc2626; --amber-100: #fef3c7; --amber-800: #92400e; --white: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: var(--slate-50); color: var(--slate-900); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 48px 64px; }
+  h1 { font-size: 32px; font-weight: 700; margin: 0 0 8px; }
+  h2 { font-size: 20px; font-weight: 600; margin: 40px 0 16px; border-bottom: 1px solid var(--slate-300); padding-bottom: 8px; }
+  h3 { font-size: 14px; font-weight: 600; margin: 16px 0 8px; color: var(--slate-500); text-transform: uppercase; letter-spacing: .04em; }
+  .lede { color: var(--slate-500); margin: 0 0 32px; font-size: 15px; }
+  .grid { display: grid; gap: 16px; }
+  .swatches { grid-template-columns: repeat(6, 1fr); }
+  .swatch { border: 1px solid var(--slate-300); border-radius: 8px; overflow: hidden; background: var(--white); }
+  .swatch .chip { height: 64px; }
+  .swatch .meta { padding: 8px 10px; font-size: 12px; }
+  .swatch .name { font-weight: 600; }
+  .swatch .val { color: var(--slate-500); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; }
+  .type-row { display: flex; align-items: baseline; gap: 24px; padding: 12px 0; border-bottom: 1px solid var(--slate-100); }
+  .type-row .label { width: 120px; font-size: 12px; color: var(--slate-500); font-family: ui-monospace, monospace; }
+  .spacing-row { display: flex; align-items: center; gap: 16px; padding: 6px 0; }
+  .spacing-bar { background: var(--brand-500); height: 8px; border-radius: 2px; }
+  .radius-demo { display: flex; gap: 16px; }
+  .radius-box { width: 64px; height: 64px; background: var(--brand-100); border: 1px solid var(--brand-500); }
+  .shadow-demo { display: flex; gap: 24px; }
+  .shadow-card { width: 160px; height: 96px; background: var(--white); border: 1px solid var(--slate-300); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--slate-500); }
+  .shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+  .components { display: grid; grid-template-columns: 260px 1fr; gap: 32px; }
+  .sidebar { background: var(--slate-900); color: var(--slate-100); border-radius: 8px; overflow: hidden; }
+  .sidebar .brand { padding: 20px 16px; font-size: 18px; font-weight: 700; border-bottom: 1px solid var(--slate-700); }
+  .sidebar nav a { display: block; padding: 8px 16px; font-size: 14px; color: var(--slate-300); text-decoration: none; }
+  .sidebar nav a.active { background: var(--slate-800); color: #fff; font-weight: 600; border-left: 3px solid var(--brand-500); }
+  .sidebar nav a:hover { background: var(--slate-800); }
+  .sidebar .foot { padding: 12px 16px; border-top: 1px solid var(--slate-700); font-size: 12px; color: var(--slate-400); }
+  .card { background: var(--white); border: 1px solid var(--slate-300); border-radius: 8px; padding: 16px; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+  .card .label { font-size: 14px; color: var(--slate-500); }
+  .card .value { font-size: 24px; font-weight: 700; }
+  .btn-primary { background: var(--brand-600); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; }
+  .btn-primary:hover { background: var(--brand-700); }
+  .btn-accent { background: var(--accent-600); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; }
+  .input { border: 1px solid var(--slate-300); border-radius: 4px; padding: 8px 10px; font-size: 14px; width: 240px; }
+  .table { width: 100%; border-collapse: collapse; background: var(--white); border: 1px solid var(--slate-300); border-radius: 8px; overflow: hidden; font-size: 14px; }
+  .table th { text-align: left; padding: 8px; background: var(--slate-100); font-weight: 600; }
+  .table td { padding: 8px; border-top: 1px solid var(--slate-300); }
+  .alert { background: var(--white); border: 1px solid var(--slate-300); border-radius: 4px; padding: 12px; font-size: 14px; }
+  .alert .kind { font-weight: 600; }
+  .empty { color: var(--slate-500); font-size: 14px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+  .badge.ok { background: var(--brand-100); color: var(--brand-700); }
+  .badge.warn { background: var(--amber-100); color: var(--amber-800); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>La Verdu Admin — Design System</h1>
+  <p class="lede">Paleta "Mercado fresco": menta (brand), zanahoria (accent), maíz (highlight). Tokens de <code>apps/admin/tailwind.config.js</code> y <code>apps/admin/src/index.css</code>.</p>
+
+  <h2>Colors — Brand (menta)</h2>
+  <div class="grid swatches">
+    <div class="swatch"><div class="chip" style="background:var(--brand-50)"></div><div class="meta"><div class="name">brand-50</div><div class="val">#ecfdf5</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--brand-100)"></div><div class="meta"><div class="name">brand-100</div><div class="val">#d1fae5</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--brand-500)"></div><div class="meta"><div class="name">brand-500</div><div class="val">#10b981</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--brand-600)"></div><div class="meta"><div class="name">brand-600</div><div class="val">#059669</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--brand-700)"></div><div class="meta"><div class="name">brand-700</div><div class="val">#047857</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--brand-900)"></div><div class="meta"><div class="name">brand-900</div><div class="val">#064e3b</div></div></div>
+  </div>
+
+  <h2>Colors — Accent (zanahoria)</h2>
+  <div class="grid swatches">
+    <div class="swatch"><div class="chip" style="background:var(--accent-50)"></div><div class="meta"><div class="name">accent-50</div><div class="val">#fff7ed</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--accent-100)"></div><div class="meta"><div class="name">accent-100</div><div class="val">#ffedd5</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--accent-500)"></div><div class="meta"><div class="name">accent-500</div><div class="val">#f97316</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--accent-600)"></div><div class="meta"><div class="name">accent-600</div><div class="val">#ea580c</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--accent-700)"></div><div class="meta"><div class="name">accent-700</div><div class="val">#c2410c</div></div></div>
+  </div>
+
+  <h2>Colors — Highlight (maíz)</h2>
+  <div class="grid swatches">
+    <div class="swatch"><div class="chip" style="background:var(--highlight-100)"></div><div class="meta"><div class="name">highlight-100</div><div class="val">#fef9c3</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--highlight-400)"></div><div class="meta"><div class="name">highlight-400</div><div class="val">#facc15</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--highlight-500)"></div><div class="meta"><div class="name">highlight-500</div><div class="val">#eab308</div></div></div>
+  </div>
+
+  <h2>Colors — Neutrals (slate)</h2>
+  <div class="grid swatches">
+    <div class="swatch"><div class="chip" style="background:var(--slate-50)"></div><div class="meta"><div class="name">slate-50</div><div class="val">#f8fafc</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--slate-100)"></div><div class="meta"><div class="name">slate-100</div><div class="val">#f1f5f9</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--slate-300)"></div><div class="meta"><div class="name">slate-300</div><div class="val">#cbd5e1</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--slate-400)"></div><div class="meta"><div class="name">slate-400</div><div class="val">#94a3b8</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--slate-500)"></div><div class="meta"><div class="name">slate-500</div><div class="val">#64748b</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--slate-700)"></div><div class="meta"><div class="name">slate-700</div><div class="val">#334155</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--slate-800)"></div><div class="meta"><div class="name">slate-800</div><div class="val">#1e293b</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--slate-900)"></div><div class="meta"><div class="name">slate-900</div><div class="val">#0f172a</div></div></div>
+  </div>
+
+  <h2>Colors — Status</h2>
+  <div class="grid swatches">
+    <div class="swatch"><div class="chip" style="background:var(--red-600)"></div><div class="meta"><div class="name">red-600 (tomate)</div><div class="val">#dc2626</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--amber-100)"></div><div class="meta"><div class="name">amber-100</div><div class="val">#fef3c7</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--white);border-bottom:1px solid var(--slate-300)"></div><div class="meta"><div class="name">white</div><div class="val">#ffffff</div></div></div>
+  </div>
+
+  <h2>Typography</h2>
+  <div class="type-row"><span class="label">text-xs 12</span><span style="font-size:12px">El asistente atiende por WhatsApp</span></div>
+  <div class="type-row"><span class="label">text-sm 14</span><span style="font-size:14px">El asistente atiende por WhatsApp</span></div>
+  <div class="type-row"><span class="label">text-base 16</span><span style="font-size:16px">El asistente atiende por WhatsApp</span></div>
+  <div class="type-row"><span class="label">text-lg 18</span><span style="font-size:18px;font-weight:600">El asistente atiende por WhatsApp</span></div>
+  <div class="type-row"><span class="label">text-2xl 24</span><span style="font-size:24px;font-weight:700">El asistente atiende por WhatsApp</span></div>
+
+  <h2>Spacing (4px base)</h2>
+  <div class="spacing-row"><span class="label" style="width:80px;font-size:12px;color:var(--slate-500);font-family:ui-monospace,monospace">p-2 · 8</span><div class="spacing-bar" style="width:8px"></div></div>
+  <div class="spacing-row"><span class="label" style="width:80px;font-size:12px;color:var(--slate-500);font-family:ui-monospace,monospace">p-3 · 12</span><div class="spacing-bar" style="width:12px"></div></div>
+  <div class="spacing-row"><span class="label" style="width:80px;font-size:12px;color:var(--slate-500);font-family:ui-monospace,monospace">p-4 · 16</span><div class="spacing-bar" style="width:16px"></div></div>
+  <div class="spacing-row"><span class="label" style="width:80px;font-size:12px;color:var(--slate-500);font-family:ui-monospace,monospace">p-6 · 24</span><div class="spacing-bar" style="width:24px"></div></div>
+
+  <h2>Radius</h2>
+  <div class="radius-demo">
+    <div><div class="radius-box" style="border-radius:4px"></div><div style="font-size:12px;margin-top:6px;color:var(--slate-500)">rounded · 4px</div></div>
+    <div><div class="radius-box" style="border-radius:8px"></div><div style="font-size:12px;margin-top:6px;color:var(--slate-500)">rounded-lg · 8px</div></div>
+  </div>
+
+  <h2>Shadows</h2>
+  <div class="shadow-demo">
+    <div class="shadow-card shadow-sm">shadow-sm</div>
+    <div class="shadow-card" style="box-shadow:none">none</div>
+  </div>
+
+  <h2>Components</h2>
+  <div class="components">
+    <div class="sidebar">
+      <div class="brand">La Verdu · Administración</div>
+      <nav>
+        <a class="active" href="#">Inicio</a>
+        <a href="#">Catálogo</a>
+        <a href="#">Sucursales</a>
+        <a href="#">Pedidos</a>
+      </nav>
+      <div class="foot">dueño · owner<br/><span style="color:var(--slate-300)">Cerrar sesión</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <div class="card"><div class="label">Pedidos hoy</div><div class="value">12</div></div>
+        <div class="card"><div class="label">Pedidos mes</div><div class="value">284</div></div>
+        <div class="card"><div class="label">En cola</div><div class="value">2</div></div>
+        <div class="card"><div class="label">Borradores</div><div class="value">1</div></div>
+      </div>
+      <table class="table">
+        <thead><tr><th>Sucursal</th><th>Versión</th><th>Último visto</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>Centro</td><td>1.2.0</td><td>hoy 10:24</td><td><span class="badge ok">ok</span></td></tr>
+          <tr><td>Norte</td><td>1.2.0</td><td>hoy 09:11</td><td><span class="badge ok">ok</span></td></tr>
+          <tr><td>Sur</td><td>1.1.8</td><td>ayer 18:40</td><td><span class="badge warn">desactualizado</span></td></tr>
+        </tbody>
+      </table>
+      <div style="display:flex;gap:12px;align-items:center">
+        <input class="input" placeholder="Nombre del negocio" />
+        <button class="btn-primary">Guardar</button>
+        <button class="btn-accent">Acción</button>
+      </div>
+      <div class="alert"><span class="kind" style="color:var(--accent-600)">Stock bajo</span> — Tomate sin disponibilidad en Centro</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

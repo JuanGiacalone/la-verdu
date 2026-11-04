@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Logo — Monograma LV</title>
+<style>
+  :root { --brand-50:#ecfdf5;--brand-100:#d1fae5;--brand-500:#10b981;--brand-600:#059669;--brand-700:#047857;--brand-900:#064e3b;--slate-50:#f8fafc;--slate-900:#0f172a;--white:#ffffff; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--slate-50);color:var(--slate-900);padding:48px}
+  h1{font-size:22px;font-weight:700;margin-bottom:6px}
+  .lede{color:#64748b;font-size:14px;margin-bottom:36px}
+  h2{font-size:14px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin:32px 0 14px}
+  .row{display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+  .tile{border-radius:12px;padding:32px;display:flex;align-items:center;justify-content:center;min-width:200px;min-height:200px}
+  .tile.light{background:var(--white);border:1px solid #cbd5e1}
+  .tile.brand{background:var(--brand-600)}
+  .tile.dark{background:var(--brand-900)}
+  .tile.mono{background:#f1f5f9}
+  .notes{margin-top:40px;max-width:720px;font-size:14px;color:#475569;line-height:1.6}
+  .notes li{margin-bottom:6px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+  <h1>Logo 02 — Monograma LV</h1>
+  <p class="lede">Monograma "LV" donde la V se convierte en una hoja. Compacto, ideal para avatar de WhatsApp, favicon y app icon.</p>
+
+  <h2>Sobre claro</h2>
+  <div class="row">
+    <div class="tile light">
+      <svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La Verdu monograma">
+        <rect x="4" y="4" width="112" height="112" rx="24" fill="#ecfdf5"/>
+        <text x="26" y="86" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="78" font-weight="800" fill="#064e3b">L</text>
+        <path d="M62 30 C 62 22, 74 18, 84 24 C 94 30, 92 46, 80 52 C 68 58, 56 48, 60 38 Z" fill="#059669"/>
+        <path d="M72 40 C 76 44, 80 48, 82 52" stroke="#064e3b" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Sobre verde (brand)</h2>
+  <div class="row">
+    <div class="tile brand">
+      <svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La Verdu monograma">
+        <rect x="4" y="4" width="112" height="112" rx="24" fill="#ffffff" opacity="0.15"/>
+        <text x="26" y="86" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="78" font-weight="800" fill="#ffffff">L</text>
+        <path d="M62 30 C 62 22, 74 18, 84 24 C 94 30, 92 46, 80 52 C 68 58, 56 48, 60 38 Z" fill="#ffffff" opacity="0.9"/>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Sobre oscuro</h2>
+  <div class="row">
+    <div class="tile dark">
+      <svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La Verdu monograma">
+        <rect x="4" y="4" width="112" height="112" rx="24" fill="#1e293b"/>
+        <text x="26" y="86" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="78" font-weight="800" fill="#ffffff">L</text>
+        <path d="M62 30 C 62 22, 74 18, 84 24 C 94 30, 92 46, 80 52 C 68 58, 56 48, 60 38 Z" fill="#10b981"/>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Monocromo</h2>
+  <div class="row">
+    <div class="tile mono">
+      <svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La Verdu monograma">
+        <rect x="4" y="4" width="112" height="112" rx="24" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+        <text x="26" y="86" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="78" font-weight="800" fill="#0f172a">L</text>
+        <path d="M62 30 C 62 22, 74 18, 84 24 C 94 30, 92 46, 80 52 C 68 58, 56 48, 60 38 Z" fill="#0f172a"/>
+      </svg>
+    </div>
+  </div>
+
+  <ul class="notes">
+    <li><strong>Tradeoff:</strong> máxima reconocibilidad a tamaño pequeño (avatar, favicon); pierde el nombre completo, requiere acompañar con wordmark en contextos grandes.</li>
+    <li>El cuadrado redondeado (rx 24) funciona como app icon en iOS/Android.</li>
+  </ul>
+</body>
+</html>
