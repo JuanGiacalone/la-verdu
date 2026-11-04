@@ -1,0 +1,7 @@
+{
+  "backend_url": "http://api:3000",
+  "branch_token": "dev_print_agent_token_only",
+  "branch_id": "00000000-0000-0000-0000-000000000001",
+  "printer_address": "tcp://printer-sim:9100",
+  "printer_port": 9100
+}
