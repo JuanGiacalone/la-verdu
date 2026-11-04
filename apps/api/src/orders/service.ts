@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import type { Database } from "../db/client.js";
 import * as schema from "../db/schema.js";
 
@@ -170,7 +170,17 @@ export async function createDraftOrder(db: Database, input: CreateOrderInput): P
  * Returns the order number.
  */
 export async function confirmOrder(db: Database, orderId: string): Promise<number> {
-  const rows = await db
+  const orderRows = await db
+    .select({ customerId: schema.order.customerId, orderNumber: schema.order.orderNumber })
+    .from(schema.order)
+    .where(eq(schema.order.id, orderId))
+    .limit(1);
+  const order = orderRows[0];
+  if (!order) {
+    throw new Error("Order not found");
+  }
+
+  await db
     .update(schema.order)
     .set({
       status: "CONFIRMED",
@@ -178,14 +188,17 @@ export async function confirmOrder(db: Database, orderId: string): Promise<numbe
       confirmedAt: new Date(),
       updatedAt: new Date(),
     })
-    .where(eq(schema.order.id, orderId))
-    .returning({ orderNumber: schema.order.orderNumber });
+    .where(eq(schema.order.id, orderId));
 
-  const orderNumber = rows[0]?.orderNumber;
-  if (orderNumber === undefined) {
-    throw new Error("Order not found");
+  // Increment the customer's order counter (for "new customer" detection on print).
+  if (order.customerId) {
+    await db
+      .update(schema.customer)
+      .set({ orderCount: sql`${schema.customer.orderCount} + 1`, updatedAt: new Date() })
+      .where(eq(schema.customer.id, order.customerId));
   }
-  return Number(orderNumber);
+
+  return Number(order.orderNumber);
 }
 
 /**
