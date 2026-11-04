@@ -56,10 +56,10 @@ describe("extractProducts", () => {
     const { products, errors } = extractProducts(rows);
     expect(errors).toEqual([]);
     expect(products).toEqual([
-      { officialName: "Lechuga Manteca", unit: "KG" },
-      { officialName: "Lechuga Crespa", unit: "KG" },
-      { officialName: "Banana Brasil", unit: "KG" },
-      { officialName: "Maple Huevo Color", unit: "UNIT" },
+      { officialName: "Lechuga Manteca", unit: "KG", referencePrice: null },
+      { officialName: "Lechuga Crespa", unit: "KG", referencePrice: null },
+      { officialName: "Banana Brasil", unit: "KG", referencePrice: null },
+      { officialName: "Maple Huevo Color", unit: "UNIT", referencePrice: null },
     ]);
   });
 
@@ -70,7 +70,23 @@ describe("extractProducts", () => {
     ];
     const { products, errors } = extractProducts(rows);
     expect(errors).toEqual([]);
-    expect(products).toEqual([{ officialName: "Verdeo", unit: "KG" }]);
+    expect(products).toEqual([{ officialName: "Verdeo", unit: "KG", referencePrice: null }]);
+  });
+
+  it("extracts the reference price from 'Precio Lista 1'", () => {
+    const rows = [
+      ["Descripción", "Tipo de Venta", "Precio Lista 1"],
+      ["Tomate", "Peso", "1200"],
+      ["Banana", "Peso", "850,50"],
+      ["Lechuga", "Unidad", ""],
+    ];
+    const { products, errors } = extractProducts(rows);
+    expect(errors).toEqual([]);
+    expect(products).toEqual([
+      { officialName: "Tomate", unit: "KG", referencePrice: 1200 },
+      { officialName: "Banana", unit: "KG", referencePrice: 850.5 },
+      { officialName: "Lechuga", unit: "UNIT", referencePrice: null },
+    ]);
   });
 
   it("reports an error for unknown sale types", () => {
@@ -98,6 +114,6 @@ describe("extractProducts", () => {
       ["Banana", "Peso"],
     ];
     const { products } = extractProducts(rows);
-    expect(products).toEqual([{ officialName: "Banana", unit: "KG" }]);
+    expect(products).toEqual([{ officialName: "Banana", unit: "KG", referencePrice: null }]);
   });
 });

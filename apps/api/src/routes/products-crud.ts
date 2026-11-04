@@ -7,6 +7,7 @@ import * as schema from "../db/schema.js";
 const productBody = z.object({
   officialName: z.string().min(1).max(80),
   unit: z.enum(["KG", "UNIT", "BUNCH"]),
+  referencePrice: z.number().nullable().optional(),
   active: z.boolean().default(true),
 });
 
@@ -60,6 +61,12 @@ export function registerProductCrudRoutes(app: FastifyInstance, database: Databa
         .values({
           officialName: data.officialName,
           unit: data.unit,
+          referencePrice:
+            data.referencePrice !== undefined
+              ? data.referencePrice === null
+                ? null
+                : String(data.referencePrice)
+              : undefined,
           active: data.active,
         })
         .returning();
@@ -85,6 +92,9 @@ export function registerProductCrudRoutes(app: FastifyInstance, database: Databa
       .set({
         ...(data.officialName !== undefined && { officialName: data.officialName }),
         ...(data.unit !== undefined && { unit: data.unit }),
+        ...(data.referencePrice !== undefined && {
+          referencePrice: data.referencePrice === null ? null : String(data.referencePrice),
+        }),
         ...(data.active !== undefined && { active: data.active }),
         updatedAt: new Date(),
       })

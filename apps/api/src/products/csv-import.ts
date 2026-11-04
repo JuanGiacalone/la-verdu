@@ -12,6 +12,7 @@ export interface CsvImportResult {
 export interface ParsedProduct {
   readonly officialName: string;
   readonly unit: "KG" | "UNIT" | "BUNCH";
+  readonly referencePrice: number | null;
 }
 
 /**
@@ -20,6 +21,10 @@ export interface ParsedProduct {
  * and \r\n line endings. Blank lines are skipped.
  */
 export function parseCsv(text: string): string[][] {
+  // Strip a leading BOM (UTF-8/UTF-16) so header detection works on POS exports.
+  if (text.charCodeAt(0) === 0xfeff) {
+    text = text.slice(1);
+  }
   const rows: string[][] = [];
   let current: string[] = [];
   let field = "";
@@ -101,9 +106,27 @@ export function extractProducts(rows: string[][]): {
   if (!headerRow) {
     return { products, errors: ["El archivo CSV está vacío."] };
   }
-  const header = headerRow.map((h) => h.trim().toLowerCase());
-  const nameIndex = header.findIndex((h) => h === "descripción" || h === "descripcion");
-  const unitIndex = header.indexOf("tipo de venta");
+  const normalize = (value: string) =>
+    value
+      .replace(/^\ufeff/, "")
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  const header = headerRow.map(normalize);
+  const nameIndex = header.findIndex(
+    (h) => h === "descripcion" || h.includes("descripcion") || h.includes("description"),
+  );
+  const unitIndex = header.findIndex(
+    (h) => h === "tipo de venta" || (h.includes("tipo") && h.includes("venta")),
+  );
+  const priceIndex = header.findIndex(
+    (h) =>
+      h === "precio lista 1" ||
+      h.includes("precio lista 1") ||
+      h.includes("precio lista") ||
+      h.includes("precio"),
+  );
 
   if (nameIndex === -1) {
     return {
@@ -137,7 +160,18 @@ export function extractProducts(rows: string[][]): {
       continue;
     }
 
-    products.push({ officialName: name, unit });
+    let referencePrice: number | null = null;
+    if (priceIndex !== -1) {
+      const rawPrice = (row[priceIndex] ?? "").trim();
+      if (rawPrice !== "") {
+        const parsed = Number(rawPrice.replace(",", "."));
+        if (Number.isFinite(parsed) && parsed >= 0) {
+          referencePrice = parsed;
+        }
+      }
+    }
+
+    products.push({ officialName: name, unit, referencePrice });
   }
 
   return { products, errors };
@@ -173,6 +207,7 @@ export async function importProductsFromCsv(
     await db.insert(schema.product).values({
       officialName: product.officialName,
       unit: product.unit,
+      referencePrice: product.referencePrice !== null ? String(product.referencePrice) : null,
     });
     imported += 1;
   }
