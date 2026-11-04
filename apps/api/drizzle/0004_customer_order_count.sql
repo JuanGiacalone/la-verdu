@@ -1,0 +1,1 @@
+ALTER TABLE "customer" ADD COLUMN "order_count" integer DEFAULT 0 NOT NULL;--> statement-breakpoint

@@ -145,6 +145,7 @@ export const customer = pgTable(
     usualFulfillment: fulfillmentType("usual_fulfillment").notNull().default("PICKUP"),
     preferredBranchId: uuid("preferred_branch_id").references(() => branch.id),
     consentAt: timestamp("consent_at", { withTimezone: true }),
+    orderCount: integer("order_count").notNull().default(0),
     ...timestamps,
   },
   (table) => [check("customer_phone_e164_format", phoneFormat(table.phoneE164))],
@@ -154,7 +155,19 @@ export const product = pgTable("product", {
   id: uuid("id").primaryKey().defaultRandom(),
   officialName: varchar("official_name", { length: 80 }).notNull().unique(),
   unit: productUnit("unit").notNull(),
+  referencePrice: numeric("reference_price", { precision: 12, scale: 2 }),
   active: boolean("active").notNull().default(true),
+  ...timestamps,
+});
+
+/** Single-row configuration of the business instance (name, owner, contact). */
+export const business = pgTable("business", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: varchar("name", { length: 120 }).notNull(),
+  ownerName: varchar("owner_name", { length: 80 }),
+  phoneE164: varchar("phone_e164", { length: 16 }),
+  addressText: text("address_text"),
+  agentNotes: text("agent_notes"),
   ...timestamps,
 });
 

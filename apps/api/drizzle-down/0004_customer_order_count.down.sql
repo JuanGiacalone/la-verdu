@@ -1,0 +1,1 @@
+ALTER TABLE "customer" DROP COLUMN IF EXISTS "order_count";--> statement-breakpoint

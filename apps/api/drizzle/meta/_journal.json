@@ -29,6 +29,34 @@
       "when": 1793567643636,
       "tag": "0003_admin_user",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793567643637,
+      "tag": "0004_customer_order_count",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793635820964,
+      "tag": "0005_product_reference_price",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793636683169,
+      "tag": "0006_business",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793637994490,
+      "tag": "0007_business_agent_notes",
+      "breakpoints": true
     }
   ]
 }

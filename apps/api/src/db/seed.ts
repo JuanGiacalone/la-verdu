@@ -60,8 +60,20 @@ const CUSTOMERS = [
   { phoneE164: "+5491100000203", name: "Cliente Norte", preferredBranch: "NORTE" },
 ] as const;
 
+const BUSINESS = {
+  name: process.env.BUSINESS_NAME ?? "La Verdu",
+  ownerName: process.env.BUSINESS_OWNER_NAME ?? "Dueño de prueba",
+  phoneE164: process.env.BUSINESS_PHONE ?? null,
+  addressText: process.env.BUSINESS_ADDRESS ?? null,
+} as const;
+
 export async function seedDatabase(db: Database): Promise<void> {
   await db.transaction(async (tx) => {
+    const existingBusiness = await tx.select().from(schema.business).limit(1);
+    if (existingBusiness.length === 0) {
+      await tx.insert(schema.business).values(BUSINESS);
+    }
+
     for (const branch of BRANCHES) {
       await tx.insert(schema.branch).values(branch).onConflictDoNothing();
     }
