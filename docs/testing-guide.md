@@ -89,6 +89,26 @@ Requieren `TEST_DATABASE_URL` apuntando a una base de datos PostgreSQL que termi
 - Prueba: dataset PRD 19.4, idempotencia, métodos de pago por sucursal.
 - Ejecutar: `TEST_DATABASE_URL=... npx vitest run test/integration/seed.test.ts`
 
+### Modificación de pedido (customer)
+- Archivo: `test/integration/order-modification.test.ts`
+- Prueba: el customer modifica un pedido confirmado ("modificar" → nueva versión 2 con resumen).
+- Ejecutar: `TEST_DATABASE_URL=... npx vitest run test/integration/order-modification.test.ts`
+
+### Cancelación (customer y staff)
+- Archivo: `test/integration/cancellation.test.ts`
+- Prueba: el customer cancela un pedido pendiente ("cancelar" → CANCELLED); el staff rechaza un change set ("no" → REJECTED, sin aplicar cambios).
+- Ejecutar: `TEST_DATABASE_URL=... npx vitest run test/integration/cancellation.test.ts`
+
+### Confirmación de cambios de personal (staff)
+- Archivo: `test/integration/staff-confirmation.test.ts`
+- Prueba: el bot propone cambios y pide "sí"; no aplica hasta confirmación explícita; el precio aplicado es el del input (noInventedPrices).
+- Ejecutar: `TEST_DATABASE_URL=... npx vitest run test/integration/staff-confirmation.test.ts`
+
+### Confirmación de pedido (customer)
+- Archivo: `test/integration/customer-confirmation.test.ts`
+- Prueba: el bot envía resumen y pide "sí"; no confirma hasta recibir "sí" explícito (noConfirmationWithoutYes).
+- Ejecutar: `TEST_DATABASE_URL=... npx vitest run test/integration/customer-confirmation.test.ts`
+
 ### CSV import (endpoint)
 - Archivo: `test/integration/csv-import.test.ts`
 - Prueba: importación end-to-end, duplicados, errores de fila, body vacío.
@@ -99,6 +119,12 @@ Requieren `TEST_DATABASE_URL` apuntando a una base de datos PostgreSQL que termi
 - Ubicación: `packages/print-render/test/render.test.ts`
 - Prueba: formato de hoja impresa, cantidades, etiquetas, tildes, corte.
 - Ejecutar: `cd packages/print-render && npx vitest run`
+
+### Golden file de render (snapshot)
+- Archivo: `packages/print-render/test/render.test.ts` (test `preview matches golden file (snapshot)`)
+- Genera/actualiza: `packages/print-render/test/__snapshots__/render.test.ts.snap`
+- Ejecutar: `cd packages/print-render && npx vitest run`
+- Actualizar snapshots: `cd packages/print-render && npx vitest run -u`
 
 ### Agregar un golden file nuevo
 1. Crear un `PrintJobData` en el test.
@@ -115,7 +141,11 @@ Requieren `TEST_DATABASE_URL` apuntando a una base de datos PostgreSQL que termi
 
 ### Ejecutar
 ```bash
+# Conversaciones (texto)
 npx tsx evals/run-evals.ts
+
+# Incluir audio evals (requiere archivos en evals/audio/ y STT configurado)
+npx tsx evals/run-evals.ts --audio
 ```
 
 ### Umbrales (PRD 21.2)
@@ -129,6 +159,41 @@ npx tsx evals/run-evals.ts
 1. Crear un archivo JSON en `evals/conversations/`.
 2. Incluir: `id`, `input`, `expected` (products, quantities, fulfillment, noInventedPrices, noConfirmationWithoutYes).
 3. Ejecutar el runner y verificar que el caso pasa.
+
+## Modo local (LLM/STT local, perfil A)
+
+Para probar contra un LLM/STT local (Ollama, llama.cpp, vLLM, faster-whisper)
+sin API key, ver la guía dedicada:
+
+- [`docs/local-mode-testing.md`](local-mode-testing.md)
+
+Resumen rápido:
+
+```bash
+export CHAT_BASE_URL="http://localhost:11434/v1"
+export CHAT_API_KEY=""
+export CHAT_MODEL="llama3.1:8b"
+make dev-up
+```
+
+## Modo híbrido (LLM real)
+
+Para probar el flujo conversacional contra un proveedor LLM real (OpenCode) en
+lugar del `llm-stub`, ver la guía dedicada:
+
+- [`docs/hybrid-mode-testing.md`](hybrid-mode-testing.md)
+
+Resumen rápido:
+
+```bash
+export CHAT_BASE_URL="https://opencode.ai/inference/openai/v1"
+export CHAT_API_KEY="oc_sk_..."
+export CHAT_MODEL="glm-5.3"
+make dev-up   # con override compose, o correr la API directa
+```
+
+Los tests unitarios y de integración **no** requieren red ni clave; siguen
+usando el stub por defecto.
 
 ## CI pipeline
 
