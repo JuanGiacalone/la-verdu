@@ -48,8 +48,24 @@ describe.skipIf(!testDatabaseUrl)("migrations are versioned and reversible (RNF-
   it("rolls back one migration at a time and re-applies cleanly", async () => {
     await resetDatabase(url);
     await runMigrations(url);
-    expect(await publicTables()).toHaveLength(20);
+    expect(await publicTables()).toHaveLength(21);
     expect(await triggerExists("audit_log_append_only")).toBe(true);
+
+    await rollbackMigrations(url, 1);
+    expect(await columnExists("business", "agent_notes")).toBe(false);
+    expect(await publicTables()).toHaveLength(21);
+
+    await rollbackMigrations(url, 1);
+    expect(await columnExists("business", "name")).toBe(false);
+    expect(await publicTables()).toHaveLength(20);
+
+    await rollbackMigrations(url, 1);
+    expect(await columnExists("product", "reference_price")).toBe(false);
+    expect(await publicTables()).toHaveLength(20);
+
+    await rollbackMigrations(url, 1);
+    expect(await columnExists("customer", "order_count")).toBe(false);
+    expect(await publicTables()).toHaveLength(20);
 
     await rollbackMigrations(url, 1);
     expect(await columnExists("admin_user", "id")).toBe(false);
@@ -67,8 +83,11 @@ describe.skipIf(!testDatabaseUrl)("migrations are versioned and reversible (RNF-
     expect(await publicTables()).toEqual([]);
 
     await runMigrations(url);
-    expect(await publicTables()).toHaveLength(20);
+    expect(await publicTables()).toHaveLength(21);
     expect(await columnExists("payment_method", "active")).toBe(true);
     expect(await columnExists("admin_user", "id")).toBe(true);
+    expect(await columnExists("product", "reference_price")).toBe(true);
+    expect(await columnExists("business", "name")).toBe(true);
+    expect(await columnExists("business", "agent_notes")).toBe(true);
   });
 });
