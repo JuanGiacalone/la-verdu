@@ -30,10 +30,12 @@ help:
 	@echo "lint            Biome check"
 
 dev-up:
+	@test -f .env || cp .env.example .env
 	@test -S "$(PODMAN_SOCKET)" || (mkdir -p "$(dir $(PODMAN_SOCKET))" && nohup podman system service --time=0 unix://$(PODMAN_SOCKET) >/dev/null 2>&1 &) ; sleep 1
 	$(COMPOSE) up -d
 
 dev-up-no-print:
+	@test -f .env || cp .env.example .env
 	@test -S "$(PODMAN_SOCKET)" || (mkdir -p "$(dir $(PODMAN_SOCKET))" && nohup podman system service --time=0 unix://$(PODMAN_SOCKET) >/dev/null 2>&1 &) ; sleep 1
 	docker-compose -f infra/compose/dev.no-print.yml up -d
 
@@ -61,6 +63,7 @@ dev-printouts:
 # Requiere Ollama/llama.cpp/vLLM y (opcional) faster-whisper/whisper.cpp
 # corriendo en el host. Override de variables via infra/compose/dev.local.yml.
 dev-up-local:
+	@test -f .env || cp .env.example .env
 	@test -f infra/compose/dev.local.yml || (echo "Falta infra/compose/dev.local.yml. Copiá el ejemplo de docs/local-mode-testing.md" && exit 1)
 	@test -S "$(PODMAN_SOCKET)" || (mkdir -p "$(dir $(PODMAN_SOCKET))" && nohup podman system service --time=0 unix://$(PODMAN_SOCKET) >/dev/null 2>&1 &) ; sleep 1
 	$(COMPOSE) -f infra/compose/dev.yml -f infra/compose/dev.local.yml up -d

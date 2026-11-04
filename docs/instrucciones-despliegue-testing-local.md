@@ -160,3 +160,19 @@ npx tsx -e "import('./src/db/migrate.js').then(m => m.rollbackMigrations(process
 - Los tests de integración requieren `TEST_DATABASE_URL` apuntando a una base que termine en `_test`.
 - El stack local usa puertos: API 3000, db 5433 (compose) o 5432 (host), whatsapp-sim 8081, printer-sim 9100, llm-stub 8082, stt-stub 8083.
 - Para detener todo: `make dev-down`.
+
+## Variables de entorno (.env)
+
+Las credenciales (LLM, STT, WhatsApp) se leen desde el archivo `.env` en la raíz del repo (ignorado por git). Copiá `.env.example` a `.env` y editá los valores:
+
+```bash
+cp .env.example .env
+```
+
+El compose carga `.env` automáticamente mediante `env_file`. Si modificás `.env`, recreá el container de la API:
+
+```bash
+docker compose -f infra/compose/dev.yml up -d --force-recreate api
+```
+
+`make dev-up` crea `.env` desde `.env.example` si no existe.
