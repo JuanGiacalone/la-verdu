@@ -299,6 +299,7 @@ El LLM interpreta y redacta. El sistema decide. El LLM nunca escribe en la base 
 - **Salida estructurada:** toda respuesta del LLM que dispara una herramienta se valida contra un esquema. Si no valida, se reintenta una vez y después se escala.
 - **Contenido no confiable:** el texto y los audios del cliente son datos, no instrucciones. Un mensaje del tipo "ignorá tus reglas" no cambia permisos ni reglas (test de inyección en el eval set).
 - **Precios y disponibilidad:** toda cifra o disponibilidad que el asistente diga se toma de una herramienta en el mismo turno. Un test de eval verifica que cada cifra mencionada exista en el resultado de herramienta (BR-02).
+- **Precios de referencia:** el precio almacenado en el catálogo (`reference_price`) es de referencia y puede cambiar sin previo aviso, porque los precios de frutas y verduras son estacionales y se basan en la disponibilidad general diaria. Si el cliente solicita confirmación del precio de un producto, el asistente no confirma ni garantiza el precio; informa que es de referencia y que la confirmación final requiere la intervención de un vendedor o del dueño. El asistente nunca promete un precio final ni lo usa como compromiso de cobro (BR-08).
 - **Límites de turno:** máximo 8 llamadas a herramientas por turno (P). Excedido, escala.
 - **Fallo del proveedor de LLM:** M-15 y escalamiento. El sistema no improvisa.
 
@@ -501,6 +502,7 @@ Pantallas:
 10. **Alertas:** lista de avisos con estado y acción de reconocimiento.
 11. **Auditoría:** solo lectura con filtros.
 12. **Configuración técnica (operador):** versiones de agentes, estado de proveedores (LLM, STT, WhatsApp) y tokens (rotación).
+13. **Configuración del negocio:** nombre del negocio, nombre del dueño, teléfono y dirección. Se usa en los mensajes del asistente (M-01) y en la hoja impresa. Editable desde el admin; el seed la carga desde las variables de entorno `BUSINESS_NAME`, `BUSINESS_OWNER_NAME`, `BUSINESS_PHONE` y `BUSINESS_ADDRESS` (con valores por defecto para desarrollo). Incluye un campo de **notas del agente** (texto libre) que se suman a sus guardrails e instrucciones, para adaptar el comportamiento a cada negocio. El nombre configurado se refleja dinámicamente en el panel de administración (título del sitio, página de login y encabezado del menú) mediante el endpoint público `GET /business`.
 
 Idioma del admin: español (P, por la operación del local).
 
@@ -666,6 +668,7 @@ Los valores reales se cargan fuera del repositorio. Nunca en git.
 - Métodos de pago: los cuatro de RF-26, activos en ambas sucursales.
 - Horarios: `CENTRO` 08:00 a 20:00, `NORTE` 08:30 a 19:30, inicio de jornada igual a la apertura.
 - Clientes de prueba: 3 con sucursal preferida distinta.
+- Negocio: el seed crea un registro en la tabla `business` usando las variables de entorno `BUSINESS_NAME` (default "La Verdu"), `BUSINESS_OWNER_NAME` (default "Dueño de prueba"), `BUSINESS_PHONE` y `BUSINESS_ADDRESS`. Para adaptar la instancia a otro negocio, configurar estas variables antes de `make dev-seed` o editar la configuración desde el admin.
 
 ### 19.5 Criterio de "listo para ejecutar localmente"
 
@@ -700,6 +703,7 @@ Cada tarea cita los requisitos que cubre. Las tareas se implementan con tests pr
 | T1.4 | ABM de productos y sinónimos, sin calidades | RF-21 |
 | T1.5 | ABM de métodos de pago por sucursal | RF-26, BR-10 |
 | T1.6 | Auditoría de cambios de configuración | RF-36 |
+| T1.7 | ABM de configuración del negocio (nombre, dueño, teléfono, dirección) | Sección 15.13 |
 
 **Aceptación de I1:** el dueño configura una sucursal completa desde cero y cada cambio aparece en auditoría. Tests de permisos verifican que `SELLER` no accede a estas pantallas.
 
@@ -881,7 +885,7 @@ Textos de producto. Se implementan en `packages/messages-es-ar/` y se testean po
 | ID | Texto |
 |---|---|
 | M-01 | Hola, soy el asistente de {business}. Para tomar tu pedido necesito tu nombre, la dirección si querés envío y la sucursal que preferís. Tus datos se usan solo para gestionar tus pedidos. ¿Seguimos? |
-| M-02 | Los precios son referenciales y pueden cambiar. El total final lo define el peso en la balanza. |
+| M-02 | Los precios son referenciales y pueden cambiar. El total final lo define el peso en la balanza. Si el cliente solicita confirmación del precio de un producto, el asistente no confirma ni garantiza el precio: informa que los precios son de referencia (estacionales y sujetos a la disponibilidad general diaria) y que la confirmación final requiere la intervención de un vendedor o del dueño. |
 | M-03 | En {preferred_branch} no tenemos {product}. Tu pedido se prepara en {fulfilling_branch}, donde sí lo tenemos. Podés retirarlo allí o pedir envío desde esa sucursal. |
 | M-04 | Ahora estamos cerrados. Tomé tu pedido #{order_number}. Lo preparamos desde la apertura de {opens_at}. |
 | M-05 | En {branch} por ahora solo hacemos retiro en el local. |
@@ -931,6 +935,7 @@ Textos de producto. Se implementan en `packages/messages-es-ar/` y se testean po
 | 2026-11-01 | Impresora: prueba diferida. Modelo no bloquea la iteración 1. | Conversación |
 | 2026-11-01 | Iteración 1 en perfil B. Ambos perfiles preparados en la arquitectura. | Conversación |
 | 2026-11-01 | País Argentina. Ley 25.326 aplicable. Voseo y formato argentino. | Conversación |
+| 2026-11-02 | El precio del catálogo (`reference_price`) es de referencia y estacional; si el cliente solicita confirmación del precio, interviene un vendedor o el dueño. | Conversación |
 
 ### 26.1 Registro verbatim de las instrucciones del dueño
 
@@ -946,6 +951,7 @@ Textos originales, sin editar, en el orden en que se dieron.
 8. "La derivacion podemos solo informar al cliente. El inicio de jornada esta bien asi como propones. La cancelacion esta muy bien asi tambien. En caso de derivacion se deriva el pedido completo. Se permite la entrega a domicilio desde todas las sucursales, tenemos que agregar la opcion de desactivar los envios a domicilio en caso de problemas con el repartidor. Si en caso de problemas o de faltantes siempre se informa al personal."
 9. "La sucursal preferida la selecciona el cliente, las zonas de reparto las dejamos fuera."
 10. "Si guarda el PRD.md con el maximo detalle y deja todo listo para empezar a implementar el PRD. En la primera iteracion usaremos el modelo hibrido pero quiero dejar todo listo para poder implementarlo localmente"
+11. "Excelente agreguemos la aclaracion para el agente que los precios son de referencia y en caso de solicitar una confirmacion es necesaria la intervencion de un vendedor o del duenio, esto ocurre ya que los precios de las frutas y verduras son estacionales y se basan en la disponibilidad general diaria."
 
 ## 27. Decisiones abiertas
 
