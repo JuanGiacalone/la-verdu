@@ -15,6 +15,7 @@ export interface PrintJobData {
   readonly kind: PrintKind;
   readonly confirmedAt: Date;
   readonly customerName: string;
+  readonly customerOrderCount?: number;
   readonly fulfillment: PrintFulfillment;
   readonly pickupTime?: string;
   readonly deliveryAddress?: string;

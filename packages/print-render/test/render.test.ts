@@ -106,4 +106,27 @@ describe("renderPrintJob", () => {
     expect(result.bytes[len - 2]).toBe(0x56);
     expect(result.bytes[len - 1]).toBe(0x01);
   });
+
+  it("preview matches golden file (snapshot)", () => {
+    const result = renderPrintJob(baseData);
+    expect(result.preview).toMatchSnapshot();
+  });
+
+  it("shows NUEVO for a first-time customer (count 1)", () => {
+    const result = renderPrintJob({ ...baseData, customerOrderCount: 1 });
+    expect(result.preview).toContain("NUEVO");
+    expect(result.bytes.length).toBeGreaterThan(0);
+  });
+
+  it("shows order number for a returning customer (count > 1)", () => {
+    const result = renderPrintJob({ ...baseData, customerOrderCount: 3 });
+    expect(result.preview).toContain("pedido #3");
+    expect(result.preview).not.toContain("NUEVO");
+  });
+
+  it("omits order count suffix when not provided", () => {
+    const result = renderPrintJob(baseData);
+    expect(result.preview).not.toContain("NUEVO");
+    expect(result.preview).not.toContain("pedido #");
+  });
 });

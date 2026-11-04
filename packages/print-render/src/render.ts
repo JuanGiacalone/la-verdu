@@ -124,7 +124,13 @@ function buildPreview(data: PrintJobData): string {
   lines.push(formatDate(data.confirmedAt));
 
   // Customer.
-  lines.push(`Cliente: ${stripAccents(data.customerName).slice(0, 30)}`);
+  let customerLine = `Cliente: ${stripAccents(data.customerName).slice(0, 30)}`;
+  if (data.customerOrderCount !== undefined) {
+    const count = data.customerOrderCount;
+    const suffix = count <= 1 ? " (NUEVO)" : ` (pedido #${count})`;
+    customerLine += suffix;
+  }
+  lines.push(customerLine);
 
   // Delivery.
   if (data.fulfillment === "PICKUP") {
@@ -259,7 +265,13 @@ function buildBytes(data: PrintJobData): Uint8Array {
   bytes.push(LF);
 
   // Customer.
-  bytes.push(...textToBytes(`Cliente: ${stripAccents(data.customerName).slice(0, 30)}`));
+  let customerBytesLine = `Cliente: ${stripAccents(data.customerName).slice(0, 30)}`;
+  if (data.customerOrderCount !== undefined) {
+    const count = data.customerOrderCount;
+    const suffix = count <= 1 ? " (NUEVO)" : ` (pedido #${count})`;
+    customerBytesLine += suffix;
+  }
+  bytes.push(...textToBytes(customerBytesLine));
   bytes.push(LF);
 
   // Delivery.
