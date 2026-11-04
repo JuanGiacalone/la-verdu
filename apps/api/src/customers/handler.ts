@@ -65,14 +65,7 @@ export async function handleCustomerMessage(
   const conversation = convRows[0];
   if (!conversation) return;
 
-  // Store inbound message.
-  await deps.database.insert(schema.message).values({
-    waMessageId,
-    conversationId: conversation.id,
-    direction: "INBOUND",
-    type: type === "text" ? "TEXT" : type === "audio" ? "AUDIO" : "OTHER",
-    bodyText: text ?? null,
-  });
+  // Inbound message is already stored by the webhook; do not insert again.
 
   // Get text content.
   let messageText = text ?? "";
