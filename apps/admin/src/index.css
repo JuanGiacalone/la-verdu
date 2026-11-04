@@ -1,0 +1,19 @@
+/* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind */
+@tailwind base;
+/* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind */
+@tailwind components;
+/* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind */
+@tailwind utilities;
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+}
+
+/* Scrollbar sutil */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded;
+}
