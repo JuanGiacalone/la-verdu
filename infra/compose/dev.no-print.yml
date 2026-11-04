@@ -55,6 +55,12 @@ services:
       WHATSAPP_ACCESS_TOKEN: local_dev_access_token
       WHATSAPP_PHONE_NUMBER_ID: "1000000000000001"
       WHATSAPP_API_VERSION: v22.0
+      CHAT_BASE_URL: http://llm-stub:8082
+      CHAT_API_KEY: ""
+      CHAT_MODEL: llm-stub
+      STT_BASE_URL: http://stt-stub:8083
+      STT_API_KEY: ""
+      STT_MODEL: stt-stub
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
