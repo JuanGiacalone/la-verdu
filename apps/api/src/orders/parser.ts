@@ -74,7 +74,8 @@ Reglas:
   });
 
   if (!response.ok) {
-    throw new Error(`LLM failed: ${response.status}`);
+    const body = await response.text().catch(() => "");
+    throw new Error(`LLM failed: ${response.status} ${body.slice(0, 300)}`.trim());
   }
 
   const data = (await response.json()) as {
