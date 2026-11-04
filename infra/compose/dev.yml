@@ -92,9 +92,6 @@ services:
     ports:
       - "127.0.0.1:8083:8083"
 
-volumes:
-  db-data:
-
   print-agent:
     build:
       context: ../../apps/print-agent
@@ -106,3 +103,6 @@ volumes:
     depends_on:
       - api
     restart: unless-stopped
+
+volumes:
+  db-data:
