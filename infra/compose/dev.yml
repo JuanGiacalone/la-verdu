@@ -50,6 +50,11 @@ services:
       DATABASE_URL: postgres://laverdu:laverdu_dev_only@db:5432/laverdu_dev
       TZ_APP: America/Argentina/Buenos_Aires
       LOG_LEVEL: info
+      WHATSAPP_APP_SECRET: local_dev_app_secret_only
+      WHATSAPP_VERIFY_TOKEN: local_dev_verify_token
+      WHATSAPP_ACCESS_TOKEN: local_dev_access_token
+      WHATSAPP_PHONE_NUMBER_ID: "1000000000000001"
+      WHATSAPP_API_VERSION: v22.0
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
