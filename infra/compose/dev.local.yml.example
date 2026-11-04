@@ -1,0 +1,19 @@
+# Override para modo local (perfil A): LLM/STT en el host, sin API key.
+# Copiar a dev.local.yml (gitignored) y ajustar host/puerto/modelo:
+#   cp infra/compose/dev.local.yml.example infra/compose/dev.local.yml
+#
+# En Podman/Docker, host.containers.internal (o host.docker.internal) apunta al host.
+# Requiere Ollama/llama.cpp/vLLM y (opcional) faster-whisper/whisper.cpp corriendo
+# en el host. Ver docs/local-mode-testing.md.
+
+services:
+  api:
+    environment:
+      # LLM local (Ollama por defecto)
+      CHAT_BASE_URL: "http://host.containers.internal:11434/v1"
+      CHAT_API_KEY: ""
+      CHAT_MODEL: "llama3.1:8b"
+      # STT local (o dejar el stub)
+      STT_BASE_URL: "http://host.containers.internal:8083"
+      STT_API_KEY: ""
+      STT_MODEL: "whisper-base"

@@ -13,6 +13,10 @@ coverage/
 .env.*
 !.env.example
 
+# local compose overrides (may contain host-specific config or secrets)
+infra/compose/dev.local.yml
+infra/compose/dev.hybrid.yml
+
 # editor and OS
 .DS_Store
 .idea/
