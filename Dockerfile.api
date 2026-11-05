@@ -1,0 +1,28 @@
+# Build and run the La Verdu API in a container.
+# Build context must be the repository root.
+
+FROM node:22-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY apps/api/package.json apps/api/
+COPY packages/print-render/package.json packages/print-render/
+RUN npm ci
+COPY . .
+RUN npm run build -w @la-verdu/print-render
+RUN npm run build -w @la-verdu/api
+
+FROM node:22-alpine AS runtime
+WORKDIR /app
+ENV NODE_ENV=production
+# Copy only what the runtime needs.
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/apps/api/dist ./apps/api/dist
+COPY --from=build /app/apps/api/drizzle ./apps/api/dist/drizzle
+COPY --from=build /app/apps/api/drizzle ./apps/api/drizzle
+COPY --from=build /app/apps/api/drizzle-down ./apps/api/drizzle-down
+COPY --from=build /app/apps/api/package.json ./apps/api/package.json
+COPY --from=build /app/packages/print-render/dist ./packages/print-render/dist
+COPY --from=build /app/packages/print-render/package.json ./packages/print-render/package.json
+COPY --from=build /app/package.json ./package.json
+EXPOSE 3000
+CMD ["node", "apps/api/dist/src/server.js"]

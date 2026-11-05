@@ -1,0 +1,7 @@
+{
+  "backend_url": "wss://<DOMAIN>",
+  "branch_token": "<BRANCH_TOKEN>",
+  "branch_id": "<BRANCH_UUID>",
+  "printer_address": "tcp://<PRINTER_IP>:9100",
+  "printer_port": 9100
+}

@@ -1,0 +1,67 @@
+# Production compose for Dokploy/Coolify or any Docker host.
+# Usage: docker compose -f infra/compose/prod.yml up -d
+
+name: la-verdu-prod
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER:-laverdu}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+      POSTGRES_DB: ${DB_NAME:-laverdu}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-laverdu} -d ${DB_NAME:-laverdu}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.api
+    env_file:
+      - ../../.env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      DATABASE_URL: postgres://${DB_USER:-laverdu}:${DB_PASSWORD}@db:5432/${DB_NAME:-laverdu}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  admin:
+    build:
+      context: ../..
+      dockerfile: apps/admin/Dockerfile
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  backup:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.backup
+    env_file:
+      - ../../.env
+    environment:
+      DATABASE_URL: postgres://${DB_USER:-laverdu}:${DB_PASSWORD}@db:5432/${DB_NAME:-laverdu}
+      GPG_RECIPIENT: ${GPG_RECIPIENT:-backup@la-verdu}
+      BACKUP_DIR: /backups
+      OFFSITE_ENABLED: ${OFFSITE_ENABLED:-false}
+      OFFSITE_TARGET: ${OFFSITE_TARGET:-}
+    volumes:
+      - backups:/backups
+    depends_on:
+      - db
+    # Run on demand or schedule via the platform's cron feature.
+    restart: "no"
+    profiles: ["backup"]
+
+volumes:
+  db-data:
+  backups:
