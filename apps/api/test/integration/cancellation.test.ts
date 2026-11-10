@@ -1,10 +1,11 @@
+import { and, eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { handleStaffMessage } from "../../src/conversations/handler.js";
+import { handleCustomerMessage } from "../../src/customers/handler.js";
 import { createDatabase } from "../../src/db/client.js";
 import { resetDatabase, runMigrations } from "../../src/db/migrate.js";
 import * as schema from "../../src/db/schema.js";
-import { handleCustomerMessage } from "../../src/customers/handler.js";
-import { handleStaffMessage } from "../../src/conversations/handler.js";
-import { and, eq } from "drizzle-orm";
+import { expectRow } from "./helpers.js";
 
 const testDatabaseUrl = process.env.TEST_DATABASE_URL;
 
@@ -34,8 +35,8 @@ describe.skipIf(!testDatabaseUrl)("Cancellation (integration)", () => {
   const staffPhone = "+5491100000666";
 
   const channel = {
-    sendText: vi.fn(async () => undefined),
-    downloadMedia: vi.fn(async () => Buffer.from("")),
+    sendText: vi.fn(async (_to: string, _body: string) => undefined),
+    downloadMedia: vi.fn(async (_mediaId: string) => Buffer.from("")),
   };
   const stt = { transcribe: vi.fn(async () => ({ text: "" })) };
 
@@ -58,13 +59,13 @@ describe.skipIf(!testDatabaseUrl)("Cancellation (integration)", () => {
         active: true,
       })
       .returning();
-    branchId = branchRows[0]!.id;
+    branchId = expectRow(branchRows, "branch").id;
 
     const productRows = await db
       .insert(schema.product)
       .values([{ officialName: "Tomate perita", unit: "KG", active: true }])
       .returning();
-    tomateId = productRows[0]!.id;
+    tomateId = expectRow(productRows, "product").id;
 
     const customerRows = await db
       .insert(schema.customer)
@@ -76,13 +77,13 @@ describe.skipIf(!testDatabaseUrl)("Cancellation (integration)", () => {
         consentAt: new Date(),
       })
       .returning();
-    customerId = customerRows[0]!.id;
+    customerId = expectRow(customerRows, "customer").id;
 
     const staffRows = await db
       .insert(schema.staff)
       .values({ phoneE164: staffPhone, name: "Personal Cancel", role: "SELLER", active: true })
       .returning();
-    staffId = staffRows[0]!.id;
+    staffId = expectRow(staffRows, "staff").id;
     await db.insert(schema.staffBranch).values({ staffId, branchId });
   });
 
@@ -111,8 +112,18 @@ describe.skipIf(!testDatabaseUrl)("Cancellation (integration)", () => {
       llmModel: "llm-stub",
     };
 
-    await handleCustomerMessage(deps, customerPhone, "wa-c-1", "text", "quiero un tomate", undefined);
-    const ordersBefore = await handle.db.select().from(schema.order).where(eq(schema.order.customerId, customerId));
+    await handleCustomerMessage(
+      deps,
+      customerPhone,
+      "wa-c-1",
+      "text",
+      "quiero un tomate",
+      undefined,
+    );
+    const ordersBefore = await handle.db
+      .select()
+      .from(schema.order)
+      .where(eq(schema.order.customerId, customerId));
     expect(ordersBefore.length).toBe(1);
     expect(ordersBefore[0]?.status).toBe("DRAFT");
 
@@ -120,13 +131,18 @@ describe.skipIf(!testDatabaseUrl)("Cancellation (integration)", () => {
 
     await handleCustomerMessage(deps, customerPhone, "wa-c-2", "text", "cancelar", undefined);
 
-    const ordersAfter = await handle.db.select().from(schema.order).where(eq(schema.order.customerId, customerId));
+    const ordersAfter = await handle.db
+      .select()
+      .from(schema.order)
+      .where(eq(schema.order.customerId, customerId));
     expect(ordersAfter[0]?.status).toBe("CANCELLED");
 
     expect(channel.sendText).toHaveBeenCalled();
-    const lastCall = (channel.sendText.mock.calls as any[])[channel.sendText.mock.calls.length - 1];
+    const lastCall = channel.sendText.mock.calls[channel.sendText.mock.calls.length - 1];
     const sentText = String(lastCall?.[1] ?? "");
-    expect(sentText).toMatch(/cancel/i);
+    // A pending confirmation is open, so "cancelar" is handled as a rejection of the
+    // draft: the order is cancelled and the customer is told it was not confirmed.
+    expect(sentText).toMatch(/no se confirmó|cancel/i);
   });
 
   it("staff can reject a pending change set", async () => {

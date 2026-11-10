@@ -13,6 +13,7 @@ const EXPECTED_TABLES = [
   "branch_payment_method",
   "branch_product",
   "branch_product_day",
+  "business",
   "change_set",
   "conversation",
   "customer",
