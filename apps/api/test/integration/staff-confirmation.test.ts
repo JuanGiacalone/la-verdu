@@ -1,9 +1,10 @@
+import { and, eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { handleStaffMessage } from "../../src/conversations/handler.js";
 import { createDatabase } from "../../src/db/client.js";
 import { resetDatabase, runMigrations } from "../../src/db/migrate.js";
 import * as schema from "../../src/db/schema.js";
-import { handleStaffMessage } from "../../src/conversations/handler.js";
-import { and, eq } from "drizzle-orm";
+import { expectFound, expectRow } from "./helpers.js";
 
 const testDatabaseUrl = process.env.TEST_DATABASE_URL;
 
@@ -24,8 +25,8 @@ describe.skipIf(!testDatabaseUrl)("Staff change confirmation (integration)", () 
   const phone = "+5491100000888";
 
   const channel = {
-    sendText: vi.fn(async () => undefined),
-    downloadMedia: vi.fn(async () => Buffer.from("")),
+    sendText: vi.fn(async (_to: string, _body: string) => undefined),
+    downloadMedia: vi.fn(async (_mediaId: string) => Buffer.from("")),
   };
   const stt = {
     transcribe: vi.fn(async () => ({ text: "" })),
@@ -50,7 +51,7 @@ describe.skipIf(!testDatabaseUrl)("Staff change confirmation (integration)", () 
         active: true,
       })
       .returning();
-    branchId = branchRows[0]!.id;
+    branchId = expectRow(branchRows, "branch").id;
 
     const productRows = await db
       .insert(schema.product)
@@ -59,7 +60,10 @@ describe.skipIf(!testDatabaseUrl)("Staff change confirmation (integration)", () 
         { officialName: "Lechuga crespa", unit: "UNIT", active: true },
       ])
       .returning();
-    tomateId = productRows.find((p) => p.officialName === "Tomate perita")!.id;
+    tomateId = expectFound(
+      productRows.find((p) => p.officialName === "Tomate perita"),
+      "product Tomate perita",
+    ).id;
     // lechugaId not used in this test
 
     const staffRows = await db
@@ -71,7 +75,7 @@ describe.skipIf(!testDatabaseUrl)("Staff change confirmation (integration)", () 
         active: true,
       })
       .returning();
-    staffId = staffRows[0]!.id;
+    staffId = expectRow(staffRows, "staff").id;
 
     await db.insert(schema.staffBranch).values({
       staffId,
@@ -107,10 +111,17 @@ describe.skipIf(!testDatabaseUrl)("Staff change confirmation (integration)", () 
     };
 
     // First message: change request.
-    await handleStaffMessage(deps, phone, "wa-staff-1", "text", "no hay tomate, lechuga a 2400", undefined);
+    await handleStaffMessage(
+      deps,
+      phone,
+      "wa-staff-1",
+      "text",
+      "no hay tomate, lechuga a 2400",
+      undefined,
+    );
 
     expect(channel.sendText).toHaveBeenCalled();
-    const lastCall = (channel.sendText.mock.calls as any[])[channel.sendText.mock.calls.length - 1];
+    const lastCall = channel.sendText.mock.calls[channel.sendText.mock.calls.length - 1];
     const sentText = String(lastCall?.[1] ?? "");
     // Bot echoes proposed changes and asks for confirmation.
     expect(sentText).toMatch(/Entendí|¿Lo aplico\?|sí o no/i);
@@ -147,7 +158,7 @@ describe.skipIf(!testDatabaseUrl)("Staff change confirmation (integration)", () 
     await handleStaffMessage(deps, phone, "wa-staff-2", "text", "sí", undefined);
 
     expect(channel.sendText).toHaveBeenCalled();
-    const confirmCall = (channel.sendText.mock.calls as any[])[channel.sendText.mock.calls.length - 1];
+    const confirmCall = channel.sendText.mock.calls[channel.sendText.mock.calls.length - 1];
     const confirmText = String(confirmCall?.[1] ?? "");
     expect(confirmText).toMatch(/Listo|cambios aplicados/i);
 

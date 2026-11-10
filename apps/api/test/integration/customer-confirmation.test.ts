@@ -1,10 +1,11 @@
+import { eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import type { AppConfig } from "../../src/config.js";
+import { handleCustomerMessage } from "../../src/customers/handler.js";
 import { createDatabase } from "../../src/db/client.js";
 import { resetDatabase, runMigrations } from "../../src/db/migrate.js";
 import * as schema from "../../src/db/schema.js";
-import { handleCustomerMessage } from "../../src/customers/handler.js";
-import { eq } from "drizzle-orm";
+import { expectRow } from "./helpers.js";
 
 const testDatabaseUrl = process.env.TEST_DATABASE_URL;
 
@@ -57,8 +58,8 @@ describe.skipIf(!testDatabaseUrl)("Customer order confirmation (integration)", (
   const phone = "+5491100000999";
 
   const channel = {
-    sendText: vi.fn(async () => undefined),
-    downloadMedia: vi.fn(async () => Buffer.from("")),
+    sendText: vi.fn(async (_to: string, _body: string) => undefined),
+    downloadMedia: vi.fn(async (_mediaId: string) => Buffer.from("")),
   };
   const stt = {
     transcribe: vi.fn(async () => ({ text: "" })),
@@ -84,7 +85,7 @@ describe.skipIf(!testDatabaseUrl)("Customer order confirmation (integration)", (
         active: true,
       })
       .returning();
-    branchId = branchRows[0]!.id;
+    branchId = expectRow(branchRows, "branch").id;
 
     await db.insert(schema.product).values([
       { officialName: "Tomate perita", unit: "KG", active: true },
@@ -101,7 +102,7 @@ describe.skipIf(!testDatabaseUrl)("Customer order confirmation (integration)", (
         consentAt: new Date(),
       })
       .returning();
-    customerId = customerRows[0]!.id;
+    customerId = expectRow(customerRows, "customer").id;
 
     // Mock fetch to return a valid LLM JSON response.
     vi.stubGlobal(
@@ -131,16 +132,26 @@ describe.skipIf(!testDatabaseUrl)("Customer order confirmation (integration)", (
     };
 
     // First message: order request.
-    await handleCustomerMessage(deps, phone, "wa-msg-1", "text", "quiero 2 kg de tomate y una lechuga", undefined);
+    await handleCustomerMessage(
+      deps,
+      phone,
+      "wa-msg-1",
+      "text",
+      "quiero 2 kg de tomate y una lechuga",
+      undefined,
+    );
 
     // The bot should have sent a confirmation summary asking for "sí".
     expect(channel.sendText).toHaveBeenCalled();
-    const lastCall = (channel.sendText.mock.calls as any[])[channel.sendText.mock.calls.length - 1];
+    const lastCall = channel.sendText.mock.calls[channel.sendText.mock.calls.length - 1];
     const sentText = String(lastCall?.[1] ?? "");
     expect(sentText).toMatch(/¿Está todo bien\?|resumen|confirm/i);
 
     // There should be a DRAFT order, not a CONFIRMED one.
-    const orders = await handle.db.select().from(schema.order).where(eq(schema.order.customerId, customerId));
+    const orders = await handle.db
+      .select()
+      .from(schema.order)
+      .where(eq(schema.order.customerId, customerId));
     expect(orders.length).toBe(1);
     expect(orders[0]?.status).toBe("DRAFT");
 
@@ -151,7 +162,10 @@ describe.skipIf(!testDatabaseUrl)("Customer order confirmation (integration)", (
     await handleCustomerMessage(deps, phone, "wa-msg-2", "text", "sí", undefined);
 
     // The order should now be CONFIRMED.
-    const ordersAfter = await handle.db.select().from(schema.order).where(eq(schema.order.customerId, customerId));
+    const ordersAfter = await handle.db
+      .select()
+      .from(schema.order)
+      .where(eq(schema.order.customerId, customerId));
     expect(ordersAfter.length).toBe(1);
     expect(ordersAfter[0]?.status).toBe("CONFIRMED");
   });
