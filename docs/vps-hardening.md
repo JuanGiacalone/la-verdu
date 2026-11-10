@@ -5,6 +5,7 @@ Checklist y procedimiento para asegurar el VPS que corre La Verdu (perfil B / Co
 ## 1. Checklist de hardening
 
 ### Acceso
+
 - [ ] SSH solo con clave pública (`PasswordAuthentication no`).
 - [ ] Root login deshabilitado (`PermitRootLogin no`).
 - [ ] Usuario no-root para administración (`laverdu`).
@@ -12,12 +13,14 @@ Checklist y procedimiento para asegurar el VPS que corre La Verdu (perfil B / Co
 - [ ] Fail2ban activo para SSH.
 
 ### Sistema
+
 - [ ] Sistema operativo actualizado (`apt update && apt upgrade`).
 - [ ] Actualizaciones automáticas de seguridad (unattended-upgrades).
 - [ ] Zona horaria correcta (`timedatectl`).
 - [ ] NTP sincronizado.
 
 ### Red
+
 - [ ] Firewall UFW activo (ver `scripts/configure-firewall.sh`).
 - [ ] Solo puertos 80/443 públicos.
 - [ ] SSH (22) solo por Tailscale (o cerrado al público).
@@ -25,6 +28,7 @@ Checklist y procedimiento para asegurar el VPS que corre La Verdu (perfil B / Co
 - [ ] PostgreSQL (5432) solo localhost.
 
 ### Aplicación
+
 - [ ] `.env` con permisos 600, owner `laverdu`.
 - [ ] `SESSION_SECRET` único y fuerte.
 - [ ] `ADMIN_PASSWORD` cambiado del default.
@@ -33,12 +37,14 @@ Checklist y procedimiento para asegurar el VPS que corre La Verdu (perfil B / Co
 - [ ] Restore drill exitoso.
 
 ### Contenedores (Coolify/Dokploy)
+
 - [ ] Volúmenes persistentes para DB y backups.
 - [ ] Imágenes actualizadas.
 - [ ] No exponer puertos innecesarios.
 - [ ] Variables de entorno gestionadas por la plataforma.
 
 ### Monitoreo
+
 - [ ] Health checks configurados (`/health/ready`).
 - [ ] Alertas de backup (si no hay backup en 25 h).
 - [ ] Logs centralizados (`journalctl`).

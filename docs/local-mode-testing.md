@@ -186,14 +186,14 @@ recomendaciones orientativas para el LLM (Ollama tags) y el STT.
 
 ### LLM (Ollama)
 
-| Hardware | Modelo recomendado | Tag | RAM/VRAM aprox. | Notas |
-|---|---|---|---|---|
-| CPU only, 8 GB RAM | Llama 3.1 8B (Q4) | `llama3.1:8b` | ~5 GB | Mínimo viable para pruebas. |
-| CPU only, 16 GB RAM | Llama 3.1 8B (Q8) o Mistral 7B | `llama3.1:8b` / `mistral:7b` | ~8-9 GB | Mejor calidad, más lento. |
-| GPU 8 GB VRAM | Llama 3.1 8B (Q4/Q8) | `llama3.1:8b` | ~5-8 GB | Rápido, buena calidad. |
-| GPU 12-16 GB VRAM | Llama 3.1 8B (fp16) o Qwen 2.5 14B | `llama3.1:8b` / `qwen2.5:14b` | ~16 GB | Mayor calidad. |
-| GPU 24+ GB VRAM | Llama 3.1 70B (Q4) | `llama3.1:70b` | ~40 GB | Calidad cercana a modelos hospedados. |
-| GPU 48+ GB VRAM | Llama 3.1 70B (Q8/fp16) | `llama3.1:70b` | ~75 GB | Máxima calidad local. |
+| Hardware            | Modelo recomendado                 | Tag                           | RAM/VRAM aprox. | Notas                                 |
+| ------------------- | ---------------------------------- | ----------------------------- | --------------- | ------------------------------------- |
+| CPU only, 8 GB RAM  | Llama 3.1 8B (Q4)                  | `llama3.1:8b`                 | ~5 GB           | Mínimo viable para pruebas.           |
+| CPU only, 16 GB RAM | Llama 3.1 8B (Q8) o Mistral 7B     | `llama3.1:8b` / `mistral:7b`  | ~8-9 GB         | Mejor calidad, más lento.             |
+| GPU 8 GB VRAM       | Llama 3.1 8B (Q4/Q8)               | `llama3.1:8b`                 | ~5-8 GB         | Rápido, buena calidad.                |
+| GPU 12-16 GB VRAM   | Llama 3.1 8B (fp16) o Qwen 2.5 14B | `llama3.1:8b` / `qwen2.5:14b` | ~16 GB          | Mayor calidad.                        |
+| GPU 24+ GB VRAM     | Llama 3.1 70B (Q4)                 | `llama3.1:70b`                | ~40 GB          | Calidad cercana a modelos hospedados. |
+| GPU 48+ GB VRAM     | Llama 3.1 70B (Q8/fp16)            | `llama3.1:70b`                | ~75 GB          | Máxima calidad local.                 |
 
 Para tareas de parsing estructurado (JSON), preferí modelos **instruct/chat** con
 buen seguimiento de formato. Los modelos base (no instruct) suelen no respetar
@@ -201,12 +201,12 @@ el formato JSON del prompt.
 
 ### STT (Whisper)
 
-| Hardware | Modelo recomendado | Tamaño | VRAM/RAM aprox. | Notas |
-|---|---|---|---|---|
-| CPU only, 4 GB RAM | Whisper tiny/base | `tiny` / `base` | ~1 GB | Rápido, menor precisión. |
-| CPU only, 8 GB RAM | Whisper small | `small` | ~2 GB | Buen balance. |
-| GPU 4 GB VRAM | Whisper medium | `medium` | ~5 GB | Buena precisión, rápido en GPU. |
-| GPU 8+ GB VRAM | Whisper large-v3 | `large-v3` | ~10 GB | Máxima precisión. |
+| Hardware           | Modelo recomendado | Tamaño          | VRAM/RAM aprox. | Notas                           |
+| ------------------ | ------------------ | --------------- | --------------- | ------------------------------- |
+| CPU only, 4 GB RAM | Whisper tiny/base  | `tiny` / `base` | ~1 GB           | Rápido, menor precisión.        |
+| CPU only, 8 GB RAM | Whisper small      | `small`         | ~2 GB           | Buen balance.                   |
+| GPU 4 GB VRAM      | Whisper medium     | `medium`        | ~5 GB           | Buena precisión, rápido en GPU. |
+| GPU 8+ GB VRAM     | Whisper large-v3   | `large-v3`      | ~10 GB          | Máxima precisión.               |
 
 Para español rioplatense, `medium` o `large-v3` dan mejor resultado. `tiny`/`base`
 suelen fallar con nombres de productos y cantidades.
@@ -239,15 +239,15 @@ Con compose, bajá el override y volvé a `make dev-up`.
 
 ## Diferencias con el modo híbrido
 
-| Aspecto | Modo local (perfil A) | Modo híbrido (perfil B) |
-|---|---|---|
-| LLM | Servidor local (Ollama, llama.cpp, vLLM) | API hospedada (OpenCode, OpenAI, etc.) |
-| STT | Servidor local (faster-whisper, whisper.cpp) | API hospedada (Whisper API) |
-| API key | No requiere | Requiere (`CHAT_API_KEY`) |
-| Calidad | Depende del modelo y hardware | Generalmente mayor |
-| Latencia | Depende del hardware local | Depende de la red |
-| Costo | Hardware propio | Por request (balance/Go) |
-| Offline | Sí | No |
+| Aspecto  | Modo local (perfil A)                        | Modo híbrido (perfil B)                |
+| -------- | -------------------------------------------- | -------------------------------------- |
+| LLM      | Servidor local (Ollama, llama.cpp, vLLM)     | API hospedada (OpenCode, OpenAI, etc.) |
+| STT      | Servidor local (faster-whisper, whisper.cpp) | API hospedada (Whisper API)            |
+| API key  | No requiere                                  | Requiere (`CHAT_API_KEY`)              |
+| Calidad  | Depende del modelo y hardware                | Generalmente mayor                     |
+| Latencia | Depende del hardware local                   | Depende de la red                      |
+| Costo    | Hardware propio                              | Por request (balance/Go)               |
+| Offline  | Sí                                           | No                                     |
 
 El código es el mismo: `createLocalChatModel`/`createLocalStt` usan la misma
 interfaz OpenAI-compatible que `createHostedChatModel`/`createHostedStt`, solo
@@ -255,14 +255,14 @@ sin API key. La lógica de negocio no cambia (ADR-005).
 
 ## Troubleshooting
 
-| Síntoma | Causa probable | Acción |
-|---|---|---|
-| `ECONNREFUSED` al LLM | Servidor local no levantado | Levantar Ollama/llama.cpp/vLLM. |
-| `model not found` | Modelo no descargado | `ollama pull <modelo>` o verificar ruta del GGUF. |
-| Respuestas lentas | Hardware insuficiente | Usar un modelo más chico (ej. `llama3.1:8b` en vez de 70b) o quantizado. |
-| `404 Not Found` en STT | Endpoint no implementado | Verificar que el servidor STT exponga `/v1/audio/transcriptions`. |
-| JSON inválido del LLM | Modelo no sigue el formato | Usar un modelo instruct (chat) y verificar el prompt. Probar con un modelo más capaz. |
-| Tests unitarios fallan | Los tests usan el stub por defecto | No afecta; los tests no requieren red. |
+| Síntoma                | Causa probable                     | Acción                                                                                |
+| ---------------------- | ---------------------------------- | ------------------------------------------------------------------------------------- |
+| `ECONNREFUSED` al LLM  | Servidor local no levantado        | Levantar Ollama/llama.cpp/vLLM.                                                       |
+| `model not found`      | Modelo no descargado               | `ollama pull <modelo>` o verificar ruta del GGUF.                                     |
+| Respuestas lentas      | Hardware insuficiente              | Usar un modelo más chico (ej. `llama3.1:8b` en vez de 70b) o quantizado.              |
+| `404 Not Found` en STT | Endpoint no implementado           | Verificar que el servidor STT exponga `/v1/audio/transcriptions`.                     |
+| JSON inválido del LLM  | Modelo no sigue el formato         | Usar un modelo instruct (chat) y verificar el prompt. Probar con un modelo más capaz. |
+| Tests unitarios fallan | Los tests usan el stub por defecto | No afecta; los tests no requieren red.                                                |
 
 ## Referencias
 

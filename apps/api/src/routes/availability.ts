@@ -8,7 +8,10 @@ export function registerAvailabilityRoutes(app: FastifyInstance, database: Datab
   // Branch products (prices).
   app.get("/admin/branches/:branchId/products", async (request, reply) => {
     const { branchId } = request.params as { branchId: string };
-    const products = await database.select().from(schema.product).orderBy(schema.product.officialName);
+    const products = await database
+      .select()
+      .from(schema.product)
+      .orderBy(schema.product.officialName);
     const prices = await database
       .select()
       .from(schema.branchProduct)
@@ -51,7 +54,9 @@ export function registerAvailabilityRoutes(app: FastifyInstance, database: Datab
       .onConflictDoUpdate({
         target: [schema.branchProduct.branchId, schema.branchProduct.productId],
         set: {
-          ...(data.priceAmount !== undefined && { priceAmount: data.priceAmount === null ? null : String(data.priceAmount) }),
+          ...(data.priceAmount !== undefined && {
+            priceAmount: data.priceAmount === null ? null : String(data.priceAmount),
+          }),
           ...(data.priceUnit !== undefined && { priceUnit: data.priceUnit }),
           updatedAt: new Date(),
         },
@@ -59,7 +64,12 @@ export function registerAvailabilityRoutes(app: FastifyInstance, database: Datab
     const rows = await database
       .select()
       .from(schema.branchProduct)
-      .where(and(eq(schema.branchProduct.branchId, branchId), eq(schema.branchProduct.productId, productId)))
+      .where(
+        and(
+          eq(schema.branchProduct.branchId, branchId),
+          eq(schema.branchProduct.productId, productId),
+        ),
+      )
       .limit(1);
     return reply.code(200).send(rows[0]);
   });
@@ -69,11 +79,19 @@ export function registerAvailabilityRoutes(app: FastifyInstance, database: Datab
     const { branchId } = request.params as { branchId: string };
     const query = request.query as { date?: string };
     const date = query.date ?? new Date().toISOString().slice(0, 10);
-    const products = await database.select().from(schema.product).orderBy(schema.product.officialName);
+    const products = await database
+      .select()
+      .from(schema.product)
+      .orderBy(schema.product.officialName);
     const days = await database
       .select()
       .from(schema.branchProductDay)
-      .where(and(eq(schema.branchProductDay.branchId, branchId), eq(schema.branchProductDay.businessDate, date)));
+      .where(
+        and(
+          eq(schema.branchProductDay.branchId, branchId),
+          eq(schema.branchProductDay.businessDate, date),
+        ),
+      );
     const result = products.map((p) => {
       const d = days.find((x) => x.productId === p.id);
       return {
@@ -109,7 +127,11 @@ export function registerAvailabilityRoutes(app: FastifyInstance, database: Datab
         availability: data.availability,
       })
       .onConflictDoUpdate({
-        target: [schema.branchProductDay.branchId, schema.branchProductDay.productId, schema.branchProductDay.businessDate],
+        target: [
+          schema.branchProductDay.branchId,
+          schema.branchProductDay.productId,
+          schema.branchProductDay.businessDate,
+        ],
         set: { availability: data.availability, updatedAt: new Date() },
       });
     const rows = await database

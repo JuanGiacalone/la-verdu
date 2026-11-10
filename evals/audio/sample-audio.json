@@ -7,12 +7,8 @@
   "llmFixture": "order-tomate-only",
   "expected": {
     "transcription": "quiero 2 kilos de tomate perita",
-    "products": [
-      "Tomate perita"
-    ],
-    "quantities": [
-      2
-    ],
+    "products": ["Tomate perita"],
+    "quantities": [2],
     "fulfillment": null,
     "noInventedPrices": true
   }

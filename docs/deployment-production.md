@@ -3,12 +3,14 @@
 ## Prerrequisitos
 
 ### Cuentas y servicios
+
 - Cuenta de Meta Business (para WhatsApp Business API).
 - Número de teléfono verificado en Meta.
 - Dominio propio con DNS configurable (para el webhook HTTPS).
 - Servidor o VPS (perfil B) o máquina local (perfil A).
 
 ### Software del servidor
+
 - Node.js 22+ (`.nvmrc`).
 - PostgreSQL 16+.
 - Podman o Docker con compose.
@@ -188,24 +190,28 @@ npx tsx -e "import('./src/db/migrate.js').then(m => m.rollbackMigrations(process
 ## Troubleshooting
 
 ### El webhook no recibe mensajes
+
 1. Verificar que el túnel HTTPS funciona: `curl https://tu-dominio.com/health/live`
 2. Verificar la firma: revisar `WHATSAPP_APP_SECRET`.
 3. Verificar que el webhook está suscrito a "messages" en Meta.
 4. Revisar logs: `journalctl -u la-verdu -f`.
 
 ### La impresora no imprime
+
 1. Verificar que el agente está conectado: `curl http://localhost:3000/admin/ops/status`.
 2. Verificar la IP de la impresora en el admin.
 3. Probar conexión TCP: `nc -zv <ip-impresora> 9100`.
 4. Revisar la cola: `curl http://localhost:3000/admin/print-jobs?status=FAILED`.
 
 ### El LLM no responde
+
 1. Verificar que el proveedor está disponible: `curl $CHAT_BASE_URL/health`.
 2. Verificar la API key.
 3. Revisar logs del API para errores de timeout.
 4. El sistema escala automáticamente al personal si el LLM falla.
 
 ### Base de datos llena
+
 1. Verificar tamaño: `psql -c "SELECT pg_size_pretty(pg_database_size('laverdu'))"`.
 2. Ejecutar purga: `curl -X POST http://localhost:3000/admin/privacy/purge -d '{"retentionMonths":6}'`.
 3. Verificar backups y rotación.

@@ -94,18 +94,19 @@ La opción A es más simple porque el nginx del admin ya proxea al servicio `api
 Las migraciones no se corren automáticamente al arrancar la API (para evitar carreras). Opciones:
 
 - **Manual via consola de la plataforma**: ejecutar en el contenedor `api`:
+
   ```bash
   # Producción (compilado)
   node apps/api/dist/src/db/migrate.js
   node apps/api/dist/src/db/seed.js
   node apps/api/dist/src/db/seed-admin.js
-  
-  # Desarrollo (con tsx)
+    # Desarrollo (con tsx)
   npm run db:migrate -w @la-verdu/api
   npm run db:seed -w @la-verdu/api
   npm run db:seed-admin -w @la-verdu/api
   ```
 - **Seed (solo primera vez)**:
+
   ```bash
   BUSINESS_NAME='Apolonia' ... npm run db:seed -w @la-verdu/api
   ADMIN_USERNAME=admin ADMIN_PASSWORD=... npm run db:seed-admin -w @la-verdu/api
@@ -144,6 +145,7 @@ Enviar un mensaje de prueba al número de WhatsApp del negocio.
 
 - En Dokploy/Coolify, usar el botón de rollback a un deploy anterior.
 - Si la migración falló, correr `rollbackMigrations` en el contenedor `api`:
+
   ```bash
   npx tsx -e "import('./src/db/migrate.js').then(m => m.rollbackMigrations(process.env.DATABASE_URL!, N))"
   ```
@@ -172,15 +174,18 @@ Si preferís Caddy (más simple y completo para HTTPS/WebSocket):
 
 1. Deshabilitar el reverse proxy automático de Coolify (o usar Coolify solo para contenedores).
 2. Instalar Caddy en el VPS:
+
    ```bash
    sudo apt install -y caddy
    ```
 3. Configurar `/etc/caddy/Caddyfile`:
+
    ```
    apolonia.tu-dominio.com {
        reverse_proxy localhost:3000
    }
    ```
+
    Si Coolify expone la API en otro puerto, ajustar.
 4. Reiniciar: `sudo systemctl restart caddy`.
 
@@ -191,6 +196,7 @@ Caddy maneja SSL (Let's Encrypt) y WebSocket automáticamente. Ideal si usás Cl
 Si usás Tailscale para el print-agent:
 
 - Usar el override `infra/compose/prod.tailscale.yml`:
+
   ```bash
   TAILSCALE_BIND_IP=100.x.x.x docker compose -f infra/compose/prod.yml -f infra/compose/prod.tailscale.yml up -d
   ```

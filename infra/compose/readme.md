@@ -4,37 +4,37 @@ ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_ROLE=OWNER.
 
 
 
-   DB_PASSWORD=... DB_NAME=apolonia DB_USER=laverdu \\
+DB_PASSWORD=... DB_NAME=apolonia DB_USER=laverdu \\
 
      podman compose -f infra/compose/prod.yml up -d --build
 
-   podman exec la-verdu-prod-api-1 node apps/api/dist/src/db/migrate.js
+podman exec la-verdu-prod-api-1 node apps/api/dist/src/db/migrate.js
 
-   podman exec la-verdu-prod-api-1 sh -c "BUSINESS_NAME='Apolonia' node apps/api/dist/src/db/seed.js"
+podman exec la-verdu-prod-api-1 sh -c "BUSINESS_NAME='Apolonia' node apps/api/dist/src/db/seed.js"
 
-   podman exec la-verdu-prod-api-1 wget -qO- [http://127.0.0.1:3000/health/ready](http://127.0.0.1:3000/health/ready)
+podman exec la-verdu-prod-api-1 wget -qO- [http://127.0.0.1:3000/health/ready](http://127.0.0.1:3000/health/ready)
 
-   podman exec la-verdu-prod-api-1 wget -qO- [http://127.0.0.1:3000/admin/business](http://127.0.0.1:3000/admin/business)
+podman exec la-verdu-prod-api-1 wget -qO- [http://127.0.0.1:3000/admin/business](http://127.0.0.1:3000/admin/business)
 
 
 
 &nbsp;
 
- \`\`\`bash
+\`\`\`bash
 
-   # Sin exponer API por Tailscale
+# Sin exponer API por Tailscale
 
-   sudo /opt/la-verdu/scripts/[configure-firewall.sh](http://configure-firewall.sh)
+sudo /opt/la-verdu/scripts/[configure-firewall.sh](http://configure-firewall.sh)
 
-   # Exponiendo API solo en Tailscale
+# Exponiendo API solo en Tailscale
 
-   sudo EXPOSE_API_TAILSCALE=true /opt/la-verdu/scripts/[configure-firewall.sh](http://configure-firewall.sh)
+sudo EXPOSE_API_TAILSCALE=true /opt/la-verdu/scripts/[configure-firewall.sh](http://configure-firewall.sh)
 
-   # Forzar SSH público (sin Tailscale)
+# Forzar SSH público (sin Tailscale)
 
-   sudo ALLOW_SSH_PUBLIC=true /opt/la-verdu/scripts/[configure-firewall.sh](http://configure-firewall.sh)
+sudo ALLOW_SSH_PUBLIC=true /opt/la-verdu/scripts/[configure-firewall.sh](http://configure-firewall.sh)
 
- \`\`\`
+\`\`\`
 
 # Reiniciar solo el contenedor admin (Podman)
 

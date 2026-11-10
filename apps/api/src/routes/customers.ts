@@ -1,4 +1,4 @@
-import { ilike, or, eq } from "drizzle-orm";
+import { eq, ilike, or } from "drizzle-orm";
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 import type { Database } from "../db/client.js";
@@ -9,7 +9,11 @@ export function registerCustomerRoutes(app: FastifyInstance, database: Database)
     const query = request.query as { search?: string; limit?: string };
     const limit = Math.min(Number(query.limit) || 50, 200);
     const search = query.search?.trim();
-    const base = database.select().from(schema.customer).orderBy(schema.customer.createdAt).limit(limit);
+    const base = database
+      .select()
+      .from(schema.customer)
+      .orderBy(schema.customer.createdAt)
+      .limit(limit);
     if (!search) {
       const rows = await base;
       return reply.code(200).send(rows);
@@ -17,7 +21,12 @@ export function registerCustomerRoutes(app: FastifyInstance, database: Database)
     const rows = await database
       .select()
       .from(schema.customer)
-      .where(or(ilike(schema.customer.name, `%${search}%`), ilike(schema.customer.phoneE164, `%${search}%`)))
+      .where(
+        or(
+          ilike(schema.customer.name, `%${search}%`),
+          ilike(schema.customer.phoneE164, `%${search}%`),
+        ),
+      )
       .orderBy(schema.customer.createdAt)
       .limit(limit);
     return reply.code(200).send(rows);
@@ -25,7 +34,11 @@ export function registerCustomerRoutes(app: FastifyInstance, database: Database)
 
   app.get("/admin/customers/:id", async (request, reply) => {
     const { id } = request.params as { id: string };
-    const rows = await database.select().from(schema.customer).where(eq(schema.customer.id, id)).limit(1);
+    const rows = await database
+      .select()
+      .from(schema.customer)
+      .where(eq(schema.customer.id, id))
+      .limit(1);
     if (rows.length === 0) {
       return reply.code(404).send({ error: "Cliente no encontrado." });
     }
