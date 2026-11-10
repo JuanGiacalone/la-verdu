@@ -146,13 +146,13 @@ npx tsx -e "import('./src/db/migrate.js').then(m => m.rollbackMigrations(process
 
 ## 9. Estructura de pruebas
 
-| Nivel | Herramienta | Comando |
-|---|---|---|
-| Unit | Vitest | `npm test` |
-| Integración | Vitest + Postgres | `make test-integration` |
-| Typecheck | tsc | `make typecheck` |
-| Lint | Biome | `make lint` |
-| E2E | Script + compose | `make test-e2e` (cuando esté disponible) |
+| Nivel       | Herramienta       | Comando                                  |
+| ----------- | ----------------- | ---------------------------------------- |
+| Unit        | Vitest            | `npm test`                               |
+| Integración | Vitest + Postgres | `make test-integration`                  |
+| Typecheck   | tsc               | `make typecheck`                         |
+| Lint        | Biome             | `make lint`                              |
+| E2E         | Script + compose  | `make test-e2e` (cuando esté disponible) |
 
 ## 10. Notas
 

@@ -1,9 +1,10 @@
+import { eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { handleCustomerMessage } from "../../src/customers/handler.js";
 import { createDatabase } from "../../src/db/client.js";
 import { resetDatabase, runMigrations } from "../../src/db/migrate.js";
 import * as schema from "../../src/db/schema.js";
-import { handleCustomerMessage } from "../../src/customers/handler.js";
-import { eq } from "drizzle-orm";
+import { expectRow } from "./helpers.js";
 
 const testDatabaseUrl = process.env.TEST_DATABASE_URL;
 
@@ -34,8 +35,8 @@ describe.skipIf(!testDatabaseUrl)("Order modification (integration)", () => {
   const customerPhone = "+5491100000555";
 
   const channel = {
-    sendText: vi.fn(async () => undefined),
-    downloadMedia: vi.fn(async () => Buffer.from("")),
+    sendText: vi.fn(async (_to: string, _body: string) => undefined),
+    downloadMedia: vi.fn(async (_mediaId: string) => Buffer.from("")),
   };
   const stt = { transcribe: vi.fn(async () => ({ text: "" })) };
 
@@ -58,11 +59,11 @@ describe.skipIf(!testDatabaseUrl)("Order modification (integration)", () => {
         active: true,
       })
       .returning();
-    branchId = branchRows[0]!.id;
+    branchId = expectRow(branchRows, "branch").id;
 
-    await db.insert(schema.product).values([
-      { officialName: "Tomate perita", unit: "KG", active: true },
-    ]);
+    await db
+      .insert(schema.product)
+      .values([{ officialName: "Tomate perita", unit: "KG", active: true }]);
 
     const customerRows = await db
       .insert(schema.customer)
@@ -74,7 +75,7 @@ describe.skipIf(!testDatabaseUrl)("Order modification (integration)", () => {
         consentAt: new Date(),
       })
       .returning();
-    customerId = customerRows[0]!.id;
+    customerId = expectRow(customerRows, "customer").id;
   });
 
   afterAll(async () => {
@@ -103,11 +104,21 @@ describe.skipIf(!testDatabaseUrl)("Order modification (integration)", () => {
       llmModel: "llm-stub",
     };
 
-    await handleCustomerMessage(deps, customerPhone, "wa-m-1", "text", "quiero un tomate", undefined);
+    await handleCustomerMessage(
+      deps,
+      customerPhone,
+      "wa-m-1",
+      "text",
+      "quiero un tomate",
+      undefined,
+    );
     // Confirm.
     await handleCustomerMessage(deps, customerPhone, "wa-m-2", "text", "sí", undefined);
 
-    const ordersAfterConfirm = await handle.db.select().from(schema.order).where(eq(schema.order.customerId, customerId));
+    const ordersAfterConfirm = await handle.db
+      .select()
+      .from(schema.order)
+      .where(eq(schema.order.customerId, customerId));
     expect(ordersAfterConfirm.length).toBe(1);
     expect(ordersAfterConfirm[0]?.status).toBe("CONFIRMED");
     expect(ordersAfterConfirm[0]?.version).toBe(1);
@@ -131,15 +142,25 @@ describe.skipIf(!testDatabaseUrl)("Order modification (integration)", () => {
       })),
     );
 
-    await handleCustomerMessage(deps, customerPhone, "wa-m-4", "text", "ahora quiero 2 kg de tomate", undefined);
+    await handleCustomerMessage(
+      deps,
+      customerPhone,
+      "wa-m-4",
+      "text",
+      "ahora quiero 2 kg de tomate",
+      undefined,
+    );
 
     // The order should now be version 2 (modified).
-    const ordersAfterModify = await handle.db.select().from(schema.order).where(eq(schema.order.customerId, customerId));
+    const ordersAfterModify = await handle.db
+      .select()
+      .from(schema.order)
+      .where(eq(schema.order.customerId, customerId));
     expect(ordersAfterModify.length).toBe(1);
     expect(ordersAfterModify[0]?.version).toBe(2);
 
     expect(channel.sendText).toHaveBeenCalled();
-    const lastCall = (channel.sendText.mock.calls as any[])[channel.sendText.mock.calls.length - 1];
+    const lastCall = channel.sendText.mock.calls[channel.sendText.mock.calls.length - 1];
     const sentText = String(lastCall?.[1] ?? "");
     expect(sentText).toMatch(/Actualicé|resumen/i);
   });

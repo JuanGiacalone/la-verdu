@@ -13,11 +13,11 @@ Garantizar que los datos de La Verdu puedan recuperarse ante pérdida, corrupci�
 
 ## 2. Roles
 
-| Rol | Responsabilidad |
-|---|---|
-| Operador técnico | Ejecutar backups, verificar cron, restaurar en incidentes |
-| Owner del negocio | Custodiar la clave privada GPG (offline) y el passphrase |
-| Soporte VPS | Mantener el servidor y el almacenamiento offsite |
+| Rol               | Responsabilidad                                           |
+| ----------------- | --------------------------------------------------------- |
+| Operador técnico  | Ejecutar backups, verificar cron, restaurar en incidentes |
+| Owner del negocio | Custodiar la clave privada GPG (offline) y el passphrase  |
+| Soporte VPS       | Mantener el servidor y el almacenamiento offsite          |
 
 ## 3. Prerrequisitos
 
@@ -226,15 +226,15 @@ En el bucket offsite, configurar lifecycle rules: 7 diarios, 4 semanales, 3 mens
 
 ## 12. Troubleshooting
 
-| Problema | Causa probable | Acción |
-|---|---|---|
-| `gpg: no valid OpenPGP data found` | Archivo corrupto o no cifrado | Verificar integridad, re-descargar de offsite |
-| `gpg: decryption failed: No secret key` | Falta clave privada | Importar `la-verdu-backup.priv` (solo en máquina de restore) |
-| `ERROR: set GPG_RECIPIENT or BACKUP_PASSPHRASE` | Variables no pasadas | Revisar cron y `.env` |
-| `DB name must end in _verify or _test` | Seguridad del script | Usar una DB con sufijo correcto |
-| Backup no se genera | Cron no corre / Postgres caído | `journalctl`, `pg_isready`, `/var/log/la-verdu-backup.log` |
-| Offsite falla | rclone/rsync no configurado | Probar manualmente el comando |
-| Disco lleno | Retención insuficiente | Ejecutar purga, ampliar disco, revisar lifecycle |
+| Problema                                        | Causa probable                 | Acción                                                       |
+| ----------------------------------------------- | ------------------------------ | ------------------------------------------------------------ |
+| `gpg: no valid OpenPGP data found`              | Archivo corrupto o no cifrado  | Verificar integridad, re-descargar de offsite                |
+| `gpg: decryption failed: No secret key`         | Falta clave privada            | Importar `la-verdu-backup.priv` (solo en máquina de restore) |
+| `ERROR: set GPG_RECIPIENT or BACKUP_PASSPHRASE` | Variables no pasadas           | Revisar cron y `.env`                                        |
+| `DB name must end in _verify or _test`          | Seguridad del script           | Usar una DB con sufijo correcto                              |
+| Backup no se genera                             | Cron no corre / Postgres caído | `journalctl`, `pg_isready`, `/var/log/la-verdu-backup.log`   |
+| Offsite falla                                   | rclone/rsync no configurado    | Probar manualmente el comando                                |
+| Disco lleno                                     | Retención insuficiente         | Ejecutar purga, ampliar disco, revisar lifecycle             |
 
 ## 13. Checklist de implementación
 
@@ -250,18 +250,18 @@ En el bucket offsite, configurar lifecycle rules: 7 diarios, 4 semanales, 3 mens
 
 ## 14. Variables de entorno del backup
 
-| Variable | Requerida | Descripción |
-|---|---|---|
-| `DATABASE_URL` | sí | Conexión a Postgres |
-| `GPG_RECIPIENT` | sí* | UID/email de la clave pública |
-| `BACKUP_PASSPHRASE` | sí* | Passphrase simétrica (alternativa) |
-| `BACKUP_DIR` | no | Destino local (default `/var/backups/la-verdu`) |
-| `RETENTION_DAYS` | no | Retención local (default 30) |
-| `OFFSITE_ENABLED` | no | `true` para copiar offsite |
-| `OFFSITE_TARGET` | si offsite | Remote rclone o destino rsync |
-| `OFFSITE_TOOL` | no | `rclone` (default) o `rsync` |
-| `SHRED_PLAINTEXT` | no | `true` (default) |
-| `VERIFY_DB_URL` | para verify | DB de verificación |
+| Variable            | Requerida   | Descripción                                     |
+| ------------------- | ----------- | ----------------------------------------------- |
+| `DATABASE_URL`      | sí          | Conexión a Postgres                             |
+| `GPG_RECIPIENT`     | sí*         | UID/email de la clave pública                   |
+| `BACKUP_PASSPHRASE` | sí*         | Passphrase simétrica (alternativa)              |
+| `BACKUP_DIR`        | no          | Destino local (default `/var/backups/la-verdu`) |
+| `RETENTION_DAYS`    | no          | Retención local (default 30)                    |
+| `OFFSITE_ENABLED`   | no          | `true` para copiar offsite                      |
+| `OFFSITE_TARGET`    | si offsite  | Remote rclone o destino rsync                   |
+| `OFFSITE_TOOL`      | no          | `rclone` (default) o `rsync`                    |
+| `SHRED_PLAINTEXT`   | no          | `true` (default)                                |
+| `VERIFY_DB_URL`     | para verify | DB de verificación                              |
 
 \* Una de las dos es obligatoria.
 

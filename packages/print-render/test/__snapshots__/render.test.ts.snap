@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`renderPrintJob > preview matches golden file (snapshot) 1`] = `
+"             LA VERDU - SUC. CENTRO
+------------------------------------------------
+PEDIDO #1042
+01/11/2026 10:32
+Cliente: Maria Gomez
+Entrega: RETIRA 11:30
+Pago: TRANSFERENCIA
+Estado: A COBRAR
+------------------------------------------------
+Cant.       Producto
+2 kg        Tomate perita
+1 u         Lechuga crespa
+1/2 kg      Banana
+------------------------------------------------
+Notas: sin cascara en la banana. Llama al llegar
+.
+------------------------------------------------
+"
+`;

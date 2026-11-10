@@ -61,6 +61,7 @@
   .map code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;color:var(--text-secondary)}
   .map p{font-size:12.5px;color:var(--text-secondary);max-width:110ch;margin-top:10px}
   :focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:4px}
+  /* biome-ignore lint/complexity/noImportantStyles: reduced-motion override must win the cascade */
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -75,16 +76,16 @@
     <div class="modehead"><span>Modo claro</span><span class="tag">data-theme="light"</span></div>
     <div class="mini">
       <nav>
-        <a class="active" href="#">Inicio</a>
-        <a href="#">Catálogo</a>
-        <a href="#">Pedidos</a>
-        <a href="#">Impresión</a>
-        <a href="#">Alertas</a>
+        <a class="active" href="#main">Inicio</a>
+        <a href="#main">Catálogo</a>
+        <a href="#main">Pedidos</a>
+        <a href="#main">Impresión</a>
+        <a href="#main">Alertas</a>
       </nav>
-      <div class="content">
+      <div class="content" id="main">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
           <div><h2>Inicio</h2><div class="sub">Sucursal Centro · hoy, 24 de octubre</div></div>
-          <button class="btn">+ Nuevo pedido</button>
+          <button type="button" class="btn">+ Nuevo pedido</button>
         </div>
         <div class="kpis">
           <div class="card"><div class="label">Pedidos hoy</div><div class="value">12</div></div>
@@ -107,16 +108,16 @@
     <div class="modehead"><span>Modo oscuro</span><span class="tag">data-theme="dark"</span></div>
     <div class="mini">
       <nav>
-        <a class="active" href="#">Inicio</a>
-        <a href="#">Catálogo</a>
-        <a href="#">Pedidos</a>
-        <a href="#">Impresión</a>
-        <a href="#">Alertas</a>
+        <a class="active" href="#main-dark">Inicio</a>
+        <a href="#main-dark">Catálogo</a>
+        <a href="#main-dark">Pedidos</a>
+        <a href="#main-dark">Impresión</a>
+        <a href="#main-dark">Alertas</a>
       </nav>
-      <div class="content">
+      <div class="content" id="main-dark">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
           <div><h2>Inicio</h2><div class="sub">Sucursal Centro · hoy, 24 de octubre</div></div>
-          <button class="btn">+ Nuevo pedido</button>
+          <button type="button" class="btn">+ Nuevo pedido</button>
         </div>
         <div class="kpis">
           <div class="card"><div class="label">Pedidos hoy</div><div class="value">12</div></div>

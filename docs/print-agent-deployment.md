@@ -26,14 +26,14 @@ El usuario no está equivocado: **sí se necesita una computadora pequeña con L
 
 ## 2. Requisitos del equipo local
 
-| Componente | Mínimo | Recomendado |
-|---|---|---|
-| CPU | 1 core | 2 cores |
-| RAM | 512 MB | 1 GB |
-| Disco | 1 GB libre | 4 GB (spool + logs) |
-| Red | Ethernet/Wi-Fi al router del local | Ethernet dedicado |
-| SO | Linux (Ubuntu 22.04/Debian 12) o Windows/macOS | Linux (systemd) |
-| Impresora | Red (TCP 9100) o USB | Red (TCP 9100) |
+| Componente | Mínimo                                         | Recomendado         |
+| ---------- | ---------------------------------------------- | ------------------- |
+| CPU        | 1 core                                         | 2 cores             |
+| RAM        | 512 MB                                         | 1 GB                |
+| Disco      | 1 GB libre                                     | 4 GB (spool + logs) |
+| Red        | Ethernet/Wi-Fi al router del local             | Ethernet dedicado   |
+| SO         | Linux (Ubuntu 22.04/Debian 12) o Windows/macOS | Linux (systemd)     |
+| Impresora  | Red (TCP 9100) o USB                           | Red (TCP 9100)      |
 
 Notas:
 - No necesita GPU ni mucho almacenamiento.
@@ -183,6 +183,7 @@ En el admin, `/admin/ops/status` debe listar el agente en `agents` con `lastSeen
 - Asignar IP fija (ej. `192.168.1.100`).
 - Configurar en el admin: `printer_address = tcp://192.168.1.100:9100`.
 - Probar conexión TCP desde el agente:
+
   ```bash
   nc -zv 192.168.1.100 9100
   ```
@@ -192,6 +193,7 @@ En el admin, `/admin/ops/status` debe listar el agente en `agents` con `lastSeen
 - Configurar `printer_address = usb` en `config.json`.
 - El agente debe tener permisos para acceder al dispositivo USB (grupo `lp` o `dialout`).
 - Agregar el usuario `printagent` al grupo correspondiente:
+
   ```bash
   sudo usermod -aG lp printagent
   ```
@@ -223,14 +225,14 @@ O copiar el nuevo binario y reiniciar.
 
 ## 9. Troubleshooting
 
-| Problema | Causa probable | Acción |
-|---|---|---|
-| `dial: ...` / no conecta | URL incorrecta, WSS no soportado, firewall | Verificar `backend_url`, Cloudflare/Caddy WebSocket, salida 443 |
-| `cannot read config` | Ruta o permisos | Verificar `/opt/print-agent/config.json` y permisos |
-| Impresora no imprime | IP/puerto incorrectos, impresora offline | `nc -zv <ip> 9100`, revisar config y cola |
-| Jobs en `FAILED`/`ABANDONED` | Impresora rechaza payload, timeout | Revisar logs del agente y `/admin/print-jobs?status=FAILED` |
-| Agente no aparece en `/admin/ops/status` | Token/branch incorrectos, no conecta | Verificar `branch_id`, `branch_token`, logs |
-| Spool crece | Jobs no ackeados | Reiniciar agente, verificar conectividad |
+| Problema                                 | Causa probable                             | Acción                                                          |
+| ---------------------------------------- | ------------------------------------------ | --------------------------------------------------------------- |
+| `dial: ...` / no conecta                 | URL incorrecta, WSS no soportado, firewall | Verificar `backend_url`, Cloudflare/Caddy WebSocket, salida 443 |
+| `cannot read config`                     | Ruta o permisos                            | Verificar `/opt/print-agent/config.json` y permisos             |
+| Impresora no imprime                     | IP/puerto incorrectos, impresora offline   | `nc -zv <ip> 9100`, revisar config y cola                       |
+| Jobs en `FAILED`/`ABANDONED`             | Impresora rechaza payload, timeout         | Revisar logs del agente y `/admin/print-jobs?status=FAILED`     |
+| Agente no aparece en `/admin/ops/status` | Token/branch incorrectos, no conecta       | Verificar `branch_id`, `branch_token`, logs                     |
+| Spool crece                              | Jobs no ackeados                           | Reiniciar agente, verificar conectividad                        |
 
 ## 10. Integración con Coolify / Cloudflare Tunnel
 
@@ -261,7 +263,7 @@ credentials-file: /root/.cloudflared/<TUNNEL_ID>.json
 
 ingress:
   - hostname: apolonia.tu-dominio.com
-    service: http://localhost:80  # Coolify/Traefik
+    service: http://localhost:80 # Coolify/Traefik
     originRequest:
       noTLSVerify: false
   - service: http_status:404
@@ -393,6 +395,7 @@ Recomendación: usar **Caddy** si preferís simplicidad y control manual; usar *
 - Timeout de inactividad en plan gratuito: ~100 s. El heartbeat de 30 s evita el corte.
 - El túnel debe apuntar al reverse proxy de Coolify (o al puerto del servicio `api` si no se usa proxy).
 - Configurar el túnel con `cloudflared`:
+
   ```bash
   cloudflared tunnel route dns la-verdu apolonia.tu-dominio.com
   cloudflared tunnel run la-verdu
