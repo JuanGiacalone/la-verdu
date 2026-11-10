@@ -23,7 +23,6 @@ export function AuditPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Auditoría</h1>
       {error && <div className="text-red-600">{error}</div>}
       <div className="bg-white border rounded p-4 flex gap-3">
         <input

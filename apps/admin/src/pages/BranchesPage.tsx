@@ -98,7 +98,6 @@ export function BranchesPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Sucursales</h1>
       {error && <div className="text-red-600">{error}</div>}
 
       <form
@@ -155,7 +154,10 @@ export function BranchesPage() {
           />
           Envío habilitado
         </label>
-        <button type="submit" className="bg-brand-600 text-white rounded px-4 py-2">
+        <button
+          type="submit"
+          className="bg-brand-700 hover:bg-brand-900 text-white rounded px-4 py-2"
+        >
           Crear sucursal
         </button>
       </form>

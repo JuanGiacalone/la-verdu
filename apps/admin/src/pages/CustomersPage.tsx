@@ -98,7 +98,6 @@ export function CustomersPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Clientes</h1>
       {error && <div className="text-red-600">{error}</div>}
       <div className="flex gap-3">
         <input
@@ -142,7 +141,10 @@ export function CustomersPage() {
             <option value="DELIVERY">Envío</option>
           </select>
           <div className="flex gap-2">
-            <button type="submit" className="bg-brand-600 text-white rounded px-4 py-2">
+            <button
+              type="submit"
+              className="bg-brand-700 hover:bg-brand-900 text-white rounded px-4 py-2"
+            >
               Guardar
             </button>
             <button
