@@ -3,8 +3,26 @@
   "brief": "Sistema de color del panel de administración de La Verdu después de adoptar Astryx: hay texto en blanco sobre fondo blanco y la paleta de marca \"Mercado fresco\" choca con el tema neutral (acromático) que trae Astryx. Tres direcciones de color sobre el mismo layout elegido (sidebar clásico), con el token de Astryx al que corresponde cada valor.",
   "feature": "odd/tasks/admin-color-system.md",
   "artboards": [
-    { "file": "01-astryx-neutral.html", "title": "Astryx neutral tal cual", "tradeoff": "Adopción estricta del design system, retícula plana y sólo bordes hairline; el color pierde su función de marca y La Verdu queda indistinguible de cualquier otra app", "width": 1440, "height": 1200 },
-    { "file": "02-mercado-fresco.html", "title": "Mercado fresco", "tradeoff": "El color como identidad: banda degradada, cabeceras teñidas, chips de estado y elevación visible; la marca se reconoce de un vistazo pero la paleta queda fuera de los tokens de Astryx", "width": 1440, "height": 1200 },
-    { "file": "03-verdu-sobre-astryx.html", "title": "Verdu sobre Astryx (dual)", "tradeoff": "Un tema propio que extiende neutral con la marca y resuelve los dos modos con los mismos tokens; resuelve el defecto de raíz pero es la migración más grande", "width": 1440, "height": 1200 }
+    {
+      "file": "01-astryx-neutral.html",
+      "title": "Astryx neutral tal cual",
+      "tradeoff": "Adopción estricta del design system, retícula plana y sólo bordes hairline; el color pierde su función de marca y La Verdu queda indistinguible de cualquier otra app",
+      "width": 1440,
+      "height": 1200
+    },
+    {
+      "file": "02-mercado-fresco.html",
+      "title": "Mercado fresco",
+      "tradeoff": "El color como identidad: banda degradada, cabeceras teñidas, chips de estado y elevación visible; la marca se reconoce de un vistazo pero la paleta queda fuera de los tokens de Astryx",
+      "width": 1440,
+      "height": 1200
+    },
+    {
+      "file": "03-verdu-sobre-astryx.html",
+      "title": "Verdu sobre Astryx (dual)",
+      "tradeoff": "Un tema propio que extiende neutral con la marca y resuelve los dos modos con los mismos tokens; resuelve el defecto de raíz pero es la migración más grande",
+      "width": 1440,
+      "height": 1200
+    }
   ]
 }

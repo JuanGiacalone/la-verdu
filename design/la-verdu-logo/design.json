@@ -2,8 +2,26 @@
   "title": "La Verdu — Logo directions",
   "brief": "Logo para La Verdu, asistente de WhatsApp para fruterías y verdulerías. Tres direcciones: wordmark con hoja, monograma LV, canasta de mercado.",
   "artboards": [
-    { "file": "01-wordmark-leaf.html", "title": "Wordmark con hoja", "tradeoff": "Máxima legibilidad y bajo costo de reproducción; la hoja es acento", "width": 1280, "height": 800 },
-    { "file": "02-monogram-lv.html", "title": "Monograma LV", "tradeoff": "Reconocible a tamaño pequeño (avatar, favicon); pierde el nombre completo", "width": 1280, "height": 800 },
-    { "file": "03-market-basket.html", "title": "Canasta de mercado", "tradeoff": "Expresivo y memorable; pierde nitidez bajo 64px y es costoso en tickets", "width": 1280, "height": 800 }
+    {
+      "file": "01-wordmark-leaf.html",
+      "title": "Wordmark con hoja",
+      "tradeoff": "Máxima legibilidad y bajo costo de reproducción; la hoja es acento",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "02-monogram-lv.html",
+      "title": "Monograma LV",
+      "tradeoff": "Reconocible a tamaño pequeño (avatar, favicon); pierde el nombre completo",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "03-market-basket.html",
+      "title": "Canasta de mercado",
+      "tradeoff": "Expresivo y memorable; pierde nitidez bajo 64px y es costoso en tickets",
+      "width": 1280,
+      "height": 800
+    }
   ]
 }

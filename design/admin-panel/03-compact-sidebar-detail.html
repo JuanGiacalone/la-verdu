@@ -45,6 +45,7 @@
   .btn{background:var(--brand-600);color:#fff;border:none;padding:8px 14px;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer;width:100%;margin-top:12px}
   .alert{background:var(--slate-50);border:1px solid var(--slate-300);border-radius:6px;padding:10px;font-size:12px;margin-top:12px}
   .alert .kind{font-weight:600}
+  /* biome-ignore lint/complexity/noImportantStyles: reduced-motion override must win the cascade */
   @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -66,7 +67,7 @@
       <div><h1>Inicio</h1><span class="crumb">Sucursal Centro</span></div>
       <div style="display:flex;gap:8px">
         <input placeholder="Buscar…" style="border:1px solid var(--slate-300);border-radius:6px;padding:6px 10px;font-size:13px;width:200px" />
-        <button style="background:var(--brand-600);color:#fff;border:none;padding:7px 12px;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer">+ Pedido</button>
+        <button type="button" style="background:var(--brand-600);color:#fff;border:none;padding:7px 12px;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer">+ Pedido</button>
       </div>
     </div>
     <div class="content">
@@ -113,8 +114,8 @@
           <h3>Alertas</h3>
           <div class="alert"><div class="kind">Stock bajo</div><div style="margin-top:2px">Tomate sin disponibilidad en Centro</div></div>
         </div>
-        <button class="btn">Reimprimir</button>
-        <button class="btn" style="background:var(--slate-700)">Ver conversación</button>
+        <button type="button" class="btn">Reimprimir</button>
+        <button type="button" class="btn" style="background:var(--slate-700)">Ver conversación</button>
       </div>
     </div>
   </main>

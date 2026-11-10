@@ -70,6 +70,7 @@
   .shadow-row{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
   .shadow-row div{width:110px;height:64px;background:var(--background-card);border-radius:var(--radius-container);display:grid;place-items:center;font-size:11px;color:var(--text-secondary)}
   :focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:4px}
+  /* biome-ignore lint/complexity/noImportantStyles: reduced-motion override must win the cascade */
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -174,10 +175,10 @@
     <div class="panel">
       <h3>buttons</h3>
       <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
-        <button class="btn">+ Nuevo pedido</button>
-        <button class="btn ghost">Exportar</button>
-        <button class="btn brand">+ Nuevo pedido (marca)</button>
-        <button class="btn" disabled>Guardando…</button>
+        <button type="button" class="btn">+ Nuevo pedido</button>
+        <button type="button" class="btn ghost">Exportar</button>
+        <button type="button" class="btn brand">+ Nuevo pedido (marca)</button>
+        <button type="button" class="btn" disabled>Guardando…</button>
       </div>
     </div>
     <div class="panel">

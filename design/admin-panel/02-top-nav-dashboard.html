@@ -44,6 +44,7 @@
   .chart{height:180px;background:linear-gradient(180deg,var(--brand-50),transparent);border-radius:8px;display:flex;align-items:flex-end;gap:6px;padding:12px}
   .chart .bar{flex:1;background:var(--brand-500);border-radius:4px 4px 0 0;min-height:8px}
   .empty{color:var(--slate-500);font-size:14px;padding:20px;text-align:center}
+  /* biome-ignore lint/complexity/noImportantStyles: reduced-motion override must win the cascade */
   @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -51,26 +52,26 @@
 <div class="topbar">
   <div class="brand"><svg width="28" height="28" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tomate"><path d="M16 6 C 14 3, 10 3, 9 6 C 8 8, 10 9, 12 8 C 13 7, 14 7, 16 6 Z" fill="#059669"/><path d="M16 6 C 18 3, 22 3, 23 6 C 24 8, 22 9, 20 8 C 19 7, 18 7, 16 6 Z" fill="#047857"/><path d="M16 6 C 15 4, 16 2, 17 3 C 18 4, 17 6, 16 6 Z" fill="#10b981"/><rect x="15" y="5" width="2" height="3" rx="1" fill="#064e3b"/><circle cx="16" cy="19" r="11" fill="#dc2626"/></svg> La Verdu</div>
   <nav>
-    <a class="active" href="#">Inicio</a>
-    <a href="#">Catálogo</a>
-    <a href="#">Sucursales</a>
-    <a href="#">Pedidos</a>
-    <a href="#">Conversaciones</a>
-    <a href="#">Alertas</a>
-    <a href="#">Configuración</a>
+    <a class="active" href="#main">Inicio</a>
+    <a href="#main">Catálogo</a>
+    <a href="#main">Sucursales</a>
+    <a href="#main">Pedidos</a>
+    <a href="#main">Conversaciones</a>
+    <a href="#main">Alertas</a>
+    <a href="#main">Configuración</a>
   </nav>
   <div class="user">
     <span>dueño · owner</span>
     <div class="avatar">D</div>
   </div>
 </div>
-<main class="main">
+<main class="main" id="main">
   <div class="pagehead">
     <div>
       <h1>Inicio</h1>
       <div class="sub">Todas las sucursales · hoy, 24 de octubre</div>
     </div>
-    <button style="background:var(--brand-600);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer">+ Nuevo pedido</button>
+    <button type="button" style="background:var(--brand-600);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer">+ Nuevo pedido</button>
   </div>
   <div class="kpis">
     <div class="card"><div class="label"><span>Pedidos hoy</span><span style="color:var(--brand-600)">↑</span></div><div class="value">47</div><div class="delta">+8 vs ayer</div></div>

@@ -4,69 +4,69 @@ Captured from three sources: the Tailwind v3 config of the admin app, the app's 
 
 ## Sources
 
-| Source | What it contributes |
-|---|---|
-| `node_modules/@astryxdesign/theme-neutral/dist/theme.css` | Astryx semantic tokens (color, spacing, radius, shadow, typography), each with a `light-dark()` light/dark pair |
-| `node_modules/@astryxdesign/core/src/theme/Theme.tsx` | `Theme` wrapper contract: `display: contents`, `color: var(--color-text-primary)`, `font-family: var(--font-family-body)`; root `Theme` syncs `data-theme` on `<html>` from `mode` (`system` by default) |
-| `apps/admin/tailwind.config.js` | Legacy "Mercado fresco" brand palette (`brand`, `accent`, `highlight`) |
-| `apps/admin/src/index.css` | Body baseline `bg-slate-50 text-slate-900`, scrollbar, Tailwind layer wiring |
+| Source                                                    | What it contributes                                                                                                                                                                                      |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node_modules/@astryxdesign/theme-neutral/dist/theme.css` | Astryx semantic tokens (color, spacing, radius, shadow, typography), each with a `light-dark()` light/dark pair                                                                                          |
+| `node_modules/@astryxdesign/core/src/theme/Theme.tsx`     | `Theme` wrapper contract: `display: contents`, `color: var(--color-text-primary)`, `font-family: var(--font-family-body)`; root `Theme` syncs `data-theme` on `<html>` from `mode` (`system` by default) |
+| `apps/admin/tailwind.config.js`                           | Legacy "Mercado fresco" brand palette (`brand`, `accent`, `highlight`)                                                                                                                                   |
+| `apps/admin/src/index.css`                                | Body baseline `bg-slate-50 text-slate-900`, scrollbar, Tailwind layer wiring                                                                                                                             |
 
 ## Colors
 
 ### Astryx semantic tokens (light | dark) — system of record
 
-| Token | Light | Dark | Usage |
-|---|---|---|---|
-| `--color-background-body` | `#f1f1f1` | `#1b1b1b` | Page background |
-| `--color-background-card` | `#ffffff` | `#1b1b1b` | Card / panel surface |
-| `--color-background-surface` | `#ffffff` | `#262626` | Raised surface |
-| `--color-background-muted` | `#f1f1f1` | `#1b1b1b` | Muted fill, table header |
-| `--color-background-popover` | `#ffffff` | `#1b1b1b` | Popover, menu |
-| `--color-text-primary` | `#000000` | `#ffffff` | Primary text, inherited default |
-| `--color-text-secondary` | `#474747` | `#9e9e9e` | Secondary text, labels |
-| `--color-text-disabled` | `#919191` | `#525252` | Disabled text |
-| `--color-text-accent` | `#1b1b1b` | `#f1f1f1` | Text on accent surface |
-| `--color-text-error` | `#c0262c` | `#ffaea7` | Error text |
-| `--color-text-success` | `#2f7d33` | `#90ca90` | Success text |
-| `--color-text-warning` | `#836700` | `#eec448` | Warning text |
-| `--color-text-info` | `#0067ce` | `#a1caff` | Info text |
-| `--color-border` | `#00000014` | `#ffffff1A` | Hairline border |
-| `--color-border-emphasized` | `#d4d4d4` | `#525252` | Table header, emphasized border |
-| `--color-icon-primary` | `#000000` | `#ffffff` | Primary icon |
-| `--color-icon-secondary` | `#6a6a6a` | `#9e9e9e` | Secondary icon |
-| `--color-accent` | `#1b1b1b` | `#f1f1f1` | Accent surface (buttons, selection) |
-| `--color-on-accent` | `#ffffff` | `#111111` | Text/icon on accent surface |
+| Token                        | Light       | Dark        | Usage                               |
+| ---------------------------- | ----------- | ----------- | ----------------------------------- |
+| `--color-background-body`    | `#f1f1f1`   | `#1b1b1b`   | Page background                     |
+| `--color-background-card`    | `#ffffff`   | `#1b1b1b`   | Card / panel surface                |
+| `--color-background-surface` | `#ffffff`   | `#262626`   | Raised surface                      |
+| `--color-background-muted`   | `#f1f1f1`   | `#1b1b1b`   | Muted fill, table header            |
+| `--color-background-popover` | `#ffffff`   | `#1b1b1b`   | Popover, menu                       |
+| `--color-text-primary`       | `#000000`   | `#ffffff`   | Primary text, inherited default     |
+| `--color-text-secondary`     | `#474747`   | `#9e9e9e`   | Secondary text, labels              |
+| `--color-text-disabled`      | `#919191`   | `#525252`   | Disabled text                       |
+| `--color-text-accent`        | `#1b1b1b`   | `#f1f1f1`   | Text on accent surface              |
+| `--color-text-error`         | `#c0262c`   | `#ffaea7`   | Error text                          |
+| `--color-text-success`       | `#2f7d33`   | `#90ca90`   | Success text                        |
+| `--color-text-warning`       | `#836700`   | `#eec448`   | Warning text                        |
+| `--color-text-info`          | `#0067ce`   | `#a1caff`   | Info text                           |
+| `--color-border`             | `#00000014` | `#ffffff1A` | Hairline border                     |
+| `--color-border-emphasized`  | `#d4d4d4`   | `#525252`   | Table header, emphasized border     |
+| `--color-icon-primary`       | `#000000`   | `#ffffff`   | Primary icon                        |
+| `--color-icon-secondary`     | `#6a6a6a`   | `#9e9e9e`   | Secondary icon                      |
+| `--color-accent`             | `#1b1b1b`   | `#f1f1f1`   | Accent surface (buttons, selection) |
+| `--color-on-accent`          | `#ffffff`   | `#111111`   | Text/icon on accent surface         |
 
 The installed `neutral` theme is **achromatic**: its accent is near-black, not a brand hue. The app's brand green has no equivalent token in it.
 
 ### Legacy brand palette (from `tailwind.config.js`)
 
-| Token | Value | Usage |
-|---|---|---|
-| `brand-50` | `#ecfdf5` | Light brand tint (hover/selected rows) |
-| `brand-100` | `#d1fae5` | Brand chip/badge background |
-| `brand-500` | `#10b981` | Primary accent (links, focus, status ok) |
-| `brand-600` | `#059669` | Primary button background |
-| `brand-700` | `#047857` | Primary button hover / strong accent |
-| `brand-900` | `#064e3b` | Deep brand (sidebar background) |
-| `accent-50 / 100` | `#fff7ed` / `#ffedd5` | Carrot orange tints |
-| `accent-500 / 600 / 700` | `#f97316` / `#ea580c` / `#c2410c` | Carrot orange emphasis |
-| `highlight-100 / 400 / 500` | `#fef9c3` / `#facc15` / `#eab308` | Corn yellow highlight |
+| Token                       | Value                             | Usage                                    |
+| --------------------------- | --------------------------------- | ---------------------------------------- |
+| `brand-50`                  | `#ecfdf5`                         | Light brand tint (hover/selected rows)   |
+| `brand-100`                 | `#d1fae5`                         | Brand chip/badge background              |
+| `brand-500`                 | `#10b981`                         | Primary accent (links, focus, status ok) |
+| `brand-600`                 | `#059669`                         | Primary button background                |
+| `brand-700`                 | `#047857`                         | Primary button hover / strong accent     |
+| `brand-900`                 | `#064e3b`                         | Deep brand (sidebar background)          |
+| `accent-50 / 100`           | `#fff7ed` / `#ffedd5`             | Carrot orange tints                      |
+| `accent-500 / 600 / 700`    | `#f97316` / `#ea580c` / `#c2410c` | Carrot orange emphasis                   |
+| `highlight-100 / 400 / 500` | `#fef9c3` / `#facc15` / `#eab308` | Corn yellow highlight                    |
 
 ### Neutrals (Tailwind `slate`, remapped to the "Mercado fresco" surfaces)
 
-| Token | Value | Usage |
-|---|---|---|
-| `slate-50` | `#f4f7f4` | Page background (body) |
-| `slate-100` | `#eef1ec` | Table header, subtle surfaces |
-| `slate-200` | `#e6ebe5` | Row separators |
-| `slate-300` | `#e2e8f0` | Borders |
+| Token       | Value     | Usage                                                |
+| ----------- | --------- | ---------------------------------------------------- |
+| `slate-50`  | `#f4f7f4` | Page background (body)                               |
+| `slate-100` | `#eef1ec` | Table header, subtle surfaces                        |
+| `slate-200` | `#e6ebe5` | Row separators                                       |
+| `slate-300` | `#e2e8f0` | Borders                                              |
 | `slate-400` | `#94a3b8` | Decoration only (fails AA as text on light surfaces) |
-| `slate-500` | `#64748b` | Secondary text (4.76:1 on white) |
-| `slate-600` | `#475569` | Labels, inactive text |
-| `slate-700` | `#334155` | Muted headings |
-| `slate-800` | `#1e293b` | Reserved |
-| `slate-900` | `#0f172a` | Primary text |
+| `slate-500` | `#64748b` | Secondary text (4.76:1 on white)                     |
+| `slate-600` | `#475569` | Labels, inactive text                                |
+| `slate-700` | `#334155` | Muted headings                                       |
+| `slate-800` | `#1e293b` | Reserved                                             |
+| `slate-900` | `#0f172a` | Primary text                                         |
 
 The remap lives in `apps/admin/tailwind.config.js` (`theme.extend.colors.slate`), so every screen that already used `bg-slate-50`, `border-slate-300` or `text-slate-500` follows the new surfaces without touching its markup.
 
@@ -84,14 +84,14 @@ The remap lives in `apps/admin/tailwind.config.js` (`theme.extend.colors.slate`)
 
 ## Radius
 
-| Token | Value |
-|---|---|
-| `--radius-none` | `0px` |
-| `--radius-inner` | `0.375rem` (6px) |
-| `--radius-element` | `0.625rem` (10px) |
-| `--radius-container` | `0.75rem` (12px) |
-| `--radius-page` | `1.75rem` (28px) |
-| `--radius-full` | `9999px` |
+| Token                | Value             |
+| -------------------- | ----------------- |
+| `--radius-none`      | `0px`             |
+| `--radius-inner`     | `0.375rem` (6px)  |
+| `--radius-element`   | `0.625rem` (10px) |
+| `--radius-container` | `0.75rem` (12px)  |
+| `--radius-page`      | `1.75rem` (28px)  |
+| `--radius-full`      | `9999px`          |
 
 Legacy app radius: `rounded` (4px), `rounded-lg` (8px), `rounded-2xl` (16px, login card).
 
