@@ -1,5 +1,16 @@
-/* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind */
-@tailwind base;
+/*
+ * Global stylesheet. Astryx stylesheets are imported here so they land in the
+ * `reset`, `astryx-base` and `astryx-theme` layers declared in layers.css.
+ * The @layer order line lives in layers.css and is imported first in main.tsx.
+ */
+@import "@astryxdesign/core/reset.css";
+@import "@astryxdesign/core/astryx.css";
+@import "@astryxdesign/theme-neutral/theme.css";
+
+@layer tw-preflight {
+  /* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind */
+  @tailwind base;
+}
 /* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind */
 @tailwind components;
 /* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind */
