@@ -45,14 +45,14 @@ export function Layout() {
   );
 
   return (
-    <div className="min-h-screen flex text-slate-900">
-      <aside className="w-60 bg-brand-900 text-white flex flex-col shrink-0">
+    <div className="h-screen flex overflow-hidden text-slate-900">
+      <aside className="w-60 bg-brand-900 text-white flex flex-col shrink-0 overflow-hidden">
         <div className="h-1 bg-gradient-to-r from-brand-500 via-accent-600 to-highlight-500" />
         <div className="px-4 py-5 flex items-center gap-3">
           <TomatoMark size={30} />
           <span className="text-lg font-extrabold">La Verdu · Administración</span>
         </div>
-        <nav className="flex-1 overflow-y-auto py-1">
+        <nav className="flex-1 min-h-0 overflow-y-auto py-1">
           {nav.map((item) => {
             const active = location.pathname === item.to;
             return (
@@ -82,7 +82,7 @@ export function Layout() {
           </button>
         </div>
       </aside>
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 min-w-0 overflow-y-auto">
         <div className="bg-gradient-to-r from-brand-50 via-brand-50 to-accent-50 border-b border-slate-300 px-8 py-5">
           <div className="text-xs font-bold uppercase tracking-widest text-brand-700">
             Todas las sucursales
