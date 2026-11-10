@@ -12,7 +12,7 @@ TEST_DATABASE_URL ?= postgres://laverdu:laverdu_dev_only@127.0.0.1:5433/laverdu_
 
 .PHONY: help dev-up dev-down dev-logs dev-seed dev-sim-msg dev-printouts \
 	dev-up-local dev-down-local dev-local-check \
-	test test-integration typecheck lint format
+	test test-integration typecheck lint format ci
 
 help:
 	@echo "dev-up          start the local stack (db, api, simulators)"
@@ -28,6 +28,7 @@ help:
 	@echo "test-integration schema and seed tests against laverdu_test"
 	@echo "typecheck       TypeScript strict check across workspaces"
 	@echo "lint            Biome check"
+	@echo "ci              the exact steps the ci workflow runs (run before pushing)"
 
 dev-up:
 	@test -f .env || cp .env.example .env
@@ -93,3 +94,13 @@ lint:
 
 format:
 	npm run format
+
+# The exact steps the ci workflow runs, in the same order. CI=true matters:
+# vitest refuses to create a missing snapshot there, which is how a golden file
+# that was never committed fails on the runner but passes on a laptop.
+ci:
+	CI=true npm run lint
+	CI=true npm run typecheck
+	CI=true npm test
+	CI=true TEST_DATABASE_URL=$(TEST_DATABASE_URL) npm run test:integration -w @la-verdu/api
+	CI=true npm audit --omit=dev --audit-level=high

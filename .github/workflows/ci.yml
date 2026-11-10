@@ -3,7 +3,10 @@ name: ci
 on:
   pull_request:
   push:
-    branches: [main]
+    # The default branch of this repository is `master`, not `main`. A push
+    # trigger naming a branch that does not exist never fires, which is how
+    # master accumulated lint errors with no check ever running on it.
+    branches: [master]
 
 permissions:
   contents: read
