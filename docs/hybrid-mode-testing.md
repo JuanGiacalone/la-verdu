@@ -175,3 +175,7 @@ Con compose, bajá el override y volvé a `make dev-up`.
 - PRD §19.1, §19.3 — perfiles A/B y variables de entorno.
 - PRD §21.2 — umbrales de eval.
 - OpenCode Inference API: https://opencode.ai/v2/docs/console/api/inference/
+
+## Variables de entorno (.env)
+
+Las credenciales (LLM, STT, WhatsApp) se leen desde `.env` en la raíz (gitignored). Copiá `.env.example` a `.env` y editá. El compose carga `.env` vía `env_file`. `make dev-up` crea `.env` desde `.env.example` si falta.

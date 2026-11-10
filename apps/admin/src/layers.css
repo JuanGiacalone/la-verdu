@@ -1,0 +1,10 @@
+/*
+ * Cascade layer order. Imported FIRST (see main.tsx) so the layer names exist
+ * before any stylesheet that uses them is loaded.
+ *
+ * Tailwind v3 has no preflight.css, so its `@tailwind base` is wrapped in the
+ * `tw-preflight` layer (see index.css). Tailwind `components`/`utilities` stay
+ * unlayered on purpose: unlayered rules beat every named layer, so existing
+ * utility classes keep winning over the design system defaults.
+ */
+@layer reset, tw-preflight, astryx-base, astryx-theme;

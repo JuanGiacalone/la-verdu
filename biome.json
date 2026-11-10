@@ -14,7 +14,10 @@
       "!**/drizzle",
       "!**/.dev",
       "!**/odd",
-      "!**/PRD.md"
+      "!**/PRD.md",
+      "!**/astryx-themes.ts",
+      "!**/apps/admin/AGENTS.md",
+      "!**/apps/admin/GEMINI.md"
     ]
   },
   "formatter": {

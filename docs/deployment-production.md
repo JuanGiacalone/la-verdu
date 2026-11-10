@@ -38,9 +38,11 @@ sudo apt install -y podman podman-compose uidmap
 ### 2. Configurar PostgreSQL
 
 ```bash
+# La base de datos debe llevar el nombre del negocio (slug), no "laverdu".
+# Ejemplo: DB_NAME=verduleria_don_jose DB_USER=laverdu DB_PASSWORD='...' /opt/la-verdu/scripts/init-db.sh
 sudo -u postgres psql -c "CREATE USER laverdu WITH PASSWORD 'CONTRASEÑA_SEGURA';"
-sudo -u postgres psql -c "CREATE DATABASE laverdu OWNER laverdu;"
-sudo -u postgres psql -c "CREATE DATABASE laverdu_test OWNER laverdu;"
+sudo -u postgres psql -c "CREATE DATABASE <DB_NAME> OWNER laverdu;"
+sudo -u postgres psql -c "CREATE DATABASE <DB_NAME>_test OWNER laverdu;"
 ```
 
 ### 3. Clonar y configurar
@@ -108,7 +110,7 @@ After=network.target postgresql.service
 Type=simple
 User=laverdu
 WorkingDirectory=/opt/la-verdu
-ExecStart=/usr/bin/node apps/api/dist/server.js
+ExecStart=/usr/bin/node apps/api/dist/src/server.js
 Restart=always
 RestartSec=5
 EnvironmentFile=/opt/la-verdu/.env

@@ -24,3 +24,7 @@ infra/compose/dev.hybrid.yml
 
 # agent-local tracking and memory caches
 .atl/
+
+# generated print-render test artifacts
+packages/print-render/test/*.js
+packages/print-render/test/*.js.map

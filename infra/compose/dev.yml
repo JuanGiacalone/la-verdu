@@ -44,6 +44,8 @@ services:
       - sh
       - -c
       - npm run db:migrate -w @la-verdu/api && npm run dev -w @la-verdu/api
+    env_file:
+      - ../../.env
     environment:
       NODE_ENV: development
       PORT: "3000"
@@ -68,9 +70,10 @@ services:
   whatsapp-sim:
     <<: *node
     command: ["node", "infra/simulators/whatsapp-sim.mjs"]
+    env_file:
+      - ../../.env
     environment:
       WHATSAPP_SIM_PORT: "8081"
-      WHATSAPP_APP_SECRET: local_dev_app_secret_only
       WHATSAPP_SIM_WEBHOOK_URL: http://api:3000/webhooks/whatsapp
       WHATSAPP_SIM_OUT: /workspace/.dev/whatsapp-outbox.jsonl
     ports:

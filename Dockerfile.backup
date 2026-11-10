@@ -1,0 +1,8 @@
+# Container for running La Verdu backups (pg_dump + GPG + offsite).
+# Build context must be the repository root.
+
+FROM postgres:16-alpine
+RUN apk add --no-cache bash gnupg rsync ca-certificates
+COPY scripts/backup-secure.sh scripts/verify-backup.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/backup-secure.sh /usr/local/bin/verify-backup.sh
+ENTRYPOINT ["/usr/local/bin/backup-secure.sh"]

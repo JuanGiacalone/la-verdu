@@ -29,7 +29,6 @@ export function AlertsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Alertas</h1>
       {error && <div className="text-red-600">{error}</div>}
       <div className="bg-white border rounded overflow-x-auto">
         <table className="w-full text-sm">

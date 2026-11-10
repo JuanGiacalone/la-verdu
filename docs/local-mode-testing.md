@@ -273,3 +273,19 @@ sin API key. La lógica de negocio no cambia (ADR-005).
 - PRD §19.1, §19.3 — perfiles y variables de entorno.
 - PRD §21.2 — umbrales de eval.
 - `docs/hybrid-mode-testing.md` — guía del modo híbrido (para comparar).
+
+## Variables de entorno (.env)
+
+Las credenciales y configuración de desarrollo se leen desde un archivo `.env` en la raíz del repo (gitignored). Copiá `.env.example` a `.env` y editá los valores:
+
+```bash
+cp .env.example .env
+```
+
+El compose carga `.env` automáticamente vía `env_file` para los servicios `api` y `whatsapp-sim`. Si cambiás `.env`, recreá el container de la API:
+
+```bash
+docker compose -f infra/compose/dev.yml -f infra/compose/dev.local.yml up -d --force-recreate api
+```
+
+`make dev-up` / `make dev-up-local` crean `.env` desde `.env.example` si no existe.

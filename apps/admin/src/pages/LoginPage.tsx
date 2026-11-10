@@ -40,7 +40,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden text-slate-900">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${bgImage})`, filter: "brightness(0.55) saturate(1.1)" }}
@@ -79,7 +79,7 @@ export function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-brand-600 hover:bg-brand-700 text-white rounded-lg py-2.5 font-semibold disabled:opacity-50 transition-colors"
+            className="w-full bg-brand-700 hover:bg-brand-900 text-white rounded-lg py-2.5 font-semibold disabled:opacity-50 transition-colors"
           >
             {loading ? "Ingresando…" : "Ingresar"}
           </button>

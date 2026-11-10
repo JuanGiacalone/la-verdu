@@ -1,0 +1,12 @@
+# Override for exposing the API on the Tailscale interface only.
+# Usage:
+#   TAILSCALE_BIND_IP=100.x.x.x docker compose -f infra/compose/prod.yml -f infra/compose/prod.tailscale.yml up -d
+#
+# This maps port 3000 of the api container to the Tailscale IP on the host,
+# so the print-agent can connect via ws://<TAILSCALE_IP>:3000 without
+# exposing the port to the public internet.
+
+services:
+  api:
+    ports:
+      - "${TAILSCALE_BIND_IP:-127.0.0.1}:3000:3000"

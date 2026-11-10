@@ -5,7 +5,9 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "predev": "npm run build -w @la-verdu/print-render",
+    "dev": "tsx watch src/server.ts", 
+    "prebuild": "npm run build -w @la-verdu/print-render",
     "start": "node dist/server.js",
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -13,8 +15,11 @@
     "test:integration": "vitest run test/integration",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",
+    "db:migrate:prod": "node dist/src/db/migrate.js",
     "db:seed": "tsx src/db/seed.ts",
-    "db:seed-admin": "tsx src/db/seed-admin.ts"
+    "db:seed:prod": "node dist/src/db/seed.js",
+    "db:seed-admin": "tsx src/db/seed-admin.ts",
+    "db:seed-admin:prod": "node dist/src/db/seed-admin.js"
   },
   "dependencies": {
     "@fastify/cookie": "^11.1.5",

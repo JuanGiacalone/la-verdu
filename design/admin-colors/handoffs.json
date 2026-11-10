@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "chosen": "02-mercado-fresco.html",
+  "handoffs": {
+    "02-mercado-fresco.html": {
+      "status": "implemented",
+      "queued": false,
+      "sentAt": "2026-11-10T14:37:10.980Z",
+      "startedAt": "2026-11-10T14:37:14.785Z",
+      "implementedAt": "2026-11-10T14:45:16.299Z",
+      "feature": "odd/tasks/admin-color-system.md",
+      "note": "Bug corregido en el shell: la sidebar ahora ocupa el alto del viewport (h-screen + overflow-hidden), el nav y el main scrollean por separado y el pie con usuario + cerrar sesión queda fijo en todas las vistas (antes se empujaba fuera de pantalla en páginas largas como Catálogo).",
+      "previewUrl": "http://127.0.0.1:5173/"
+    }
+  }
+}
