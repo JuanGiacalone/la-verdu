@@ -159,14 +159,14 @@ Con compose, bajá el override y volvé a `make dev-up`.
 
 ## Troubleshooting
 
-| Síntoma | Causa probable | Acción |
-|---|---|---|
-| `401 Unauthorized` | Key inválida o expirada | Regenerar la key en Console. |
-| `403 Forbidden` | Modelo free usado fuera de OpenCode | Cambiar a un modelo pago (`glm-5.3`, etc.) o activar Go. |
-| `404 Not Found` | Base URL mal formada | Verificar que termine en `/v1` y que el modelo exista en `/inference/v1/models`. |
-| `ChatModel failed: 400` | Parámetros no soportados | Revisar que la app envíe `temperature` y `messages` (soportados). |
-| Respuestas vacías | Modelo no disponible en la región | Probar otro modelo de la lista. |
-| Tests unitarios fallan | Los tests usan el stub por defecto | No afecta; los tests no requieren red. |
+| Síntoma                 | Causa probable                      | Acción                                                                           |
+| ----------------------- | ----------------------------------- | -------------------------------------------------------------------------------- |
+| `401 Unauthorized`      | Key inválida o expirada             | Regenerar la key en Console.                                                     |
+| `403 Forbidden`         | Modelo free usado fuera de OpenCode | Cambiar a un modelo pago (`glm-5.3`, etc.) o activar Go.                         |
+| `404 Not Found`         | Base URL mal formada                | Verificar que termine en `/v1` y que el modelo exista en `/inference/v1/models`. |
+| `ChatModel failed: 400` | Parámetros no soportados            | Revisar que la app envíe `temperature` y `messages` (soportados).                |
+| Respuestas vacías       | Modelo no disponible en la región   | Probar otro modelo de la lista.                                                  |
+| Tests unitarios fallan  | Los tests usan el stub por defecto  | No afecta; los tests no requieren red.                                           |
 
 ## Referencias
 

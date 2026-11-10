@@ -56,7 +56,7 @@ function parseArgs(argv: string[]): { provider: string; audio: boolean } {
   let audio = false;
   for (const arg of argv) {
     const match = arg.match(/^--provider=(.+)$/);
-    if (match) provider = match[1]!;
+    if (match?.[1]) provider = match[1];
     if (arg === "--audio") audio = true;
   }
   return { provider, audio };
@@ -101,7 +101,9 @@ async function main() {
   let cases: EvalCase[] = [];
   try {
     const files = readdirSync(conversationsDir).filter((f) => f.endsWith(".json"));
-    cases = files.map((f) => JSON.parse(readFileSync(join(conversationsDir, f), "utf8")) as EvalCase);
+    cases = files.map(
+      (f) => JSON.parse(readFileSync(join(conversationsDir, f), "utf8")) as EvalCase,
+    );
   } catch (error) {
     console.error("Failed to load eval cases:", error);
     await dbHandle.close();
@@ -139,7 +141,9 @@ async function main() {
       }
 
       if (expectedFulfillment !== null && actualFulfillment !== expectedFulfillment) {
-        failures.push(`fulfillment: expected ${expectedFulfillment}, got ${actualFulfillment ?? "null"}`);
+        failures.push(
+          `fulfillment: expected ${expectedFulfillment}, got ${actualFulfillment ?? "null"}`,
+        );
       }
 
       // noInventedPrices: the parser does not return prices, so there is nothing
@@ -159,9 +163,7 @@ async function main() {
       results.push({
         id: evalCase.id,
         passed,
-        details: passed
-          ? `OK (${actualProducts.length} item(s))`
-          : failures.join("; "),
+        details: passed ? `OK (${actualProducts.length} item(s))` : failures.join("; "),
       });
     } catch (error) {
       results.push({
@@ -183,7 +185,9 @@ async function main() {
     let audioCases: AudioEvalCase[] = [];
     try {
       const files = readdirSync(audioDir).filter((f) => f.endsWith(".json"));
-      audioCases = files.map((f) => JSON.parse(readFileSync(join(audioDir, f), "utf8")) as AudioEvalCase);
+      audioCases = files.map(
+        (f) => JSON.parse(readFileSync(join(audioDir, f), "utf8")) as AudioEvalCase,
+      );
     } catch {
       audioCases = [];
     }
@@ -211,28 +215,45 @@ async function main() {
           const normActual = transcription.text.trim().toLowerCase();
           const normExpected = expectedTranscription.trim().toLowerCase();
           if (normActual !== normExpected) {
-            failures.push(`transcription: expected "${expectedTranscription}", got "${transcription.text}"`);
+            failures.push(
+              `transcription: expected "${expectedTranscription}", got "${transcription.text}"`,
+            );
           }
         }
 
         // Then parse the transcribed text as an order and compare.
-        const parsed = await parseCustomerOrder(baseUrl, apiKey, model, transcription.text, dbHandle.db);
+        const parsed = await parseCustomerOrder(
+          baseUrl,
+          apiKey,
+          model,
+          transcription.text,
+          dbHandle.db,
+        );
         const actualProducts = parsed.items.map((i) => i.productName);
         const actualQuantities = parsed.items.map((i) => i.quantity);
         const expectedProducts = evalCase.expected.products ?? [];
         const expectedQuantities = evalCase.expected.quantities ?? [];
 
-        if (expectedProducts.length > 0 && !arraysEqualAsMultiset(actualProducts, expectedProducts)) {
-          failures.push(`products: expected [${expectedProducts.join(", ")}], got [${actualProducts.join(", ")}]`);
+        if (
+          expectedProducts.length > 0 &&
+          !arraysEqualAsMultiset(actualProducts, expectedProducts)
+        ) {
+          failures.push(
+            `products: expected [${expectedProducts.join(", ")}], got [${actualProducts.join(", ")}]`,
+          );
         }
         if (expectedQuantities.length > 0 && !numbersEqual(actualQuantities, expectedQuantities)) {
-          failures.push(`quantities: expected [${expectedQuantities.join(", ")}], got [${actualQuantities.join(", ")}]`);
+          failures.push(
+            `quantities: expected [${expectedQuantities.join(", ")}], got [${actualQuantities.join(", ")}]`,
+          );
         }
 
         const expectedFulfillment = evalCase.expected.fulfillment ?? null;
         const actualFulfillment = parsed.fulfillment ?? null;
         if (expectedFulfillment !== null && actualFulfillment !== expectedFulfillment) {
-          failures.push(`fulfillment: expected ${expectedFulfillment}, got ${actualFulfillment ?? "null"}`);
+          failures.push(
+            `fulfillment: expected ${expectedFulfillment}, got ${actualFulfillment ?? "null"}`,
+          );
         }
 
         const passed = failures.length === 0;

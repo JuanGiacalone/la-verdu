@@ -17,17 +17,17 @@ Este documento es un ejemplo completo y detallado para implantar una instancia d
 
 ## 1. Datos de la instancia
 
-| Campo | Valor |
-|---|---|
-| Nombre del negocio | Apolonia |
-| Slug (DB) | `apolonia` |
-| Teléfono del negocio | `+54911...` (completar) |
-| Dirección | (completar) |
-| Owner / responsable | (completar) |
-| Dominio público | `apolonia.tu-dominio.com` |
-| VPS | (IP / proveedor) |
-| LLM provider | OpenAI-compatible (URL + key + modelo) |
-| STT provider | OpenAI-compatible (URL + key + modelo) |
+| Campo                | Valor                                  |
+| -------------------- | -------------------------------------- |
+| Nombre del negocio   | Apolonia                               |
+| Slug (DB)            | `apolonia`                             |
+| Teléfono del negocio | `+54911...` (completar)                |
+| Dirección            | (completar)                            |
+| Owner / responsable  | (completar)                            |
+| Dominio público      | `apolonia.tu-dominio.com`              |
+| VPS                  | (IP / proveedor)                       |
+| LLM provider         | OpenAI-compatible (URL + key + modelo) |
+| STT provider         | OpenAI-compatible (URL + key + modelo) |
 
 ## 2. Prerrequisitos del servidor
 

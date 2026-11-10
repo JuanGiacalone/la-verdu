@@ -34,17 +34,17 @@ make dev-printouts                   # impresiones simuladas en .dev/printouts/
 
 La instancia se adapta a cada negocio configurando estos datos (no hay valores fijos en el código):
 
-| Dato | Dónde se carga | Variable de entorno (seed) |
-|---|---|---|
-| Nombre del negocio | Admin → Configuración del negocio o seed | `BUSINESS_NAME` (default "La Verdu") |
-| Nombre del dueño | Admin → Configuración del negocio o seed | `BUSINESS_OWNER_NAME` (default "Dueño de prueba") |
-| Teléfono del negocio | Admin → Configuración del negocio o seed | `BUSINESS_PHONE` |
-| Dirección del negocio | Admin → Configuración del negocio o seed | `BUSINESS_ADDRESS` |
-| Sucursales | Admin → Sucursales | (seed: `CENTRO`, `NORTE`) |
-| Personal y roles | Admin → Personal | (seed: dueño + 2 vendedores) |
-| Productos y precios de referencia | Admin → Catálogo o importación CSV | (seed: 5 productos) |
-| Métodos de pago por sucursal | Admin → Métodos de pago | (seed: 4 métodos) |
-| Horarios de atención | Admin → Sucursales | (seed: ver PRD 19.4) |
+| Dato                              | Dónde se carga                           | Variable de entorno (seed)                        |
+| --------------------------------- | ---------------------------------------- | ------------------------------------------------- |
+| Nombre del negocio                | Admin → Configuración del negocio o seed | `BUSINESS_NAME` (default "La Verdu")              |
+| Nombre del dueño                  | Admin → Configuración del negocio o seed | `BUSINESS_OWNER_NAME` (default "Dueño de prueba") |
+| Teléfono del negocio              | Admin → Configuración del negocio o seed | `BUSINESS_PHONE`                                  |
+| Dirección del negocio             | Admin → Configuración del negocio o seed | `BUSINESS_ADDRESS`                                |
+| Sucursales                        | Admin → Sucursales                       | (seed: `CENTRO`, `NORTE`)                         |
+| Personal y roles                  | Admin → Personal                         | (seed: dueño + 2 vendedores)                      |
+| Productos y precios de referencia | Admin → Catálogo o importación CSV       | (seed: 5 productos)                               |
+| Métodos de pago por sucursal      | Admin → Métodos de pago                  | (seed: 4 métodos)                                 |
+| Horarios de atención              | Admin → Sucursales                       | (seed: ver PRD 19.4)                              |
 
 Para crear una instancia para otro negocio:
 

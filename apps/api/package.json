@@ -6,7 +6,7 @@
   "main": "dist/server.js",
   "scripts": {
     "predev": "npm run build -w @la-verdu/print-render",
-    "dev": "tsx watch src/server.ts", 
+    "dev": "tsx watch src/server.ts",
     "prebuild": "npm run build -w @la-verdu/print-render",
     "start": "node dist/server.js",
     "build": "tsc -p tsconfig.json",

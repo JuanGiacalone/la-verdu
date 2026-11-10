@@ -18,16 +18,16 @@
 
 ## 2. Inventario de la aplicación
 
-| Componente | Tecnología | Puerto (prod) | Rol |
-|---|---|---|---|
-| API | Node.js 22 / Fastify | 3000 (interno) | Backend, webhook WhatsApp, admin REST, health/metrics |
-| Admin | Vite build estático | servido por Caddy/nginx | Panel de administración |
-| PostgreSQL | 16 | 5432 (solo localhost) | Datos operativos |
-| Impresión | Agente Go (`apps/print-agent`) | WebSocket/SSE a API | Cola de impresión por sucursal |
-| LLM/STT | Proveedor externo OpenAI-compatible | HTTPS | Parsing de pedidos y transcripción de audio |
-| WhatsApp | Meta Cloud API | HTTPS webhook | Canal de clientes y personal |
-| HTTPS | Caddy o Cloudflare Tunnel | 443/80 | Terminación TLS, proxy a 3000 |
-| Backups | `scripts/backup.sh` + cron | — | `pg_dump` diario |
+| Componente | Tecnología                          | Puerto (prod)           | Rol                                                   |
+| ---------- | ----------------------------------- | ----------------------- | ----------------------------------------------------- |
+| API        | Node.js 22 / Fastify                | 3000 (interno)          | Backend, webhook WhatsApp, admin REST, health/metrics |
+| Admin      | Vite build estático                 | servido por Caddy/nginx | Panel de administración                               |
+| PostgreSQL | 16                                  | 5432 (solo localhost)   | Datos operativos                                      |
+| Impresión  | Agente Go (`apps/print-agent`)      | WebSocket/SSE a API     | Cola de impresión por sucursal                        |
+| LLM/STT    | Proveedor externo OpenAI-compatible | HTTPS                   | Parsing de pedidos y transcripción de audio           |
+| WhatsApp   | Meta Cloud API                      | HTTPS webhook           | Canal de clientes y personal                          |
+| HTTPS      | Caddy o Cloudflare Tunnel           | 443/80                  | Terminación TLS, proxy a 3000                         |
+| Backups    | `scripts/backup.sh` + cron          | —                       | `pg_dump` diario                                      |
 
 ## 3. Variables de entorno
 
@@ -35,39 +35,39 @@ Fuente de verdad: `apps/api/src/config.ts` (validación Zod al arranque, fail-fa
 
 ### 3.1 Producción (obligatorias / relevantes)
 
-| Variable | Obligatoria | Default | Sensible | Validación | Notas |
-|---|---|---|---|---|---|
-| `NODE_ENV` | sí | `development` | no | enum | Debe ser `production` en prod |
-| `PORT` | no | `3000` | no | 1–65535 | Puerto de escucha |
-| `DATABASE_URL` | **sí** | — | **sí** | string no vacío | Postgres de producción |
-| `TZ_APP` | no | `America/Argentina/Buenos_Aires` | no | IANA tz | Zona horaria de negocio |
-| `LOG_LEVEL` | no | `info` | no | enum | `info` o `warn` en prod |
-| `SESSION_SECRET` | **sí** | `dev-secret-only` | **sí** | — | Firmado de cookies de admin. **Nunca dejar el default en prod** |
-| `WHATSAPP_APP_SECRET` | sí* | `""` | **sí** | — | Si vacío, el webhook no se registra |
-| `WHATSAPP_VERIFY_TOKEN` | sí* | `""` | semi | — | Token de verificación del webhook en Meta |
-| `WHATSAPP_ACCESS_TOKEN` | sí* | `""` | **sí** | — | Token de la API de WhatsApp |
-| `WHATSAPP_PHONE_NUMBER_ID` | sí* | `""` | no | — | ID del número de teléfono |
-| `WHATSAPP_API_VERSION` | no | `v22.0` | no | — | Versión de Graph API |
-| `CHAT_BASE_URL` | sí | `http://localhost:8082` | no | — | Endpoint OpenAI-compatible del LLM |
-| `CHAT_API_KEY` | sí* | `""` | **sí** | — | Vacío solo si el proveedor no requiere key |
-| `CHAT_MODEL` | sí | `llm-stub` | no | — | Modelo a usar |
-| `STT_BASE_URL` | sí | `http://localhost:8083` | no | — | Endpoint de transcripción |
-| `STT_API_KEY` | sí* | `""` | **sí** | — | Vacío solo si el proveedor no requiere key |
-| `STT_MODEL` | sí | `stt-stub` | no | — | Modelo STT |
+| Variable                   | Obligatoria | Default                          | Sensible | Validación      | Notas                                                           |
+| -------------------------- | ----------- | -------------------------------- | -------- | --------------- | --------------------------------------------------------------- |
+| `NODE_ENV`                 | sí          | `development`                    | no       | enum            | Debe ser `production` en prod                                   |
+| `PORT`                     | no          | `3000`                           | no       | 1–65535         | Puerto de escucha                                               |
+| `DATABASE_URL`             | **sí**      | —                                | **sí**   | string no vacío | Postgres de producción                                          |
+| `TZ_APP`                   | no          | `America/Argentina/Buenos_Aires` | no       | IANA tz         | Zona horaria de negocio                                         |
+| `LOG_LEVEL`                | no          | `info`                           | no       | enum            | `info` o `warn` en prod                                         |
+| `SESSION_SECRET`           | **sí**      | `dev-secret-only`                | **sí**   | —               | Firmado de cookies de admin. **Nunca dejar el default en prod** |
+| `WHATSAPP_APP_SECRET`      | sí*         | `""`                             | **sí**   | —               | Si vacío, el webhook no se registra                             |
+| `WHATSAPP_VERIFY_TOKEN`    | sí*         | `""`                             | semi     | —               | Token de verificación del webhook en Meta                       |
+| `WHATSAPP_ACCESS_TOKEN`    | sí*         | `""`                             | **sí**   | —               | Token de la API de WhatsApp                                     |
+| `WHATSAPP_PHONE_NUMBER_ID` | sí*         | `""`                             | no       | —               | ID del número de teléfono                                       |
+| `WHATSAPP_API_VERSION`     | no          | `v22.0`                          | no       | —               | Versión de Graph API                                            |
+| `CHAT_BASE_URL`            | sí          | `http://localhost:8082`          | no       | —               | Endpoint OpenAI-compatible del LLM                              |
+| `CHAT_API_KEY`             | sí*         | `""`                             | **sí**   | —               | Vacío solo si el proveedor no requiere key                      |
+| `CHAT_MODEL`               | sí          | `llm-stub`                       | no       | —               | Modelo a usar                                                   |
+| `STT_BASE_URL`             | sí          | `http://localhost:8083`          | no       | —               | Endpoint de transcripción                                       |
+| `STT_API_KEY`              | sí*         | `""`                             | **sí**   | —               | Vacío solo si el proveedor no requiere key                      |
+| `STT_MODEL`                | sí          | `stt-stub`                       | no       | —               | Modelo STT                                                      |
 
 \* Obligatoria si se usa la funcionalidad correspondiente.
 
 ### 3.2 Variables de seed / administración (solo primera carga o reset)
 
-| Variable | Default | Uso |
-|---|---|---|
-| `ADMIN_USERNAME` | `admin` | `npm run db:seed-admin` |
-| `ADMIN_PASSWORD` | `admin` | **Cambiar obligatoriamente** antes del seed en prod |
-| `ADMIN_ROLE` | `OWNER` | `OWNER` u `OPERATOR` |
-| `BUSINESS_NAME` | `La Verdu` | Seed del registro `business` |
-| `BUSINESS_OWNER_NAME` | `Dueño de prueba` | Seed del registro `business` |
-| `BUSINESS_PHONE` | `null` | Seed |
-| `BUSINESS_ADDRESS` | `null` | Seed |
+| Variable              | Default           | Uso                                                 |
+| --------------------- | ----------------- | --------------------------------------------------- |
+| `ADMIN_USERNAME`      | `admin`           | `npm run db:seed-admin`                             |
+| `ADMIN_PASSWORD`      | `admin`           | **Cambiar obligatoriamente** antes del seed en prod |
+| `ADMIN_ROLE`          | `OWNER`           | `OWNER` u `OPERATOR`                                |
+| `BUSINESS_NAME`       | `La Verdu`        | Seed del registro `business`                        |
+| `BUSINESS_OWNER_NAME` | `Dueño de prueba` | Seed del registro `business`                        |
+| `BUSINESS_PHONE`      | `null`            | Seed                                                |
+| `BUSINESS_ADDRESS`    | `null`            | Seed                                                |
 
 ### 3.3 Variables de entorno solo desarrollo / testing (NO usar en prod)
 
@@ -176,12 +176,14 @@ Se provee `scripts/backup-secure.sh`, que reemplaza a `scripts/backup.sh` en pro
 **Opción A — clave asimétrica (recomendada):**
 
 1. Generar un par de claves dedicado al backup (en una máquina segura, no en el VPS):
+
    ```bash
    gpg --full-generate-key
    # Tipo: RSA 4096, sin expiración o con expiración larga.
    # UID: backup@la-verdu
    ```
 2. Exportar la clave pública e importarla en el VPS:
+
    ```bash
    gpg --armor --export backup@la-verdu > la-verdu-backup.pub
    scp la-verdu-backup.pub laverdu@vps:/tmp/
@@ -190,6 +192,7 @@ Se provee `scripts/backup-secure.sh`, que reemplaza a `scripts/backup.sh` en pro
    ```
 3. Guardar la clave privada en un lugar seguro (offline, bóveda, gestor de contraseñas). **Si se pierde, los backups son irrecuperables.**
 4. Configurar el cron:
+
    ```bash
    echo "0 3 * * * root DATABASE_URL=postgres://laverdu:CONTRASEÑA@127.0.0.1:5432/laverdu GPG_RECIPIENT=backup@la-verdu BACKUP_DIR=/var/backups/la-verdu /opt/la-verdu/scripts/backup-secure.sh" | sudo tee /etc/cron.d/la-verdu-backup
    ```
@@ -198,14 +201,17 @@ Se provee `scripts/backup-secure.sh`, que reemplaza a `scripts/backup.sh` en pro
 
 1. Generar una passphrase larga (>= 32 caracteres) y guardarla en un gestor de contraseñas.
 2. Crear `/opt/la-verdu/.backup-passphrase` con permisos 600:
+
    ```bash
    echo 'PASSPHRASE_LARGA_AQUI' | sudo -u laverdu tee /opt/la-verdu/.backup-passphrase
    sudo chmod 600 /opt/la-verdu/.backup-passphrase
    ```
 3. Cron:
+
    ```bash
    echo "0 3 * * * root DATABASE_URL=... BACKUP_PASSPHRASE=\$(cat /opt/la-verdu/.backup-passphrase) BACKUP_DIR=/var/backups/la-verdu /opt/la-verdu/scripts/backup-secure.sh" | sudo tee /etc/cron.d/la-verdu-backup
    ```
+
    Nota: pasar el passphrase por cron expone el valor en la línea de proceso; preferir Opción A.
 
 **Restauración desde backup cifrado:**
@@ -226,6 +232,7 @@ shred -u /tmp/restore.sql.gz
 2. Configurar un remote: `rclone config` (ej: `backup-remote` hacia S3, Backblaze B2, Google Drive, o un segundo servidor vía SFTP).
 3. Probar: `rclone ls backup-remote:`.
 4. Activar en el cron:
+
    ```bash
    echo "0 3 * * * root DATABASE_URL=... GPG_RECIPIENT=backup@la-verdu BACKUP_DIR=/var/backups/la-verdu OFFSITE_ENABLED=true OFFSITE_TARGET=backup-remote:la-verdu /opt/la-verdu/scripts/backup-secure.sh" | sudo tee /etc/cron.d/la-verdu-backup
    ```
@@ -234,6 +241,7 @@ shred -u /tmp/restore.sql.gz
 
 1. Generar clave SSH para el usuario de backup y autorizarla en el servidor secundario.
 2. Cron:
+
    ```bash
    echo "0 3 * * * root DATABASE_URL=... GPG_RECIPIENT=backup@la-verdu BACKUP_DIR=/var/backups/la-verdu OFFSITE_ENABLED=true OFFSITE_TOOL=rsync OFFSITE_TARGET=backup@backup-server:/backups/la-verdu /opt/la-verdu/scripts/backup-secure.sh" | sudo tee /etc/cron.d/la-verdu-backup
    ```
@@ -417,14 +425,14 @@ SSH: solo clave pública, password deshabilitado (`/etc/ssh/sshd_config`: `Passw
 
 ## 6. Monitoreo y observabilidad
 
-| Señal | Endpoint / fuente | Uso |
-|---|---|---|
-| Liveness | `GET /health/live` | Proceso vivo |
-| Readiness | `GET /health/ready` | DB accesible (200/503) |
-| Métricas | `GET /metrics` | Prometheus (prom-client) |
-| Ops status | `GET /admin/ops/status` | Cola de impresión, alertas, agentes, conversaciones escaladas, drafts |
-| Logs | `journalctl -u la-verdu -f` | Errores de app |
-| DB | `psql` / `pg_stat_activity` | Conexiones, tamaño |
+| Señal      | Endpoint / fuente           | Uso                                                                   |
+| ---------- | --------------------------- | --------------------------------------------------------------------- |
+| Liveness   | `GET /health/live`          | Proceso vivo                                                          |
+| Readiness  | `GET /health/ready`         | DB accesible (200/503)                                                |
+| Métricas   | `GET /metrics`              | Prometheus (prom-client)                                              |
+| Ops status | `GET /admin/ops/status`     | Cola de impresión, alertas, agentes, conversaciones escaladas, drafts |
+| Logs       | `journalctl -u la-verdu -f` | Errores de app                                                        |
+| DB         | `psql` / `pg_stat_activity` | Conexiones, tamaño                                                    |
 
 Alertas recomendadas (implementar con cron o monitoreo externo):
 - `/health/ready` != 200 por > 2 min → alerta.
@@ -435,20 +443,20 @@ Alertas recomendadas (implementar con cron o monitoreo externo):
 
 ## 7. Matriz de riesgos
 
-| # | Riesgo | Prob. | Impacto | Mitigación | Detección |
-|---|---|---|---|---|---|
-| R1 | Pérdida de datos por fallo de disco/DB | Media | Alto | Backups diarios + offsite + restore drill | Backup job, health check |
-| R2 | Secreto comprometido (token, DB password) | Baja | Alto | Rotación, permisos 600, no git | Auditoría de acceso, alertas Meta |
-| R3 | Caída del proveedor LLM/STT | Media | Medio | Escalado automático a personal, fallback de modelo | Logs, métricas de error |
-| R4 | Webhook WhatsApp caído o firma inválida | Media | Alto | Verificar `WHATSAPP_APP_SECRET`, túnel HTTPS, suscripción | `/health/live`, logs, prueba inbound |
-| R5 | Impresora offline / cola bloqueada | Alta | Medio | Alertas, retry, estado HELD/FAILED, runbook | `/admin/ops/status` |
-| R6 | Migración fallida en producción | Baja | Alto | Backup previo, prueba en `_test`, rollback scripts | Logs de migración |
-| R7 | Disco lleno | Media | Alto | Purga periódica, rotación de logs/backups, monitoreo | `df`, alerta |
-| R8 | Meta rechaza plantillas o bloquea número | Media | Alto | Enviar plantillas temprano, texto libre como fallback | Estado en Meta, webhooks |
-| R9 | Pérdida del VPS / proveedor | Baja | Alto | Backups offsite, documentación de restore, IaC futuro | Monitoreo externo |
-| R10 | Vulnerabilidad en dependencias | Media | Medio | `npm audit`, actualizaciones periódicas | CI / manual |
-| R11 | PII mal manejada / incumplimiento | Baja | Alto | Endpoints ARCO, purga, audit log, no logs en claro | Revisión de código y logs |
-| R12 | Sesión admin insegura (cookie sin HTTPS) | Baja | Alto | `isProduction`, `SESSION_SECRET` fuerte, HTTPS obligatorio | Revisión de config |
+| #   | Riesgo                                    | Prob. | Impacto | Mitigación                                                 | Detección                            |
+| --- | ----------------------------------------- | ----- | ------- | ---------------------------------------------------------- | ------------------------------------ |
+| R1  | Pérdida de datos por fallo de disco/DB    | Media | Alto    | Backups diarios + offsite + restore drill                  | Backup job, health check             |
+| R2  | Secreto comprometido (token, DB password) | Baja  | Alto    | Rotación, permisos 600, no git                             | Auditoría de acceso, alertas Meta    |
+| R3  | Caída del proveedor LLM/STT               | Media | Medio   | Escalado automático a personal, fallback de modelo         | Logs, métricas de error              |
+| R4  | Webhook WhatsApp caído o firma inválida   | Media | Alto    | Verificar `WHATSAPP_APP_SECRET`, túnel HTTPS, suscripción  | `/health/live`, logs, prueba inbound |
+| R5  | Impresora offline / cola bloqueada        | Alta  | Medio   | Alertas, retry, estado HELD/FAILED, runbook                | `/admin/ops/status`                  |
+| R6  | Migración fallida en producción           | Baja  | Alto    | Backup previo, prueba en `_test`, rollback scripts         | Logs de migración                    |
+| R7  | Disco lleno                               | Media | Alto    | Purga periódica, rotación de logs/backups, monitoreo       | `df`, alerta                         |
+| R8  | Meta rechaza plantillas o bloquea número  | Media | Alto    | Enviar plantillas temprano, texto libre como fallback      | Estado en Meta, webhooks             |
+| R9  | Pérdida del VPS / proveedor               | Baja  | Alto    | Backups offsite, documentación de restore, IaC futuro      | Monitoreo externo                    |
+| R10 | Vulnerabilidad en dependencias            | Media | Medio   | `npm audit`, actualizaciones periódicas                    | CI / manual                          |
+| R11 | PII mal manejada / incumplimiento         | Baja  | Alto    | Endpoints ARCO, purga, audit log, no logs en claro         | Revisión de código y logs            |
+| R12 | Sesión admin insegura (cookie sin HTTPS)  | Baja  | Alto    | `isProduction`, `SESSION_SECRET` fuerte, HTTPS obligatorio | Revisión de config                   |
 
 ## 8. Plan de contingencias por escenario
 
@@ -564,14 +572,14 @@ Alertas recomendadas (implementar con cron o monitoreo externo):
 
 Realizar antes del go-live y luego cada trimestre:
 
-| Drill | Criterio de éxito |
-|---|---|
-| Restore de backup en `laverdu_test` | Restauración completa en < 30 min, counts coinciden |
-| Failover LLM | El personal recibe la escalación, el cliente recibe mensaje de espera |
-| Impresora offline | Alerta generada, jobs en HELD/FAILED, recuperación sin pérdida |
-| Rollback de migración | `rollbackMigrations` ejecuta sin error, app arranca |
-| Rotación de secreto | Nuevo token funciona, el viejo deja de funcionar |
-| Webhook signature inválida | Rechazado con 401/403, log de alerta |
+| Drill                               | Criterio de éxito                                                     |
+| ----------------------------------- | --------------------------------------------------------------------- |
+| Restore de backup en `laverdu_test` | Restauración completa en < 30 min, counts coinciden                   |
+| Failover LLM                        | El personal recibe la escalación, el cliente recibe mensaje de espera |
+| Impresora offline                   | Alerta generada, jobs en HELD/FAILED, recuperación sin pérdida        |
+| Rollback de migración               | `rollbackMigrations` ejecuta sin error, app arranca                   |
+| Rotación de secreto                 | Nuevo token funciona, el viejo deja de funcionar                      |
+| Webhook signature inválida          | Rechazado con 401/403, log de alerta                                  |
 
 ## 11. Checklist pre-producción
 
@@ -597,13 +605,13 @@ Realizar antes del go-live y luego cada trimestre:
 
 ## 12. Responsabilidades (plantilla)
 
-| Rol | Responsable | Contacto |
-|---|---|---|
-| Owner del negocio | — | — |
-| Operador técnico | — | — |
-| Soporte LLM/STT | Proveedor | — |
-| Soporte Meta/WhatsApp | Meta | — |
-| Proveedor VPS | — | — |
+| Rol                   | Responsable | Contacto |
+| --------------------- | ----------- | -------- |
+| Owner del negocio     | —           | —        |
+| Operador técnico      | —           | —        |
+| Soporte LLM/STT       | Proveedor   | —        |
+| Soporte Meta/WhatsApp | Meta        | —        |
+| Proveedor VPS         | —           | —        |
 
 ## 13. Anexo — Comandos útiles
 

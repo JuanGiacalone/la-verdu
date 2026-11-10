@@ -105,18 +105,18 @@ El script valida variables, crea la DB, instala dependencias, buildea, migra y s
 
 ### Opciones adicionales del bootstrap
 
-| Variable | Default | Efecto |
-|---|---|---|
-| `GENERATE_ENV` | `true` | Genera `/opt/la-verdu/.env` si no existe (con placeholders para secretos). |
-| `FORCE_ENV` | `false` | Sobrescribe `.env` existente (usar con cuidado). |
-| `SETUP_CRON` | `false` | Crea `/etc/cron.d/la-verdu-backup` con backup diario + restore drill semanal (requiere root). |
-| `GPG_RECIPIENT` | `backup@la-verdu` | UID de la clave GPG usada por el cron. |
-| `BACKUP_DIR` | `/var/backups/la-verdu` | Destino local de backups. |
-| `OFFSITE_ENABLED` | `false` | Activa copia offsite en el cron. |
-| `OFFSITE_TARGET` | `` | Remote rclone o destino rsync. |
-| `PORT` | `3000` | Puerto de la app en el `.env` generado. |
-| `TZ_APP`, `LOG_LEVEL` | defaults | Se propagan al `.env`. |
-| `SESSION_SECRET`, `WHATSAPP_*`, `CHAT_*`, `STT_*` | vacío/placeholder | Se propagan al `.env` si se pasan. |
+| Variable                                          | Default                 | Efecto                                                                                        |
+| ------------------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------------- |
+| `GENERATE_ENV`                                    | `true`                  | Genera `/opt/la-verdu/.env` si no existe (con placeholders para secretos).                    |
+| `FORCE_ENV`                                       | `false`                 | Sobrescribe `.env` existente (usar con cuidado).                                              |
+| `SETUP_CRON`                                      | `false`                 | Crea `/etc/cron.d/la-verdu-backup` con backup diario + restore drill semanal (requiere root). |
+| `GPG_RECIPIENT`                                   | `backup@la-verdu`       | UID de la clave GPG usada por el cron.                                                        |
+| `BACKUP_DIR`                                      | `/var/backups/la-verdu` | Destino local de backups.                                                                     |
+| `OFFSITE_ENABLED`                                 | `false`                 | Activa copia offsite en el cron.                                                              |
+| `OFFSITE_TARGET`                                  | ``                      | Remote rclone o destino rsync.                                                                |
+| `PORT`                                            | `3000`                  | Puerto de la app en el `.env` generado.                                                       |
+| `TZ_APP`, `LOG_LEVEL`                             | defaults                | Se propagan al `.env`.                                                                        |
+| `SESSION_SECRET`, `WHATSAPP_*`, `CHAT_*`, `STT_*` | vacío/placeholder       | Se propagan al `.env` si se pasan.                                                            |
 
 Ejemplo con generación de `.env` y cron:
 

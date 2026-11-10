@@ -64,8 +64,8 @@ En la consola de Tailscale (https://login.tailscale.com/admin/acls), definir qui
 ```json
 {
   "acls": [
-    {"action": "accept", "src": ["group:admins"], "dst": ["tag:vps:*"]},
-    {"action": "accept", "src": ["tag:vps"], "dst": ["tag:vps:*"]}
+    { "action": "accept", "src": ["group:admins"], "dst": ["tag:vps:*"] },
+    { "action": "accept", "src": ["tag:vps"], "dst": ["tag:vps:*"] }
   ],
   "tagOwners": {
     "tag:vps": ["group:admins"]
@@ -107,6 +107,7 @@ Esto mapea el puerto 3000 **solo** a la IP de Tailscale, sin exponerlo al públi
 
 1. En el servicio `api`, ir a **Ports** y agregar un mapeo: `100.x.x.x:3000:3000`.
 2. Asegurar que el firewall del VPS solo permita 3000 en `tailscale0`:
+
    ```bash
    sudo ufw allow in on tailscale0 to any port 3000 proto tcp
    sudo ufw deny 3000/tcp
@@ -158,12 +159,12 @@ curl http://100.x.x.x:3000/health/ready
 
 ## 6. Troubleshooting
 
-| Problema | Causa | Acción |
-|---|---|---|
-| No conecta | Dispositivo no autorizado | Autorizar en la consola de Tailscale |
-| SSH rechazado | Puerto 22 cerrado sin Tailscale SSH | Usar `tailscale up --ssh` o abrir 22 solo en tailscale0 |
-| DNS no resuelve | MagicDNS deshabilitado | Habilitar en la consola de Tailscale |
-| Servicio no arranca | Login pendiente | Ejecutar `sudo tailscale up` y autorizar |
+| Problema            | Causa                               | Acción                                                  |
+| ------------------- | ----------------------------------- | ------------------------------------------------------- |
+| No conecta          | Dispositivo no autorizado           | Autorizar en la consola de Tailscale                    |
+| SSH rechazado       | Puerto 22 cerrado sin Tailscale SSH | Usar `tailscale up --ssh` o abrir 22 solo en tailscale0 |
+| DNS no resuelve     | MagicDNS deshabilitado              | Habilitar en la consola de Tailscale                    |
+| Servicio no arranca | Login pendiente                     | Ejecutar `sudo tailscale up` y autorizar                |
 
 ## 7. Checklist
 
