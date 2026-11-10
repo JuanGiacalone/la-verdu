@@ -110,7 +110,6 @@ export function CatalogPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Catálogo</h1>
       {error && (
         <div className="text-xs px-1.5 py-0.5 rounded border border-red-200 bg-white text-red-600 hover:bg-red-50 font-bold leading-none">
           {error}
@@ -139,7 +138,10 @@ export function CatalogPage() {
             <option value="BUNCH">Atado</option>
           </select>
         </div>
-        <button type="submit" className="bg-brand-600 text-white rounded px-4 py-2">
+        <button
+          type="submit"
+          className="bg-brand-700 hover:bg-brand-900 text-white rounded px-4 py-2"
+        >
           Agregar
         </button>
       </form>

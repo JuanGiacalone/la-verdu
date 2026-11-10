@@ -60,8 +60,6 @@ export function ConfigPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Configuración técnica</h1>
-
       <section className="bg-white border rounded p-4 space-y-4">
         <h2 className="text-lg font-semibold">Configuración del negocio</h2>
         <p className="text-sm text-slate-500">
@@ -118,7 +116,7 @@ export function ConfigPage() {
             <button
               type="submit"
               disabled={saving}
-              className="px-4 py-2 bg-brand-600 text-white rounded disabled:opacity-50"
+              className="px-4 py-2 bg-brand-700 hover:bg-brand-900 text-white rounded disabled:opacity-50"
             >
               {saving ? "Guardando…" : "Guardar"}
             </button>

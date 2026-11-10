@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — Dirección 3: Verdu sobre Astryx (dual)</title>
+<style>
+  /* Un tema Astryx propio: extends neutral, sobreescribe los tokens de color con la marca.
+     Cada valor existe una sola vez; light y dark son las dos caras del mismo token. */
+  :root{
+    --background-body:#f7f8f6; --background-card:#ffffff; --background-muted:#eef1ec; --background-popover:#ffffff;
+    --text-primary:#12211a; --text-secondary:#4a5a51; --text-disabled:#8a958e;
+    --border:#0f241a14; --border-emphasized:#dfe4de;
+    --icon-primary:#12211a; --icon-secondary:#64756b;
+    --accent:#047857; --on-accent:#ffffff;
+    --text-error:#b42318; --text-success:#047857; --text-warning:#8a5a00; --text-info:#1f6feb;
+    --ok-bg:#d9f2e4; --warn-bg:#fdf0cf; --err-bg:#fde4e2;
+    --radius-element:.625rem; --radius-container:.75rem; --radius-full:9999px;
+  }
+  .dark{
+    --background-body:#101512; --background-card:#18201b; --background-muted:#1f2823; --background-popover:#1f2823;
+    --text-primary:#e8f0ea; --text-secondary:#a7b5ac; --text-disabled:#6d7b72;
+    --border:#ffffff1f; --border-emphasized:#33413a;
+    --icon-primary:#e8f0ea; --icon-secondary:#93a49a;
+    --accent:#34d399; --on-accent:#062a1d;
+    --text-error:#ff9a8f; --text-success:#6ee7b7; --text-warning:#f2c744; --text-info:#7cb7ff;
+    --ok-bg:#123528; --warn-bg:#3a2f10; --err-bg:#3d1d1a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--background-body);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+  .head{max-width:1440px;margin:0 auto;padding:26px 32px 0}
+  .head h1{font-size:23px;font-weight:800;letter-spacing:-.01em}
+  .head p{color:var(--text-secondary);font-size:14px;margin-top:4px;max-width:100ch}
+  .split{max-width:1440px;margin:0 auto;padding:22px 32px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .mode{border:1px solid var(--border-emphasized);border-radius:var(--radius-container);overflow:hidden;background:var(--background-card)}
+  .mode .modehead{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border-emphasized);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary)}
+  .mode .modehead .tag{font-size:11px;font-weight:700;letter-spacing:0;text-transform:none;background:var(--background-muted);color:var(--text-secondary);padding:3px 9px;border-radius:var(--radius-full)}
+  .mini{display:flex;min-height:470px}
+  .mini nav{width:150px;flex:none;background:var(--background-muted);border-right:1px solid var(--border-emphasized);padding:12px 0}
+  .mini nav a{display:block;padding:8px 14px;font-size:12.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent}
+  .mini nav a.active{background:var(--background-card);color:var(--text-primary);font-weight:700;border-left-color:var(--accent)}
+  .mini .content{flex:1;padding:16px}
+  .mini .content h2{font-size:17px;font-weight:800}
+  .mini .content .sub{font-size:12px;color:var(--text-secondary);margin-top:2px;margin-bottom:14px}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+  .card{background:var(--background-card);border:1px solid var(--border-emphasized);border-radius:var(--radius-element);padding:11px 12px}
+  .card .label{font-size:11px;color:var(--text-secondary)}
+  .card .value{font-size:20px;font-weight:800;margin-top:3px}
+  .btn{background:var(--accent);color:var(--on-accent);border:0;padding:8px 14px;border-radius:var(--radius-element);font-weight:700;font-size:12.5px;cursor:pointer}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--background-card);border:1px solid var(--border-emphasized);border-radius:var(--radius-element);overflow:hidden}
+  th{text-align:left;padding:8px 10px;background:var(--background-muted);color:var(--text-secondary);font-weight:700;border-bottom:1px solid var(--border-emphasized)}
+  td{padding:8px 10px;border-top:1px solid var(--border);color:var(--text-primary)}
+  .badge{display:inline-block;padding:2px 8px;border-radius:var(--radius-full);font-size:10.5px;font-weight:700}
+  .badge.ok{background:var(--ok-bg);color:var(--text-success)}
+  .badge.warn{background:var(--warn-bg);color:var(--text-warning)}
+  .badge.err{background:var(--err-bg);color:var(--text-error)}
+  .map{max-width:1440px;margin:0 auto;padding:0 32px 32px}
+  .map .panel{background:var(--background-card);border:1px solid var(--border-emphasized);border-radius:var(--radius-container);padding:18px 20px}
+  .map h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);margin-bottom:12px}
+  .map table{font-size:12.5px}
+  .map code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;color:var(--text-secondary)}
+  .map p{font-size:12.5px;color:var(--text-secondary);max-width:110ch;margin-top:10px}
+  :focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:4px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>Dirección 3 — Verdu sobre Astryx: un tema propio, dos modos</h1>
+  <p>Un tema Astryx que extiende <code>neutral</code> y sobreescribe sólo los tokens de color con la paleta "Mercado fresco". Cada token existe una vez; la columna de la derecha es su mitad oscura, resuelta por el mismo nombre.</p>
+</div>
+
+<div class="split">
+  <section class="mode" aria-label="Modo claro">
+    <div class="modehead"><span>Modo claro</span><span class="tag">data-theme="light"</span></div>
+    <div class="mini">
+      <nav>
+        <a class="active" href="#">Inicio</a>
+        <a href="#">Catálogo</a>
+        <a href="#">Pedidos</a>
+        <a href="#">Impresión</a>
+        <a href="#">Alertas</a>
+      </nav>
+      <div class="content">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><h2>Inicio</h2><div class="sub">Sucursal Centro · hoy, 24 de octubre</div></div>
+          <button class="btn">+ Nuevo pedido</button>
+        </div>
+        <div class="kpis">
+          <div class="card"><div class="label">Pedidos hoy</div><div class="value">12</div></div>
+          <div class="card"><div class="label">En cola</div><div class="value">2</div></div>
+          <div class="card"><div class="label">Borradores</div><div class="value">1</div></div>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>1042</td><td>María G.</td><td>$ 4.820</td><td><span class="badge ok">impreso</span></td></tr>
+            <tr><td>1041</td><td>Juan P.</td><td>$ 2.150</td><td><span class="badge ok">impreso</span></td></tr>
+            <tr><td>1040</td><td>Lucía R.</td><td>$ 3.400</td><td><span class="badge warn">borrador</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="mode dark" aria-label="Modo oscuro">
+    <div class="modehead"><span>Modo oscuro</span><span class="tag">data-theme="dark"</span></div>
+    <div class="mini">
+      <nav>
+        <a class="active" href="#">Inicio</a>
+        <a href="#">Catálogo</a>
+        <a href="#">Pedidos</a>
+        <a href="#">Impresión</a>
+        <a href="#">Alertas</a>
+      </nav>
+      <div class="content">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><h2>Inicio</h2><div class="sub">Sucursal Centro · hoy, 24 de octubre</div></div>
+          <button class="btn">+ Nuevo pedido</button>
+        </div>
+        <div class="kpis">
+          <div class="card"><div class="label">Pedidos hoy</div><div class="value">12</div></div>
+          <div class="card"><div class="label">En cola</div><div class="value">2</div></div>
+          <div class="card"><div class="label">Borradores</div><div class="value">1</div></div>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>1042</td><td>María G.</td><td>$ 4.820</td><td><span class="badge ok">impreso</span></td></tr>
+            <tr><td>1041</td><td>Juan P.</td><td>$ 2.150</td><td><span class="badge ok">impreso</span></td></tr>
+            <tr><td>1040</td><td>Lucía R.</td><td>$ 3.400</td><td><span class="badge warn">borrador</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="map">
+  <div class="panel">
+    <h2>Mapa de tokens (un solo origen)</h2>
+    <table>
+      <thead><tr><th>Token de Astryx</th><th>Claro</th><th>Oscuro</th><th>Origen</th></tr></thead>
+      <tbody>
+        <tr><td><code>--color-background-body</code></td><td>#f7f8f6</td><td>#101512</td><td>manda / verdín</td></tr>
+        <tr><td><code>--color-background-card</code></td><td>#ffffff</td><td>#18201b</td><td>manda / verdín</td></tr>
+        <tr><td><code>--color-text-primary</code></td><td>#12211a</td><td>#e8f0ea</td><td>manda / verdín</td></tr>
+        <tr><td><code>--color-text-secondary</code></td><td>#4a5a51</td><td>#a7b5ac</td><td>manda / verdín</td></tr>
+        <tr><td><code>--color-border-emphasized</code></td><td>#dfe4de</td><td>#33413a</td><td>manda / verdín</td></tr>
+        <tr><td><code>--color-accent</code></td><td>#047857</td><td>#34d399</td><td>brand-700 / brand-500</td></tr>
+        <tr><td><code>--color-on-accent</code></td><td>#ffffff</td><td>#062a1d</td><td>contraste del acento</td></tr>
+        <tr><td><code>--color-text-success</code></td><td>#047857</td><td>#6ee7b7</td><td>brand-700 / brand-500</td></tr>
+        <tr><td><code>--color-text-error</code></td><td>#b42318</td><td>#ff9a8f</td><td>tomate / claro</td></tr>
+        <tr><td><code>--color-text-warning</code></td><td>#8a5a00</td><td>#f2c744</td><td>maíz / maíz</td></tr>
+        <tr><td><code>--color-text-info</code></td><td>#1f6feb</td><td>#7cb7ff</td><td>heredado de neutral</td></tr>
+      </tbody>
+    </table>
+    <p><b>Estrategia visual:</b> una sola familia de tokens, dos modos. El color de marca vive dentro del tema; las superficies y el texto se leen del mismo origen en claro y en oscuro. Las superficies nunca son "slate" suelto: el texto se apoya en <code>--color-text-*</code> y las superficies en <code>--color-background-*</code>, así el par texto/fondo se puede auditar de a pares.</p>
+    <p><b>Ventaja:</b> es la única dirección que resuelve el defecto de raíz — el texto deja de heredarse y pasa a leerse del token, con la mitad oscura ya calculada. La marca sobrevive y el sistema sigue siendo Astryx.</p>
+    <p><b>Costo:</b> es la dirección másCara de implementar: hay que definir el tema (<code>defineTheme</code> sobre <code>neutral</code>), registrarlo con <code>npx astryx theme add verdu</code> y migrar las 13 pantallas del admin de utilidades sueltas a tokens.</p>
+  </div>
+</div>
+</body>
+</html>

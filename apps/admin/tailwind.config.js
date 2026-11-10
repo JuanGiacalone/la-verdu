@@ -4,6 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Neutrals remapped to the "Mercado fresco" surfaces (design/system.md).
+        slate: {
+          50: "#f4f7f4",
+          100: "#eef1ec",
+          200: "#e6ebe5",
+          300: "#e2e8f0",
+        },
         brand: {
           50: "#ecfdf5",
           100: "#d1fae5",

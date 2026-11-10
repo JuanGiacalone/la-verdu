@@ -24,14 +24,11 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-end justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Inicio</h1>
-          <p className="text-sm text-slate-500 mt-1">Todas las sucursales · hoy</p>
-        </div>
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-bold">Resumen de la jornada</h2>
         <Link
           to="/orders"
-          className="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-md font-semibold text-sm"
+          className="bg-brand-700 hover:bg-brand-900 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm"
         >
           + Nuevo pedido
         </Link>
@@ -56,16 +53,16 @@ export function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <section>
-          <h2 className="text-lg font-semibold mb-3">Agentes de impresión</h2>
-          <div className="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-sm">
+          <h2 className="text-lg font-bold mb-3">Agentes de impresión</h2>
+          <div className="bg-white border border-slate-300 rounded-xl overflow-hidden shadow-sm">
             <table className="w-full text-sm">
-              <thead className="bg-slate-100">
+              <thead className="bg-brand-50">
                 <tr>
-                  <th className="text-left p-3 font-semibold text-slate-700">Sucursal</th>
-                  <th className="text-left p-3 font-semibold text-slate-700">Versión</th>
-                  <th className="text-left p-3 font-semibold text-slate-700">Último visto</th>
-                  <th className="text-left p-3 font-semibold text-slate-700">Impresora</th>
-                  <th className="text-left p-3 font-semibold text-slate-700">Estado</th>
+                  <th className="text-left p-3 font-bold text-brand-900">Sucursal</th>
+                  <th className="text-left p-3 font-bold text-brand-900">Versión</th>
+                  <th className="text-left p-3 font-bold text-brand-900">Último visto</th>
+                  <th className="text-left p-3 font-bold text-brand-900">Impresora</th>
+                  <th className="text-left p-3 font-bold text-brand-900">Estado</th>
                 </tr>
               </thead>
               <tbody>
@@ -77,8 +74,8 @@ export function DashboardPage() {
                   </tr>
                 ) : (
                   ops.agents.map((a: AgentSession) => (
-                    <tr key={a.branchId} className="border-t border-slate-200 hover:bg-slate-50">
-                      <td className="p-3 font-medium">{a.branchId}</td>
+                    <tr key={a.branchId} className="border-t border-slate-200 hover:bg-brand-50/50">
+                      <td className="p-3 font-semibold">{a.branchId}</td>
                       <td className="p-3">{a.version ?? "—"}</td>
                       <td className="p-3">
                         {a.lastSeen ? new Date(a.lastSeen).toLocaleString() : "—"}
@@ -96,7 +93,7 @@ export function DashboardPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold mb-3">Alertas abiertas</h2>
+          <h2 className="text-lg font-bold mb-3">Alertas abiertas</h2>
           {ops.alerts.length === 0 ? (
             <p className="text-slate-500 text-sm">Sin alertas abiertas.</p>
           ) : (
@@ -104,12 +101,12 @@ export function DashboardPage() {
               {ops.alerts.map((a: Alert) => (
                 <div
                   key={a.id}
-                  className="bg-white border border-slate-300 rounded-lg p-3 flex gap-3 items-start shadow-sm"
+                  className="bg-white border border-slate-300 border-l-4 border-l-red-600 rounded-lg p-3 flex gap-3 items-start shadow-sm"
                 >
                   <span className="w-2 h-2 rounded-full bg-red-600 mt-2 shrink-0" />
                   <div>
-                    <div className="font-medium text-sm">{a.kind}</div>
-                    <div className="text-slate-500 text-xs mt-0.5">{a.message}</div>
+                    <div className="font-bold text-sm">{a.kind}</div>
+                    <div className="text-slate-600 text-xs mt-0.5">{a.message}</div>
                   </div>
                 </div>
               ))}
@@ -119,17 +116,17 @@ export function DashboardPage() {
       </div>
 
       <section>
-        <h2 className="text-lg font-semibold mb-3">Pedidos recientes</h2>
-        <div className="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-sm">
+        <h2 className="text-lg font-bold mb-3">Pedidos recientes</h2>
+        <div className="bg-white border border-slate-300 rounded-xl overflow-hidden shadow-sm">
           <table className="w-full text-sm">
-            <thead className="bg-slate-100">
+            <thead className="bg-brand-50">
               <tr>
-                <th className="text-left p-3 font-semibold text-slate-700">#</th>
-                <th className="text-left p-3 font-semibold text-slate-700">Cliente</th>
-                <th className="text-left p-3 font-semibold text-slate-700">Sucursal</th>
-                <th className="text-left p-3 font-semibold text-slate-700">Total</th>
-                <th className="text-left p-3 font-semibold text-slate-700">Estado</th>
-                <th className="text-left p-3 font-semibold text-slate-700">Hora</th>
+                <th className="text-left p-3 font-bold text-brand-900">#</th>
+                <th className="text-left p-3 font-bold text-brand-900">Cliente</th>
+                <th className="text-left p-3 font-bold text-brand-900">Sucursal</th>
+                <th className="text-left p-3 font-bold text-brand-900">Total</th>
+                <th className="text-left p-3 font-bold text-brand-900">Estado</th>
+                <th className="text-left p-3 font-bold text-brand-900">Hora</th>
               </tr>
             </thead>
             <tbody>
@@ -141,18 +138,18 @@ export function DashboardPage() {
                 </tr>
               ) : (
                 recent.map((o: Order) => (
-                  <tr key={o.id} className="border-t border-slate-200 hover:bg-slate-50">
+                  <tr key={o.id} className="border-t border-slate-200 hover:bg-brand-50/50">
                     <td className="p-3">{o.orderNumber}</td>
-                    <td className="p-3 font-medium">{o.customerId}</td>
+                    <td className="p-3 font-semibold">{o.customerId}</td>
                     <td className="p-3">{o.fulfillingBranchId ?? o.preferredBranchId ?? "—"}</td>
                     <td className="p-3">—</td>
                     <td className="p-3">
                       <span
-                        className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${
+                        className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold ${
                           o.status === "CONFIRMED"
                             ? "bg-brand-100 text-brand-700"
                             : o.status === "DRAFT"
-                              ? "bg-amber-100 text-amber-800"
+                              ? "bg-accent-50 text-accent-700"
                               : "bg-slate-200 text-slate-700"
                         }`}
                       >
@@ -192,11 +189,11 @@ function Kpi({
   deltaTone?: "brand" | "muted";
 }) {
   return (
-    <div className="bg-white border border-slate-300 rounded-lg p-4 shadow-sm">
-      <div className="text-sm text-slate-500 mb-1.5">{label}</div>
-      <div className="text-2xl font-bold">{value}</div>
+    <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-sm">
+      <div className="text-sm text-slate-600 mb-1.5">{label}</div>
+      <div className="text-2xl font-extrabold">{value}</div>
       <div
-        className={`text-xs mt-1 ${deltaTone === "brand" ? "text-brand-600" : "text-slate-500"}`}
+        className={`text-xs mt-1 font-semibold ${deltaTone === "brand" ? "text-brand-700" : "text-slate-500"}`}
       >
         {delta}
       </div>
@@ -210,13 +207,13 @@ function StatusBadge({ agent }: { agent: AgentSession }) {
     Date.now() - new Date(agent.lastSeen).getTime() > 24 * 60 * 60 * 1000;
   if (stale) {
     return (
-      <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+      <span className="inline-block px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
         desactualizado
       </span>
     );
   }
   return (
-    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-brand-100 text-brand-700">
+    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-bold bg-brand-100 text-brand-700">
       ok
     </span>
   );

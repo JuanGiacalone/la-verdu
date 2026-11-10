@@ -64,7 +64,6 @@ export function ConversationsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Conversaciones</h1>
       {error && <div className="text-red-600">{error}</div>}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white border rounded overflow-y-auto max-h-[70vh]">
@@ -112,7 +111,7 @@ export function ConversationsPage() {
                   <button
                     type="button"
                     onClick={handleResolve}
-                    className="text-xs px-2 py-1 rounded-md bg-brand-600 text-white hover:bg-brand-700 font-medium"
+                    className="text-xs px-2 py-1 rounded-md bg-brand-700 hover:bg-brand-900 text-white font-medium"
                   >
                     Resolver
                   </button>
@@ -136,7 +135,10 @@ export function ConversationsPage() {
                   onChange={(e) => setReply(e.target.value)}
                   placeholder="Responder en nombre del personal"
                 />
-                <button type="submit" className="bg-brand-600 text-white rounded px-4 py-2">
+                <button
+                  type="submit"
+                  className="bg-brand-700 hover:bg-brand-900 text-white rounded px-4 py-2"
+                >
                   Enviar
                 </button>
               </form>

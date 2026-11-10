@@ -3,173 +3,210 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>La Verdu Admin — Design System</title>
+<title>La Verdu Admin — Design system</title>
 <style>
-  :root {
-    --brand-50: #ecfdf5; --brand-100: #d1fae5; --brand-500: #10b981; --brand-600: #059669; --brand-700: #047857; --brand-900: #064e3b;
-    --accent-50: #fff7ed; --accent-100: #ffedd5; --accent-500: #f97316; --accent-600: #ea580c; --accent-700: #c2410c;
-    --highlight-100: #fef9c3; --highlight-400: #facc15; --highlight-500: #eab308;
-    --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-300: #cbd5e1; --slate-400: #94a3b8; --slate-500: #64748b; --slate-700: #334155; --slate-800: #1e293b; --slate-900: #0f172a;
-    --red-600: #dc2626; --amber-100: #fef3c7; --amber-800: #92400e; --white: #ffffff;
+  /* Astryx neutral tokens (light | dark) — source: @astryxdesign/theme-neutral/dist/theme.css */
+  :root{
+    --background-body:#f1f1f1; --background-card:#ffffff; --background-surface:#ffffff; --background-muted:#f1f1f1; --background-popover:#ffffff;
+    --text-primary:#000000; --text-secondary:#474747; --text-disabled:#919191; --text-accent:#1b1b1b;
+    --text-error:#c0262c; --text-success:#2f7d33; --text-warning:#836700; --text-info:#0067ce;
+    --border:#00000014; --border-emphasized:#d4d4d4;
+    --icon-primary:#000000; --icon-secondary:#6a6a6a;
+    --accent:#1b1b1b; --on-accent:#ffffff;
+    /* radius, shadow, motion */
+    --radius-inner:.375rem; --radius-element:.625rem; --radius-container:.75rem; --radius-page:1.75rem; --radius-full:9999px;
+    --shadow-low:0 2px 4px rgba(0,0,0,.05),0 4px 8px rgba(0,0,0,.10),inset 0 0 0 1px rgba(255,255,255,.08);
+    --shadow-med:0 2px 4px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.10),inset 0 0 0 1px rgba(255,255,255,.12);
+    --duration-fast:125ms; --duration-medium:300ms;
+    /* legacy brand — source: apps/admin/tailwind.config.js */
+    --brand-50:#ecfdf5; --brand-100:#d1fae5; --brand-500:#10b981; --brand-600:#059669; --brand-700:#047857; --brand-900:#064e3b;
+    --accent-brand-50:#fff7ed; --accent-brand-100:#ffedd5; --accent-brand-500:#f97316; --accent-brand-600:#ea580c; --accent-brand-700:#c2410c;
+    --highlight-100:#fef9c3; --highlight-400:#facc15; --highlight-500:#eab308;
+    --slate-50:#f8fafc; --slate-100:#f1f5f9; --slate-300:#cbd5e1; --slate-500:#64748b; --slate-700:#334155; --slate-900:#0f172a;
   }
-  * { box-sizing: border-box; }
-  body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: var(--slate-50); color: var(--slate-900); -webkit-font-smoothing: antialiased; }
-  .wrap { max-width: 1440px; margin: 0 auto; padding: 48px 64px; }
-  h1 { font-size: 32px; font-weight: 700; margin: 0 0 8px; }
-  h2 { font-size: 20px; font-weight: 600; margin: 40px 0 16px; border-bottom: 1px solid var(--slate-300); padding-bottom: 8px; }
-  h3 { font-size: 14px; font-weight: 600; margin: 16px 0 8px; color: var(--slate-500); text-transform: uppercase; letter-spacing: .04em; }
-  .lede { color: var(--slate-500); margin: 0 0 32px; font-size: 15px; }
-  .grid { display: grid; gap: 16px; }
-  .swatches { grid-template-columns: repeat(6, 1fr); }
-  .swatch { border: 1px solid var(--slate-300); border-radius: 8px; overflow: hidden; background: var(--white); }
-  .swatch .chip { height: 64px; }
-  .swatch .meta { padding: 8px 10px; font-size: 12px; }
-  .swatch .name { font-weight: 600; }
-  .swatch .val { color: var(--slate-500); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; }
-  .type-row { display: flex; align-items: baseline; gap: 24px; padding: 12px 0; border-bottom: 1px solid var(--slate-100); }
-  .type-row .label { width: 120px; font-size: 12px; color: var(--slate-500); font-family: ui-monospace, monospace; }
-  .spacing-row { display: flex; align-items: center; gap: 16px; padding: 6px 0; }
-  .spacing-bar { background: var(--brand-500); height: 8px; border-radius: 2px; }
-  .radius-demo { display: flex; gap: 16px; }
-  .radius-box { width: 64px; height: 64px; background: var(--brand-100); border: 1px solid var(--brand-500); }
-  .shadow-demo { display: flex; gap: 24px; }
-  .shadow-card { width: 160px; height: 96px; background: var(--white); border: 1px solid var(--slate-300); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--slate-500); }
-  .shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
-  .components { display: grid; grid-template-columns: 260px 1fr; gap: 32px; }
-  .sidebar { background: var(--slate-900); color: var(--slate-100); border-radius: 8px; overflow: hidden; }
-  .sidebar .brand { padding: 20px 16px; font-size: 18px; font-weight: 700; border-bottom: 1px solid var(--slate-700); }
-  .sidebar nav a { display: block; padding: 8px 16px; font-size: 14px; color: var(--slate-300); text-decoration: none; }
-  .sidebar nav a.active { background: var(--slate-800); color: #fff; font-weight: 600; border-left: 3px solid var(--brand-500); }
-  .sidebar nav a:hover { background: var(--slate-800); }
-  .sidebar .foot { padding: 12px 16px; border-top: 1px solid var(--slate-700); font-size: 12px; color: var(--slate-400); }
-  .card { background: var(--white); border: 1px solid var(--slate-300); border-radius: 8px; padding: 16px; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
-  .card .label { font-size: 14px; color: var(--slate-500); }
-  .card .value { font-size: 24px; font-weight: 700; }
-  .btn-primary { background: var(--brand-600); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; }
-  .btn-primary:hover { background: var(--brand-700); }
-  .btn-accent { background: var(--accent-600); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; }
-  .input { border: 1px solid var(--slate-300); border-radius: 4px; padding: 8px 10px; font-size: 14px; width: 240px; }
-  .table { width: 100%; border-collapse: collapse; background: var(--white); border: 1px solid var(--slate-300); border-radius: 8px; overflow: hidden; font-size: 14px; }
-  .table th { text-align: left; padding: 8px; background: var(--slate-100); font-weight: 600; }
-  .table td { padding: 8px; border-top: 1px solid var(--slate-300); }
-  .alert { background: var(--white); border: 1px solid var(--slate-300); border-radius: 4px; padding: 12px; font-size: 14px; }
-  .alert .kind { font-weight: 600; }
-  .empty { color: var(--slate-500); font-size: 14px; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
-  .badge.ok { background: var(--brand-100); color: var(--brand-700); }
-  .badge.warn { background: var(--amber-100); color: var(--amber-800); }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--background-body);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+  .page{width:1440px;margin:0 auto;padding:32px 40px 48px}
+  h1{font-size:26px;font-weight:700;letter-spacing:-.01em}
+  h2{font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary);margin:36px 0 14px}
+  .lead{color:var(--text-secondary);font-size:14px;margin-top:6px;max-width:80ch}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .panel{background:var(--background-card);border:1px solid var(--border-emphasized);border-radius:var(--radius-container);padding:18px;box-shadow:var(--shadow-low)}
+  .panel h3{font-size:13px;font-weight:700;color:var(--text-secondary);margin-bottom:12px;letter-spacing:.03em;text-transform:uppercase}
+  .swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .sw{border:1px solid var(--border-emphasized);border-radius:var(--radius-element);overflow:hidden;background:var(--background-card)}
+  .sw .chip{height:46px}
+  .sw .meta{padding:8px 10px;font-size:11px;line-height:1.45}
+  .sw .meta b{display:block;font-size:12px;font-weight:700}
+  .sw .meta code{font-family:ui-monospace,"SF Mono",Monaco,Consolas,monospace;color:var(--text-secondary);font-size:10.5px}
+  table{width:100%;border-collapse:collapse;font-size:13px;background:var(--background-card)}
+  th{text-align:left;padding:9px 12px;background:var(--background-muted);font-weight:700;color:var(--text-secondary);border-bottom:1px solid var(--border-emphasized)}
+  td{padding:9px 12px;border-bottom:1px solid var(--border)}
+  .type-row{display:flex;align-items:baseline;gap:16px;padding:9px 0;border-bottom:1px solid var(--border)}
+  .type-row:last-child{border-bottom:0}
+  .type-row .spec{width:170px;flex:none;font-family:ui-monospace,"SF Mono",Monaco,Consolas,monospace;font-size:11px;color:var(--text-secondary)}
+  .space{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
+  .space .bar{background:var(--accent);height:20px;border-radius:3px}
+  .r{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .r .box{width:64px;height:44px;background:var(--background-muted);border:1px solid var(--border-emphasized)}
+  .r .box span{font-size:10px;color:var(--text-secondary);display:block;text-align:center;margin-top:4px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;font:inherit;font-weight:600;font-size:14px;padding:10px 16px;border-radius:var(--radius-element);background:var(--accent);color:var(--on-accent)}
+  .btn.ghost{background:transparent;color:var(--text-primary);box-shadow:inset 0 0 0 1px var(--border-emphasized)}
+  .btn.brand{background:var(--brand-600);color:#fff}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:var(--radius-full);background:var(--background-muted);color:var(--text-secondary)}
+  .badge.ok{background:var(--brand-100);color:var(--brand-700)}
+  .badge.err{background:#fdecec;color:var(--text-error)}
+  .badge.warn{background:#fdf3d3;color:var(--text-warning)}
+  input{font:inherit;font-size:14px;padding:10px 12px;border-radius:var(--radius-element);border:1px solid var(--border-emphasized);background:var(--background-card);color:var(--text-primary);width:100%}
+  input:focus{outline:2px solid var(--accent);outline-offset:2px;border-color:var(--accent)}
+  .kv{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+  .kv:last-child{border-bottom:0}
+  .kv span:first-child{color:var(--text-secondary)}
+  .note{font-size:12.5px;color:var(--text-secondary);margin-top:10px}
+  .shadow-row{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .shadow-row div{width:110px;height:64px;background:var(--background-card);border-radius:var(--radius-container);display:grid;place-items:center;font-size:11px;color:var(--text-secondary)}
+  :focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:4px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>La Verdu Admin — Design System</h1>
-  <p class="lede">Paleta "Mercado fresco": menta (brand), zanahoria (accent), maíz (highlight). Tokens de <code>apps/admin/tailwind.config.js</code> y <code>apps/admin/src/index.css</code>.</p>
+<div class="page">
+  <h1>La Verdu Admin — Design system</h1>
+  <p class="lead">Tokens read from the Astryx <code>neutral</code> theme, the Tailwind v3 config and the admin global stylesheet. Astryx is the system of record; the "Mercado fresco" brand palette is the legacy layer that still has to be reconciled with it.</p>
 
-  <h2>Colors — Brand (menta)</h2>
-  <div class="grid swatches">
-    <div class="swatch"><div class="chip" style="background:var(--brand-50)"></div><div class="meta"><div class="name">brand-50</div><div class="val">#ecfdf5</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--brand-100)"></div><div class="meta"><div class="name">brand-100</div><div class="val">#d1fae5</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--brand-500)"></div><div class="meta"><div class="name">brand-500</div><div class="val">#10b981</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--brand-600)"></div><div class="meta"><div class="name">brand-600</div><div class="val">#059669</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--brand-700)"></div><div class="meta"><div class="name">brand-700</div><div class="val">#047857</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--brand-900)"></div><div class="meta"><div class="name">brand-900</div><div class="val">#064e3b</div></div></div>
+  <h2>Color — Astryx semantic tokens (light)</h2>
+  <div class="grid g4">
+    <div class="sw"><div class="chip" style="background:var(--background-body);border-bottom:1px solid var(--border-emphasized)"></div><div class="meta"><b>background-body</b><code>#f1f1f1</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--background-card);border-bottom:1px solid var(--border-emphasized)"></div><div class="meta"><b>background-card</b><code>#ffffff</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--background-muted);border-bottom:1px solid var(--border-emphasized)"></div><div class="meta"><b>background-muted</b><code>#f1f1f1</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--accent)"></div><div class="meta"><b>accent</b><code>#1b1b1b</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--text-primary)"></div><div class="meta"><b>text-primary</b><code>#000000</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--text-secondary)"></div><div class="meta"><b>text-secondary</b><code>#474747</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--text-disabled)"></div><div class="meta"><b>text-disabled</b><code>#919191</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--border-emphasized)"></div><div class="meta"><b>border-emphasized</b><code>#d4d4d4</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--text-error)"></div><div class="meta"><b>text-error</b><code>#c0262c</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--text-success)"></div><div class="meta"><b>text-success</b><code>#2f7d33</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--text-warning)"></div><div class="meta"><b>text-warning</b><code>#836700</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--text-info)"></div><div class="meta"><b>text-info</b><code>#0067ce</code></div></div>
+  </div>
+  <p class="note">Every one of these is a <code>light-dark()</code> pair. The same token resolves to its dark half as soon as <code>data-theme="dark"</code> reaches <code>&lt;html&gt;</code>, so the light and dark columns below are the same token, not two palettes.</p>
+
+  <h2>Color — same tokens, dark mode</h2>
+  <div class="panel" style="background:#1b1b1b;border-color:#525252;color:#fff">
+    <h3 style="color:#9e9e9e">dark values</h3>
+    <div class="grid g4">
+      <div class="sw" style="border-color:#525252;background:#1b1b1b"><div class="chip" style="background:#111112"></div><div class="meta" style="color:#9e9e9e"><b style="color:#fff">background-body</b><code>#1b1b1b</code></div></div>
+      <div class="sw" style="border-color:#525252;background:#262626"><div class="chip" style="background:#262626"></div><div class="meta" style="color:#9e9e9e"><b style="color:#fff">background-surface</b><code>#262626</code></div></div>
+      <div class="sw" style="border-color:#525252;background:#1b1b1b"><div class="chip" style="background:#ffffff"></div><div class="meta" style="color:#9e9e9e"><b style="color:#fff">text-primary</b><code>#ffffff</code></div></div>
+      <div class="sw" style="border-color:#525252;background:#1b1b1b"><div class="chip" style="background:#9e9e9e"></div><div class="meta" style="color:#9e9e9e"><b style="color:#fff">text-secondary</b><code>#9e9e9e</code></div></div>
+      <div class="sw" style="border-color:#525252;background:#1b1b1b"><div class="chip" style="background:#f1f1f1"></div><div class="meta" style="color:#9e9e9e"><b style="color:#fff">accent</b><code>#f1f1f1</code></div></div>
+      <div class="sw" style="border-color:#525252;background:#1b1b1b"><div class="chip" style="background:#ffaea7"></div><div class="meta" style="color:#9e9e9e"><b style="color:#fff">text-error</b><code>#ffaea7</code></div></div>
+      <div class="sw" style="border-color:#525252;background:#1b1b1b"><div class="chip" style="background:#eec448"></div><div class="meta" style="color:#9e9e9e"><b style="color:#fff">text-warning</b><code>#eec448</code></div></div>
+      <div class="sw" style="border-color:#525252;background:#1b1b1b"><div class="chip" style="background:#525252"></div><div class="meta" style="color:#9e9e9e"><b style="color:#fff">border-emphasized</b><code>#525252</code></div></div>
+    </div>
+    <p class="note" style="color:#9e9e9e">The installed <code>neutral</code> theme is achromatic: its accent is near-black, so it carries no brand hue at all.</p>
   </div>
 
-  <h2>Colors — Accent (zanahoria)</h2>
-  <div class="grid swatches">
-    <div class="swatch"><div class="chip" style="background:var(--accent-50)"></div><div class="meta"><div class="name">accent-50</div><div class="val">#fff7ed</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--accent-100)"></div><div class="meta"><div class="name">accent-100</div><div class="val">#ffedd5</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--accent-500)"></div><div class="meta"><div class="name">accent-500</div><div class="val">#f97316</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--accent-600)"></div><div class="meta"><div class="name">accent-600</div><div class="val">#ea580c</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--accent-700)"></div><div class="meta"><div class="name">accent-700</div><div class="val">#c2410c</div></div></div>
-  </div>
-
-  <h2>Colors — Highlight (maíz)</h2>
-  <div class="grid swatches">
-    <div class="swatch"><div class="chip" style="background:var(--highlight-100)"></div><div class="meta"><div class="name">highlight-100</div><div class="val">#fef9c3</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--highlight-400)"></div><div class="meta"><div class="name">highlight-400</div><div class="val">#facc15</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--highlight-500)"></div><div class="meta"><div class="name">highlight-500</div><div class="val">#eab308</div></div></div>
-  </div>
-
-  <h2>Colors — Neutrals (slate)</h2>
-  <div class="grid swatches">
-    <div class="swatch"><div class="chip" style="background:var(--slate-50)"></div><div class="meta"><div class="name">slate-50</div><div class="val">#f8fafc</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--slate-100)"></div><div class="meta"><div class="name">slate-100</div><div class="val">#f1f5f9</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--slate-300)"></div><div class="meta"><div class="name">slate-300</div><div class="val">#cbd5e1</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--slate-400)"></div><div class="meta"><div class="name">slate-400</div><div class="val">#94a3b8</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--slate-500)"></div><div class="meta"><div class="name">slate-500</div><div class="val">#64748b</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--slate-700)"></div><div class="meta"><div class="name">slate-700</div><div class="val">#334155</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--slate-800)"></div><div class="meta"><div class="name">slate-800</div><div class="val">#1e293b</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--slate-900)"></div><div class="meta"><div class="name">slate-900</div><div class="val">#0f172a</div></div></div>
-  </div>
-
-  <h2>Colors — Status</h2>
-  <div class="grid swatches">
-    <div class="swatch"><div class="chip" style="background:var(--red-600)"></div><div class="meta"><div class="name">red-600 (tomate)</div><div class="val">#dc2626</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--amber-100)"></div><div class="meta"><div class="name">amber-100</div><div class="val">#fef3c7</div></div></div>
-    <div class="swatch"><div class="chip" style="background:var(--white);border-bottom:1px solid var(--slate-300)"></div><div class="meta"><div class="name">white</div><div class="val">#ffffff</div></div></div>
+  <h2>Color — legacy brand palette</h2>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:var(--brand-50)"></div><div class="meta"><b>brand-50</b><code>#ecfdf5</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--brand-100)"></div><div class="meta"><b>brand-100</b><code>#d1fae5</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--brand-500)"></div><div class="meta"><b>brand-500</b><code>#10b981</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--brand-600)"></div><div class="meta"><b>brand-600</b><code>#059669</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--brand-700)"></div><div class="meta"><b>brand-700</b><code>#047857</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--brand-900)"></div><div class="meta"><b>brand-900</b><code>#064e3b</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--accent-brand-500)"></div><div class="meta"><b>accent-500</b><code>#f97316</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--accent-brand-600)"></div><div class="meta"><b>accent-600</b><code>#ea580c</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--highlight-100)"></div><div class="meta"><b>highlight-100</b><code>#fef9c3</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--highlight-400)"></div><div class="meta"><b>highlight-400</b><code>#facc15</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--slate-100)"></div><div class="meta"><b>slate-100</b><code>#f1f5f9</code></div></div>
+    <div class="sw"><div class="chip" style="background:var(--slate-900)"></div><div class="meta"><b>slate-900</b><code>#0f172a</code></div></div>
   </div>
 
   <h2>Typography</h2>
-  <div class="type-row"><span class="label">text-xs 12</span><span style="font-size:12px">El asistente atiende por WhatsApp</span></div>
-  <div class="type-row"><span class="label">text-sm 14</span><span style="font-size:14px">El asistente atiende por WhatsApp</span></div>
-  <div class="type-row"><span class="label">text-base 16</span><span style="font-size:16px">El asistente atiende por WhatsApp</span></div>
-  <div class="type-row"><span class="label">text-lg 18</span><span style="font-size:18px;font-weight:600">El asistente atiende por WhatsApp</span></div>
-  <div class="type-row"><span class="label">text-2xl 24</span><span style="font-size:24px;font-weight:700">El asistente atiende por WhatsApp</span></div>
+  <div class="panel">
+    <div class="type-row"><span class="spec">display-1 / 40px</span><span style="font-size:40px;font-weight:700;letter-spacing:-.02em">Pedidos de hoy</span></div>
+    <div class="type-row"><span class="spec">heading-1 / 24px</span><span style="font-size:24px;font-weight:700">Sucursal Centro</span></div>
+    <div class="type-row"><span class="spec">heading-2 / 18px</span><span style="font-size:18px;font-weight:600">Agentes de impresión</span></div>
+    <div class="type-row"><span class="spec">body / 14px</span><span style="font-size:14px">María G. · 3 productos · $ 4.820</span></div>
+    <div class="type-row"><span class="spec">secondary / 13px</span><span style="font-size:13px;color:var(--text-secondary)">Actualizado hace 4 minutos</span></div>
+    <div class="type-row"><span class="spec">code / 12px</span><code style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px">EPSON TM-T20 · 1.2.0</code></div>
+  </div>
+  <p class="note">The theme sets <code>--font-family-body</code> to Figtree. Artboards on this board use the system stack only; the app loads Figtree from <code>@astryxdesign/theme-neutral/fonts.css</code> and from <code>index.html</code>.</p>
 
-  <h2>Spacing (4px base)</h2>
-  <div class="spacing-row"><span class="label" style="width:80px;font-size:12px;color:var(--slate-500);font-family:ui-monospace,monospace">p-2 · 8</span><div class="spacing-bar" style="width:8px"></div></div>
-  <div class="spacing-row"><span class="label" style="width:80px;font-size:12px;color:var(--slate-500);font-family:ui-monospace,monospace">p-3 · 12</span><div class="spacing-bar" style="width:12px"></div></div>
-  <div class="spacing-row"><span class="label" style="width:80px;font-size:12px;color:var(--slate-500);font-family:ui-monospace,monospace">p-4 · 16</span><div class="spacing-bar" style="width:16px"></div></div>
-  <div class="spacing-row"><span class="label" style="width:80px;font-size:12px;color:var(--slate-500);font-family:ui-monospace,monospace">p-6 · 24</span><div class="spacing-bar" style="width:24px"></div></div>
-
-  <h2>Radius</h2>
-  <div class="radius-demo">
-    <div><div class="radius-box" style="border-radius:4px"></div><div style="font-size:12px;margin-top:6px;color:var(--slate-500)">rounded · 4px</div></div>
-    <div><div class="radius-box" style="border-radius:8px"></div><div style="font-size:12px;margin-top:6px;color:var(--slate-500)">rounded-lg · 8px</div></div>
+  <h2>Spacing &amp; radius</h2>
+  <div class="grid g2">
+    <div class="panel"><h3>spacing scale</h3>
+      <div class="space">
+        <div><div class="bar" style="width:4px"></div><div style="font-size:10px;color:var(--text-secondary);margin-top:4px">1</div></div>
+        <div><div class="bar" style="width:8px"></div><div style="font-size:10px;color:var(--text-secondary);margin-top:4px">2</div></div>
+        <div><div class="bar" style="width:12px"></div><div style="font-size:10px;color:var(--text-secondary);margin-top:4px">3</div></div>
+        <div><div class="bar" style="width:16px"></div><div style="font-size:10px;color:var(--text-secondary);margin-top:4px">4</div></div>
+        <div><div class="bar" style="width:24px"></div><div style="font-size:10px;color:var(--text-secondary);margin-top:4px">6</div></div>
+        <div><div class="bar" style="width:32px"></div><div style="font-size:10px;color:var(--text-secondary);margin-top:4px">8</div></div>
+        <div><div class="bar" style="width:48px"></div><div style="font-size:10px;color:var(--text-secondary);margin-top:4px">12</div></div>
+      </div>
+    </div>
+    <div class="panel"><h3>radius</h3>
+      <div class="r">
+        <div><div class="box" style="border-radius:6px"></div><span>inner .375</span></div>
+        <div><div class="box" style="border-radius:10px"></div><span>element .625</span></div>
+        <div><div class="box" style="border-radius:12px"></div><span>container .75</span></div>
+        <div><div class="box" style="border-radius:28px"></div><span>page 1.75</span></div>
+        <div><div class="box" style="border-radius:9999px"></div><span>full</span></div>
+      </div>
+    </div>
   </div>
 
-  <h2>Shadows</h2>
-  <div class="shadow-demo">
-    <div class="shadow-card shadow-sm">shadow-sm</div>
-    <div class="shadow-card" style="box-shadow:none">none</div>
+  <h2>Elevation</h2>
+  <div class="panel"><div class="shadow-row">
+    <div style="box-shadow:var(--shadow-low)">shadow-low</div>
+    <div style="box-shadow:var(--shadow-med)">shadow-med</div>
+    <div style="box-shadow:0 4px 6px rgba(0,0,0,.10),0 12px 24px rgba(0,0,0,.15)">shadow-high</div>
+  </div></div>
+
+  <h2>Core components</h2>
+  <div class="grid g3">
+    <div class="panel">
+      <h3>buttons</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+        <button class="btn">+ Nuevo pedido</button>
+        <button class="btn ghost">Exportar</button>
+        <button class="btn brand">+ Nuevo pedido (marca)</button>
+        <button class="btn" disabled>Guardando…</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>status</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+        <span class="badge ok">ok</span>
+        <span class="badge warn">desactualizado</span>
+        <span class="badge err">error de impresión</span>
+        <span class="badge">borrador</span>
+      </div>
+      <p class="note">Status is never color-only: every badge carries a readable label.</p>
+    </div>
+    <div class="panel">
+      <h3>input</h3>
+      <input placeholder="Buscar producto" aria-label="Buscar producto" />
+      <p class="note">Focus keeps a visible 2px outline and never relies on color change alone.</p>
+    </div>
   </div>
 
-  <h2>Components</h2>
-  <div class="components">
-    <div class="sidebar">
-      <div class="brand">La Verdu · Administración</div>
-      <nav>
-        <a class="active" href="#">Inicio</a>
-        <a href="#">Catálogo</a>
-        <a href="#">Sucursales</a>
-        <a href="#">Pedidos</a>
-      </nav>
-      <div class="foot">dueño · owner<br/><span style="color:var(--slate-300)">Cerrar sesión</span></div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:16px">
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
-        <div class="card"><div class="label">Pedidos hoy</div><div class="value">12</div></div>
-        <div class="card"><div class="label">Pedidos mes</div><div class="value">284</div></div>
-        <div class="card"><div class="label">En cola</div><div class="value">2</div></div>
-        <div class="card"><div class="label">Borradores</div><div class="value">1</div></div>
-      </div>
-      <table class="table">
-        <thead><tr><th>Sucursal</th><th>Versión</th><th>Último visto</th><th>Estado</th></tr></thead>
-        <tbody>
-          <tr><td>Centro</td><td>1.2.0</td><td>hoy 10:24</td><td><span class="badge ok">ok</span></td></tr>
-          <tr><td>Norte</td><td>1.2.0</td><td>hoy 09:11</td><td><span class="badge ok">ok</span></td></tr>
-          <tr><td>Sur</td><td>1.1.8</td><td>ayer 18:40</td><td><span class="badge warn">desactualizado</span></td></tr>
-        </tbody>
-      </table>
-      <div style="display:flex;gap:12px;align-items:center">
-        <input class="input" placeholder="Nombre del negocio" />
-        <button class="btn-primary">Guardar</button>
-        <button class="btn-accent">Acción</button>
-      </div>
-      <div class="alert"><span class="kind" style="color:var(--accent-600)">Stock bajo</span> — Tomate sin disponibilidad en Centro</div>
-    </div>
+  <h2>Data</h2>
+  <div class="panel" style="padding:0;overflow:hidden">
+    <table>
+      <thead><tr><th>Sucursal</th><th>Versión</th><th>Último visto</th><th>Impresora</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>Centro</td><td>1.2.0</td><td>hoy 10:24</td><td>EPSON TM-T20</td><td><span class="badge ok">ok</span></td></tr>
+        <tr><td>Norte</td><td>1.2.0</td><td>hoy 09:11</td><td>EPSON TM-T20</td><td><span class="badge ok">ok</span></td></tr>
+        <tr><td>Sur</td><td>1.1.8</td><td>ayer 18:40</td><td>—</td><td><span class="badge warn">desactualizado</span></td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
 </body>

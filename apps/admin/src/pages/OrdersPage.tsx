@@ -71,7 +71,6 @@ export function OrdersPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Pedidos</h1>
       {error && <div className="text-red-600">{error}</div>}
       {summary && (
         <div className="flex gap-4 text-sm">

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — Dirección 1: Astryx neutral</title>
+<style>
+  /* Tokens: @astryxdesign/theme-neutral (light half) — the design system as installed */
+  :root{
+    --background-body:#f1f1f1; --background-card:#ffffff; --background-muted:#f1f1f1;
+    --text-primary:#000000; --text-secondary:#474747; --text-disabled:#919191;
+    --border:#00000014; --border-emphasized:#d4d4d4;
+    --accent:#1b1b1b; --on-accent:#ffffff;
+    --text-error:#c0262c; --text-success:#2f7d33; --text-warning:#836700; --text-info:#0067ce;
+    --radius-element:.625rem; --radius-container:.75rem; --radius-full:9999px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--background-body);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+  .app{display:flex;min-height:100vh}
+  .sidebar{width:240px;background:#1b1b1b;color:#ffffff;display:flex;flex-direction:column;flex-shrink:0}
+  .sidebar .brand{padding:20px 16px;font-size:17px;font-weight:700;border-bottom:1px solid #333333;display:flex;align-items:center;gap:10px}
+  .sidebar .brand .mark{width:28px;height:28px;border-radius:6px;background:#ffffff;color:#1b1b1b;display:grid;place-items:center;font-weight:800;font-size:14px}
+  .sidebar nav{flex:1;overflow-y:auto;padding:8px 0}
+  .sidebar nav a{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:14px;color:#b5b5b5;text-decoration:none;border-left:3px solid transparent}
+  .sidebar nav a.active{background:#333333;color:#ffffff;font-weight:600;border-left-color:#ffffff}
+  .sidebar nav a:hover{background:#333333;color:#ffffff}
+  .sidebar .foot{padding:14px 16px;border-top:1px solid #333333;font-size:12px}
+  .sidebar .foot .user{color:#e6e6e6;font-weight:600}
+  .sidebar .foot .role{color:#919191}
+  .sidebar .foot button{margin-top:10px;background:none;border:1px solid #333333;color:#b5b5b5;font-size:12px;cursor:pointer;padding:6px 8px;border-radius:6px;width:100%;text-align:left}
+  .main{flex:1;overflow-y-auto}
+  .main .container{max-width:1200px;margin:0 auto;padding:28px 32px}
+  .pagehead{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+  .pagehead h1{font-size:24px;font-weight:700;letter-spacing:-.01em}
+  .pagehead .sub{color:var(--text-secondary);font-size:14px;margin-top:2px}
+  .btn-primary{background:var(--accent);color:var(--on-accent);border:none;padding:9px 16px;border-radius:var(--radius-element);font-weight:600;font-size:14px;cursor:pointer}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+  .card{background:var(--background-card);border:1px solid var(--border-emphasized);border-radius:var(--radius-container);padding:16px}
+  .card .label{font-size:13px;color:var(--text-secondary);margin-bottom:6px}
+  .card .value{font-size:26px;font-weight:700}
+  .card .delta{font-size:12px;color:var(--text-secondary);margin-top:4px}
+  .grid2{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+  section{margin-bottom:24px}
+  section h2{font-size:17px;font-weight:600;margin-bottom:12px}
+  .table{width:100%;border-collapse:collapse;background:var(--background-card);border:1px solid var(--border-emphasized);border-radius:var(--radius-container);overflow:hidden;font-size:14px}
+  .table th{text-align:left;padding:10px 12px;background:var(--background-muted);font-weight:600;color:var(--text-secondary)}
+  .table td{padding:10px 12px;border-top:1px solid var(--border)}
+  .badge{display:inline-block;padding:2px 8px;border-radius:var(--radius-full);font-size:11px;font-weight:600}
+  .badge.ok{background:#e8f5e9;color:var(--text-success)}
+  .badge.warn{background:#fdf3d3;color:var(--text-warning)}
+  .alert{background:var(--background-card);border:1px solid var(--border-emphasized);border-radius:var(--radius-container);padding:12px;display:flex;gap:12px;align-items:flex-start}
+  .alert + .alert{margin-top:8px}
+  .alert .dot{width:8px;height:8px;border-radius:50%;background:var(--text-error);margin-top:6px;flex-shrink:0}
+  .alert .kind{font-weight:600;font-size:14px}
+  .alert .msg{color:var(--text-secondary);font-size:13px;margin-top:2px}
+  /* legend */
+  .legend{margin:0 32px 32px;background:var(--background-card);border:1px solid var(--border-emphasized);border-radius:var(--radius-container);padding:18px 20px}
+  .legend h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);margin-bottom:12px}
+  .legend .row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .chip{border:1px solid var(--border-emphasized);border-radius:8px;overflow:hidden;width:132px}
+  .chip i{display:block;height:34px}
+  .chip span{display:block;font-size:10.5px;padding:6px 8px;color:var(--text-secondary);font-family:ui-monospace,Menlo,Consolas,monospace}
+  .legend p{font-size:12.5px;color:var(--text-secondary);max-width:110ch;margin-top:6px}
+  :focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:4px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><span class="mark">LV</span> La Verdu · Administración</div>
+    <nav>
+      <a class="active" href="#">Inicio</a>
+      <a href="#">Catálogo</a>
+      <a href="#">Sucursales</a>
+      <a href="#">Personal</a>
+      <a href="#">Pedidos</a>
+      <a href="#">Disponibilidad y precios</a>
+      <a href="#">Conversaciones</a>
+      <a href="#">Clientes</a>
+      <a href="#">Impresión</a>
+      <a href="#">Alertas</a>
+      <a href="#">Auditoría</a>
+      <a href="#">Configuración técnica</a>
+    </nav>
+    <div class="foot">
+      <div class="user">dueño</div>
+      <div class="role">owner</div>
+      <button>Cerrar sesión</button>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="container">
+      <div class="pagehead">
+        <div>
+          <h1>Inicio</h1>
+          <div class="sub">Sucursal Centro · hoy, 24 de octubre</div>
+        </div>
+        <button class="btn-primary">+ Nuevo pedido</button>
+      </div>
+      <div class="kpis">
+        <div class="card"><div class="label">Pedidos hoy</div><div class="value">12</div><div class="delta">+3 vs ayer</div></div>
+        <div class="card"><div class="label">Pedidos del mes</div><div class="value">284</div><div class="delta">+12% vs mes anterior</div></div>
+        <div class="card"><div class="label">Impresión en cola</div><div class="value">2</div><div class="delta">1 fallido</div></div>
+        <div class="card"><div class="label">Borradores</div><div class="value">1</div><div class="delta">pendiente de confirmar</div></div>
+      </div>
+      <div class="grid2">
+        <section>
+          <h2>Agentes de impresión</h2>
+          <table class="table">
+            <thead><tr><th>Sucursal</th><th>Versión</th><th>Último visto</th><th>Impresora</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td>Centro</td><td>1.2.0</td><td>hoy 10:24</td><td>EPSON TM-T20</td><td><span class="badge ok">ok</span></td></tr>
+              <tr><td>Norte</td><td>1.2.0</td><td>hoy 09:11</td><td>EPSON TM-T20</td><td><span class="badge ok">ok</span></td></tr>
+              <tr><td>Sur</td><td>1.1.8</td><td>ayer 18:40</td><td>—</td><td><span class="badge warn">desactualizado</span></td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
+          <h2>Alertas abiertas</h2>
+          <div class="alert"><span class="dot"></span><div><div class="kind">Stock bajo</div><div class="msg">Tomate sin disponibilidad en Centro</div></div></div>
+          <div class="alert"><span class="dot" style="background:var(--text-info)"></span><div><div class="kind">Precio de referencia</div><div class="msg">Palta Hass actualizada en 3 sucursales</div></div></div>
+        </section>
+      </div>
+      <section>
+        <h2>Pedidos recientes</h2>
+        <table class="table">
+          <thead><tr><th>#</th><th>Cliente</th><th>Sucursal</th><th>Total</th><th>Estado</th><th>Hora</th></tr></thead>
+          <tbody>
+            <tr><td>1042</td><td>María G.</td><td>Centro</td><td>$ 4.820</td><td><span class="badge ok">impreso</span></td><td>10:12</td></tr>
+            <tr><td>1041</td><td>Juan P.</td><td>Norte</td><td>$ 2.150</td><td><span class="badge ok">impreso</span></td><td>09:58</td></tr>
+            <tr><td>1040</td><td>Lucía R.</td><td>Centro</td><td>$ 3.400</td><td><span class="badge warn">borrador</span></td><td>09:41</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="legend">
+  <h2>Dirección 1 — Astryx neutral tal cual</h2>
+  <div class="row">
+    <div class="chip"><i style="background:#f1f1f1"></i><span>background-body</span></div>
+    <div class="chip"><i style="background:#ffffff"></i><span>background-card</span></div>
+    <div class="chip"><i style="background:#000000"></i><span>text-primary</span></div>
+    <div class="chip"><i style="background:#474747"></i><span>text-secondary</span></div>
+    <div class="chip"><i style="background:#1b1b1b"></i><span>accent</span></div>
+    <div class="chip"><i style="background:#c0262c"></i><span>text-error</span></div>
+    <div class="chip"><i style="background:#2f7d33"></i><span>text-success</span></div>
+    <div class="chip"><i style="background:#836700"></i><span>text-warning</span></div>
+  </div>
+  <p><b>Estrategia visual:</b> adopción estricta del design system. Sin sombras, sólo bordes hairline y una retícula plana; el color deja de cumplir una función de marca y pasa a marcar jerarquía y estado.</p>
+  <p><b>Ventaja:</b> una sola fuente de verdad — cada clase sale de un token de Astryx y el modo oscuro ya está resuelto por el tema.</p>
+  <p><b>Costo:</b> el tema <code>neutral</code> es acromático (acento casi negro): La Verdu pierde por completo su identidad "Mercado fresco". Toda diferencia entre frutería y ferretería desaparece.</p>
+  <p><b>Regla de accesibilidad:</b> todo texto lleva color explícito. El wrapper de <code>Theme</code> resuelve <code>--color-text-primary</code> por <code>light-dark()</code>, así que un color heredado se vuelve blanco en modo oscuro sobre superficies claras.</p>
+</div>
+</body>
+</html>
