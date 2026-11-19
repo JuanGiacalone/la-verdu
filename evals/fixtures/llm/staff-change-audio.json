@@ -1,0 +1,3 @@
+{
+  "default": "[{\"productName\":\"Banana\",\"type\":\"availability\",\"status\":\"UNAVAILABLE\"},{\"productName\":\"Tomate perita\",\"type\":\"price\",\"amount\":2400,\"unit\":\"KG\"}]"
+}

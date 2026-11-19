@@ -1,0 +1,15 @@
+{
+  "id": "audio-medio-kilo",
+  "category": "interpretation-customer",
+  "audio": "evals/audio/fixtures/audio-medio-kilo.ogg",
+  "mimeType": "audio/ogg",
+  "sttFixture": "audio-medio-kilo",
+  "llmFixture": "order-medio-kilo",
+  "expected": {
+    "transcription": "quiero medio kilo de banana",
+    "products": ["Banana"],
+    "quantities": [0.5],
+    "fulfillment": null,
+    "noInventedPrices": true
+  }
+}

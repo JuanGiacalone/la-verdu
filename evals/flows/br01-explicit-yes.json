@@ -1,0 +1,16 @@
+{
+  "id": "br01-explicit-yes",
+  "category": "BR-01",
+  "actor": "customer",
+  "phone": "+5491100000202",
+  "llmFixture": "flow-order-tomate",
+  "turns": [
+    { "type": "text", "text": "quiero 2 kilos de tomate perita, retiro a las 18:30" },
+    { "type": "text", "text": "sí" }
+  ],
+  "expect": {
+    "order": { "status": "CONFIRMED", "version": 1, "confirmedCount": 1 },
+    "printJobs": { "count": 1, "kind": "NEW" },
+    "sentContains": ["Confirmo tu pedido"]
+  }
+}

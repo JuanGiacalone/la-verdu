@@ -1,5 +1,7 @@
 # La Verdu MVP (ODD feature)
 
+> **Status note (updated during Tracks A-D):** this document originally tracked only I0 + CSV.1. The implementation has since completed I1-I5 (MVP on profile B), T6.1-T6.4 and T6.7 (Track A eval suite), T7.1-T7.5, and Track B (packages) / Track C (load test). Per-iteration progress is tracked in `odd/tasks/la-verdu-i1.md` ... `la-verdu-i7.md`; remaining agent-executable work (evals, structure, load, hygiene) is tracked in `odd/tasks/la-verdu-finishing-tracks.md`. The task table and counts below reflect I0 only and are kept as historical record.
+
 Objective: build the MVP described in `PRD.md` v1.0 (iteration 1 on deployment profile B, local development with simulators for everything external). Authoritative spec: `PRD.md`. Branch: `JuanGiacalone/la-verdu`. Delivery strategy: `ask-on-risk`. Test runners: Vitest (API, domain, contracts), `go test` (print agent, from I4). Container runtime: podman rootless with `docker-compose` as the compose provider.
 
 ## Specs

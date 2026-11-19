@@ -1,0 +1,7 @@
+{
+  "id": "order-delivery",
+  "category": "interpretation-customer",
+  "input": "traeme 2 kilos de tomate a Av. Siempre Viva 742",
+  "llmFixture": "order-delivery",
+  "expected": { "products": ["Tomate perita"], "quantities": [2], "fulfillment": "DELIVERY", "deliveryAddress": "Av. Siempre Viva 742", "noInventedPrices": true }
+}

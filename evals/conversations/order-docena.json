@@ -1,0 +1,7 @@
+{
+  "id": "order-docena",
+  "category": "interpretation-customer",
+  "input": "una docena de naranjas",
+  "llmFixture": "order-docena",
+  "expected": { "products": ["Naranja"], "quantities": [12], "fulfillment": null, "noInventedPrices": true }
+}

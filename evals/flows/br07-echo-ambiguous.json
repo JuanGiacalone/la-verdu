@@ -1,0 +1,16 @@
+{
+  "id": "br07-echo-ambiguous",
+  "category": "BR-07",
+  "actor": "staff",
+  "phone": "+5491100000101",
+  "llmFixture": "staff-change-banana",
+  "turns": [
+    { "type": "text", "text": "hoy no hay banana" },
+    { "type": "text", "text": "mmm no sé" }
+  ],
+  "expect": {
+    "availability": { "branch": "CENTRO", "product": "Banana", "value": null },
+    "auditCount": 0,
+    "sentNotContains": ["cambios aplicados"]
+  }
+}

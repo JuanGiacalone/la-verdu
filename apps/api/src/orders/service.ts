@@ -171,7 +171,12 @@ export async function createDraftOrder(db: Database, input: CreateOrderInput): P
  */
 export async function confirmOrder(db: Database, orderId: string): Promise<number> {
   const orderRows = await db
-    .select({ customerId: schema.order.customerId, orderNumber: schema.order.orderNumber })
+    .select({
+      customerId: schema.order.customerId,
+      orderNumber: schema.order.orderNumber,
+      status: schema.order.status,
+      version: schema.order.version,
+    })
     .from(schema.order)
     .where(eq(schema.order.id, orderId))
     .limit(1);
@@ -180,11 +185,14 @@ export async function confirmOrder(db: Database, orderId: string): Promise<numbe
     throw new Error("Order not found");
   }
 
+  const isDraft = order.status === "DRAFT";
+  const nextVersion = isDraft ? 1 : order.version;
+
   await db
     .update(schema.order)
     .set({
       status: "CONFIRMED",
-      version: 1,
+      version: nextVersion,
       confirmedAt: new Date(),
       updatedAt: new Date(),
     })
@@ -267,18 +275,48 @@ export async function modifyOrder(
  * Cancels a confirmed order.
  */
 export async function cancelOrder(db: Database, orderId: string): Promise<void> {
-  const rows = await db
+  const orderRows = await db
+    .select()
+    .from(schema.order)
+    .where(eq(schema.order.id, orderId))
+    .limit(1);
+  const order = orderRows[0];
+  if (!order) {
+    throw new Error("Order not found");
+  }
+
+  const wasConfirmed = order.status === "CONFIRMED";
+  const nextVersion = wasConfirmed ? order.version + 1 : order.version;
+
+  await db
     .update(schema.order)
     .set({
       status: "CANCELLED",
+      version: nextVersion,
       cancelledAt: new Date(),
       updatedAt: new Date(),
     })
-    .where(eq(schema.order.id, orderId))
-    .returning({ id: schema.order.id });
+    .where(eq(schema.order.id, orderId));
 
-  if (rows.length === 0) {
-    throw new Error("Order not found");
+  if (wasConfirmed) {
+    const { supersedeOldJobs } = await import("../printing/queue.js");
+    await supersedeOldJobs(db, orderId, nextVersion);
+
+    // held rule + enqueue would need PrintJobData; handled by caller? Spec wants enqueue here.
+    // We'll build data via build-job-data module.
+    const { buildPrintJobData } = await import("../printing/build-job-data.js");
+    const { createPrintJob } = await import("../printing/queue.js");
+    const data = await buildPrintJobData(db, orderId, "CANCELLATION", nextVersion);
+    const { isBranchClosed } = await import("../printing/build-job-data.js");
+    const held = await isBranchClosed(db, order.fulfillingBranchId as string);
+    await createPrintJob(db, {
+      orderId,
+      orderVersion: nextVersion,
+      branchId: order.fulfillingBranchId as string,
+      kind: "CANCELLATION",
+      data,
+      held,
+    });
   }
 }
 

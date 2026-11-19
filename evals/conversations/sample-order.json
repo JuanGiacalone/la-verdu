@@ -1,6 +1,8 @@
 {
   "id": "sample-order-01",
+  "category": "interpretation-customer",
   "input": "Quiero 2 kilos de tomate perita y una lechuga crespa",
+  "llmFixture": "order-basic",
   "expected": {
     "products": ["Tomate perita", "Lechuga crespa"],
     "quantities": [2, 1],

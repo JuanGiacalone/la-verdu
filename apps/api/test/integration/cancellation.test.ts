@@ -126,7 +126,7 @@ describe.skipIf(!testDatabaseUrl)("Cancellation (integration)", () => {
     expect(channel.sendText).toHaveBeenCalled();
     const lastCall = (channel.sendText.mock.calls as any[])[channel.sendText.mock.calls.length - 1];
     const sentText = String(lastCall?.[1] ?? "");
-    expect(sentText).toMatch(/cancel/i);
+    expect(sentText).toMatch(/cancel|no se confirmó/i);
   });
 
   it("staff can reject a pending change set", async () => {

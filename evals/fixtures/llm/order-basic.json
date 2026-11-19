@@ -1,0 +1,3 @@
+{
+  "default": "{\"items\":[{\"productName\":\"Tomate perita\",\"quantity\":2,\"unit\":\"KG\"},{\"productName\":\"Lechuga crespa\",\"quantity\":1,\"unit\":\"UNIT\"}],\"fulfillment\":null,\"pickupTime\":null,\"deliveryAddress\":null,\"notes\":null}"
+}

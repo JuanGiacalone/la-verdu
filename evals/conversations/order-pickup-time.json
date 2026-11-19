@@ -1,0 +1,7 @@
+{
+  "id": "order-pickup-time",
+  "category": "interpretation-customer",
+  "input": "paso a buscar una lechuga a las 18:30",
+  "llmFixture": "order-pickup-time",
+  "expected": { "products": ["Lechuga crespa"], "quantities": [1], "fulfillment": "PICKUP", "pickupTime": "18:30", "noInventedPrices": true }
+}

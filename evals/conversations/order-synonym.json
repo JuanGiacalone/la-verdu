@@ -1,0 +1,7 @@
+{
+  "id": "order-synonym",
+  "category": "interpretation-customer",
+  "input": "dame dos cavendish",
+  "llmFixture": "order-synonym",
+  "expected": { "products": ["Banana"], "quantities": [2], "fulfillment": null, "noInventedPrices": true }
+}

@@ -1,0 +1,7 @@
+{
+  "id": "order-no-catalog",
+  "category": "interpretation-customer",
+  "input": "quiero 1 kilo de mango",
+  "llmFixture": "order-no-catalog",
+  "expected": { "products": [], "quantities": [], "fulfillment": null, "noInventedPrices": true }
+}

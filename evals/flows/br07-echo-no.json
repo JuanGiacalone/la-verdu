@@ -1,0 +1,17 @@
+{
+  "id": "br07-echo-no",
+  "category": "BR-07",
+  "actor": "staff",
+  "phone": "+5491100000101",
+  "llmFixture": "staff-change-banana",
+  "turns": [
+    { "type": "text", "text": "hoy no hay banana" },
+    { "type": "text", "text": "no" }
+  ],
+  "expect": {
+    "changeSet": { "status": "REJECTED" },
+    "availability": { "branch": "CENTRO", "product": "Banana", "value": null },
+    "auditCount": 0,
+    "sentContains": ["Entendí:", "no se aplicó ningún cambio"]
+  }
+}

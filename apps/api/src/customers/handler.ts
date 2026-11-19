@@ -154,7 +154,15 @@ export async function handleCustomerMessage(
   if (pendingConfirmation && pendingOrderId) {
     const normalized = messageText.trim().toLowerCase();
     if (CONFIRM_WORDS.has(normalized)) {
-      // Confirm the order.
+      // Read order status BEFORE confirming (for kind determination).
+      const preRows = await deps.database
+        .select({ status: schema.order.status, version: schema.order.version, fulfillingBranchId: schema.order.fulfillingBranchId })
+        .from(schema.order)
+        .where(eq(schema.order.id, pendingOrderId))
+        .limit(1);
+      const preStatus = preRows[0]?.status;
+      const wasDraft = preStatus === "DRAFT";
+
       const orderNumber = await confirmOrder(deps.database, pendingOrderId);
 
       // Clear pending state.
@@ -186,9 +194,31 @@ export async function handleCustomerMessage(
         `Listo, tu pedido #${orderNumber} quedó confirmado. Pagás con ${paymentMethodName} al ${moment}. Los precios son referenciales y pueden cambiar. El total final lo define el peso en la balanza.`,
       );
 
-      // Enqueue print job (will be handled in I4).
-      // For now, log it.
-      console.log(`Order ${orderNumber} confirmed, print job queued.`);
+      // Enqueue print job.
+      const postRows = await deps.database
+        .select()
+        .from(schema.order)
+        .where(eq(schema.order.id, pendingOrderId))
+        .limit(1);
+      const postOrder = postRows[0];
+      const version = postOrder?.version ?? 1;
+      const kind = wasDraft ? "NEW" : "MODIFICATION";
+      if (kind === "MODIFICATION") {
+        const { supersedeOldJobs } = await import("../printing/queue.js");
+        await supersedeOldJobs(deps.database, pendingOrderId, version);
+      }
+      const { buildPrintJobData, isBranchClosed } = await import("../printing/build-job-data.js");
+      const { createPrintJob } = await import("../printing/queue.js");
+      const data = await buildPrintJobData(deps.database, pendingOrderId, kind, version);
+      const held = await isBranchClosed(deps.database, postOrder!.fulfillingBranchId as string);
+      await createPrintJob(deps.database, {
+        orderId: pendingOrderId,
+        orderVersion: version,
+        branchId: postOrder!.fulfillingBranchId as string,
+        kind,
+        data,
+        held,
+      });
 
       return;
     }

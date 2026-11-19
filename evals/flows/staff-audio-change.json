@@ -1,0 +1,19 @@
+{
+  "id": "staff-audio-change",
+  "category": "interpretation-staff-audio",
+  "actor": "staff",
+  "phone": "+5491100000101",
+  "sttFixture": "staff-change-audio",
+  "llmFixture": "staff-change-audio",
+  "turns": [
+    { "type": "audio", "mediaId": "eval-media-1" },
+    { "type": "text", "text": "sí" }
+  ],
+  "expect": {
+    "changeSet": { "status": "APPLIED" },
+    "availability": { "branch": "CENTRO", "product": "Banana", "value": "UNAVAILABLE" },
+    "price": { "branch": "CENTRO", "product": "Tomate perita", "amount": 2400 },
+    "auditMin": 1,
+    "sentContains": ["Entendí:"]
+  }
+}

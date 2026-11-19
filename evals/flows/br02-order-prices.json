@@ -1,0 +1,18 @@
+{
+  "id": "br02-order-prices",
+  "category": "BR-02",
+  "actor": "customer",
+  "phone": "+5491100000202",
+  "llmFixture": "flow-order-tomate",
+  "setup": {
+    "prices": [{ "branch": "CENTRO", "product": "Tomate perita", "amount": 2400, "unit": "KG" }]
+  },
+  "turns": [
+    { "type": "text", "text": "quiero 2 kilos de tomate perita, retiro a las 18:30" },
+    { "type": "text", "text": "sí" }
+  ],
+  "expect": {
+    "order": { "status": "CONFIRMED", "confirmedCount": 1 },
+    "moneyAmountsOnlyFromDb": true
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "br01-partial-response",
+  "category": "BR-01",
+  "actor": "customer",
+  "phone": "+5491100000203",
+  "llmFixture": "flow-order-tomate",
+  "turns": [
+    { "type": "text", "text": "quiero 2 kilos de tomate perita, retiro a las 18:30" },
+    { "type": "text", "text": "y... más o menos" }
+  ],
+  "expect": {
+    "order": { "confirmedCount": 0 },
+    "printJobs": { "count": 0 }
+  }
+}

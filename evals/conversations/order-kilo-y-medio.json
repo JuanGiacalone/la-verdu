@@ -1,0 +1,7 @@
+{
+  "id": "order-kilo-y-medio",
+  "category": "interpretation-customer",
+  "input": "un kilo y medio de papa",
+  "llmFixture": "order-kilo-y-medio",
+  "expected": { "products": ["Papa"], "quantities": [1.5], "fulfillment": null, "noInventedPrices": true }
+}

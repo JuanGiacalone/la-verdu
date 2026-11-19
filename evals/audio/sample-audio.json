@@ -1,7 +1,10 @@
 {
   "id": "sample-audio-01",
-  "audio": null,
-  "mimeType": null,
+  "category": "interpretation-customer",
+  "audio": "evals/audio/fixtures/order-basic.ogg",
+  "mimeType": "audio/ogg",
+  "sttFixture": "order-basic",
+  "llmFixture": "order-tomate-only",
   "expected": {
     "transcription": "quiero 2 kilos de tomate perita",
     "products": [
@@ -11,7 +14,6 @@
       2
     ],
     "fulfillment": null,
-    "noInventedPrices": true,
-    "noConfirmationWithoutYes": true
+    "noInventedPrices": true
   }
 }

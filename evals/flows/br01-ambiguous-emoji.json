@@ -1,0 +1,16 @@
+{
+  "id": "br01-ambiguous-emoji",
+  "category": "BR-01",
+  "actor": "customer",
+  "phone": "+5491100000202",
+  "llmFixture": "flow-order-tomate",
+  "turns": [
+    { "type": "text", "text": "quiero 2 kilos de tomate perita, retiro a las 18:30" },
+    { "type": "text", "text": "👍" }
+  ],
+  "expect": {
+    "order": { "confirmedCount": 0 },
+    "printJobs": { "count": 0 },
+    "sentContains": ["Confirmo tu pedido"]
+  }
+}

@@ -20,6 +20,7 @@ make dev-up        # db, api, printer-sim, whatsapp-sim, llm-stub, stt-stub
 make dev-seed      # sucursales, personal, catálogo y métodos de pago de prueba
 make test          # tests unitarios y de contrato (sin base de datos)
 make test-integration   # esquema y seed contra laverdu_test (requiere dev-up)
+make evals         # suite de evals del asistente contra los stubs (requiere dev-up)
 ```
 
 Comprobaciones rápidas:
@@ -29,6 +30,20 @@ curl localhost:3000/health/ready     # {"status":"ready",...}
 make dev-sim-msg FROM=+5491100000201 TEXT=hola
 make dev-printouts                   # impresiones simuladas en .dev/printouts/
 ```
+
+## Evals del asistente (PRD 21.2)
+
+`make evals` ejecuta tres familias de casos con los stubs del compose (requiere `make dev-up`):
+
+| Familia | Directorio | Qué verifica |
+|---|---|---|
+| Parse | `evals/conversations/` | interpretación de pedidos de cliente (productos, cantidades, modalidad) |
+| Audio | `evals/audio/` | transcripción (STT) + interpretación del texto transcrito |
+| Flujos | `evals/flows/` | guardrails de punta a punta sobre la base real: BR-01 (confirmación explícita), BR-02 (precios no inventados), BR-07 (eco antes de aplicar) e inyección de instrucciones |
+
+En modo stub, `llm-stub`/`stt-stub` reproducen respuestas grabadas de `evals/fixtures/{llm,stt}/` según el caso (`model: fixture:<nombre>`). Para medir la precisión real contra un proveedor: `make evals-hosted` (requiere `CHAT_API_KEY` y las variables `CHAT_*`/`STT_*`).
+
+Umbrales (PRD 21.2): interpretación de cliente ≥ 95%, cambios de personal por audio ≥ 90%, y tolerancia cero para BR-01, BR-02, BR-07 e inyección. Los flujos resetean y resembran `TEST_DATABASE_URL` por caso: nunca apuntarlo a una base con datos reales.
 
 ## Personalización del negocio
 

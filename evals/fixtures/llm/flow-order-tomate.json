@@ -1,0 +1,3 @@
+{
+  "default": "{\"items\":[{\"productName\":\"Tomate perita\",\"quantity\":2,\"unit\":\"KG\"}],\"fulfillment\":\"PICKUP\",\"pickupTime\":\"18:30\",\"deliveryAddress\":null,\"notes\":null}"
+}

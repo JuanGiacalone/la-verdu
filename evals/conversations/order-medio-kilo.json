@@ -1,0 +1,7 @@
+{
+  "id": "order-medio-kilo",
+  "category": "interpretation-customer",
+  "input": "quiero medio kilo de banana",
+  "llmFixture": "order-medio-kilo",
+  "expected": { "products": ["Banana"], "quantities": [0.5], "fulfillment": null, "noInventedPrices": true }
+}
