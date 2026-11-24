@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import type { Database } from "../db/client.js";
 import * as schema from "../db/schema.js";
+import { geminiGenerate } from "../llm/gemini.js";
 
 export interface ParsedOrderItem {
   readonly productName: string;
@@ -26,6 +27,8 @@ export async function parseCustomerOrder(
   model: string,
   message: string,
   db: Database,
+  audioBuffer?: Buffer,
+  audioMimeType?: string,
 ): Promise<ParsedOrder> {
   const products = await db.select().from(schema.product).where(eq(schema.product.active, true));
   const productList = products.map((p) => `${p.officialName} (${p.unit})`).join(", ");
@@ -57,34 +60,42 @@ Reglas:
 - Si no podés interpretar un producto, omitilo.
 - Respondé SOLO con el JSON, sin texto adicional.`;
 
-  console.log("[parser] LLM request", { baseUrl, model, message });
-  const response = await fetch(`${baseUrl}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: message },
-      ],
-      temperature: 0,
-    }),
-  });
+  let content = "{}";
+  if (audioBuffer) {
+    content = await geminiGenerate(apiKey, model, systemPrompt, [
+      { audio: { data: audioBuffer, mimeType: audioMimeType ?? "audio/ogg" } },
+      { text: message || "El audio contiene el pedido del cliente." },
+    ]);
+  } else {
+    console.log("[parser] LLM request", { baseUrl, model, message });
+    const response = await fetch(`${baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: message },
+        ],
+        temperature: 0,
+      }),
+    });
 
-  console.log("[parser] LLM response status", response.status, response.statusText);
-  if (!response.ok) {
-    const body = await response.text().catch(() => "");
-    console.log("[parser] LLM error body", body.slice(0, 500));
-    throw new Error(`LLM failed: ${response.status} ${body.slice(0, 300)}`.trim());
+    console.log("[parser] LLM response status", response.status, response.statusText);
+    if (!response.ok) {
+      const body = await response.text().catch(() => "");
+      console.log("[parser] LLM error body", body.slice(0, 500));
+      throw new Error(`LLM failed: ${response.status} ${body.slice(0, 300)}`.trim());
+    }
+
+    const data = (await response.json()) as {
+      choices: Array<{ message: { content: string } }>;
+    };
+    content = data.choices[0]?.message?.content ?? "{}";
   }
-
-  const data = (await response.json()) as {
-    choices: Array<{ message: { content: string } }>;
-  };
-  const content = data.choices[0]?.message?.content ?? "{}";
 
   let parsed: {
     items?: Array<{ productName: string; quantity: number; unit: string }>;

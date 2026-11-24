@@ -13,6 +13,7 @@ import {
   validateOrder,
 } from "../orders/service.js";
 import type { SttProvider } from "../stt/interface.js";
+import { geminiTranscribe } from "../llm/gemini.js";
 import { processOnboardingStep, startOnboarding } from "./onboarding.js";
 
 export interface CustomerDeps {
@@ -67,13 +68,14 @@ export async function handleCustomerMessage(
 
   // Inbound message is already stored by the webhook; do not insert again.
 
-  // Get text content.
+  // Get text content (transcribe if audio) using Gemini single-API multimodal.
   let messageText = text ?? "";
+  let audioBuffer: Buffer | undefined;
+  const audioMimeType = "audio/ogg";
   if (type === "audio" && mediaId) {
     try {
-      const audioBuffer = await deps.channel.downloadMedia(mediaId);
-      const result = await deps.stt.transcribe(audioBuffer, "audio/ogg");
-      messageText = result.text;
+      audioBuffer = await deps.channel.downloadMedia(mediaId);
+      messageText = await geminiTranscribe(deps.llmApiKey, deps.llmModel, audioBuffer, audioMimeType);
     } catch {
       await deps.channel.sendText(phoneE164, "No pude entender el audio. ¿Me lo podés escribir?");
       return;
@@ -277,6 +279,8 @@ export async function handleCustomerMessage(
       deps.llmModel,
       messageText,
       deps.database,
+      audioBuffer,
+      audioMimeType,
     );
 
     const mappedItems = await mapParsedItemsToProducts(deps.database, parsed.items);

@@ -9,6 +9,7 @@ import type { WhatsAppChannel } from "../channels/whatsapp.js";
 import type { Database } from "../db/client.js";
 import * as schema from "../db/schema.js";
 import type { SttProvider } from "../stt/interface.js";
+import { geminiGenerate } from "../llm/gemini.js";
 
 export interface StaffMessageContext {
   readonly phoneE164: string;
@@ -96,13 +97,15 @@ export async function handleStaffMessage(
   const conversation = convRows[0];
   if (!conversation) return;
 
-  // Get text content (transcribe if audio).
+  // Get text content (transcribe if audio) using Gemini single-API multimodal.
   let messageText = text ?? "";
+  let audioBuffer: Buffer | undefined;
+  let audioMimeType = "audio/ogg";
   if (type === "audio" && mediaId) {
     try {
-      const audioBuffer = await deps.channel.downloadMedia(mediaId);
-      const result = await deps.stt.transcribe(audioBuffer, "audio/ogg");
-      messageText = result.text;
+      audioBuffer = await deps.channel.downloadMedia(mediaId);
+      const { geminiTranscribe } = await import("../llm/gemini.js");
+      messageText = await geminiTranscribe(deps.llmApiKey, deps.llmModel, audioBuffer, audioMimeType);
     } catch {
       await deps.channel.sendText(phoneE164, "No pude entender el audio. ¿Me lo podés escribir?");
       return;
@@ -181,6 +184,8 @@ export async function handleStaffMessage(
       messageText,
       branchId,
       deps.database,
+      audioBuffer,
+      audioMimeType,
     );
 
     if (changes.length === 0) {
@@ -261,6 +266,8 @@ async function parseStaffMessage(
   message: string,
   _branchId: string,
   db: Database,
+  audioBuffer?: Buffer,
+  audioMimeType?: string,
 ): Promise<AvailabilityChange[]> {
   // Get all products for context.
   const products = await db.select().from(schema.product).where(eq(schema.product.active, true));
@@ -283,30 +290,38 @@ Reglas:
 - Si no podés interpretar algún producto, omitilo.
 - Respondé SOLO con el JSON array, sin texto adicional.`;
 
-  const response = await fetch(`${baseUrl}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: message },
-      ],
-      temperature: 0,
-    }),
-  });
+  let content = "[]";
+  if (audioBuffer) {
+    content = await geminiGenerate(apiKey, model, systemPrompt, [
+      { audio: { data: audioBuffer, mimeType: audioMimeType ?? "audio/ogg" } },
+      { text: message || "El audio contiene los cambios de disponibilidad/precio." },
+    ]);
+  } else {
+    const response = await fetch(`${baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: message },
+        ],
+        temperature: 0,
+      }),
+    });
 
-  if (!response.ok) {
-    throw new Error(`LLM failed: ${response.status}`);
+    if (!response.ok) {
+      throw new Error(`LLM failed: ${response.status}`);
+    }
+
+    const data = (await response.json()) as {
+      choices: Array<{ message: { content: string } }>;
+    };
+    content = data.choices[0]?.message?.content ?? "[]";
   }
-
-  const data = (await response.json()) as {
-    choices: Array<{ message: { content: string } }>;
-  };
-  const content = data.choices[0]?.message?.content ?? "[]";
 
   // Parse the JSON response.
   let parsed: Array<{
