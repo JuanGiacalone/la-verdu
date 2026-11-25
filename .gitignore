@@ -28,3 +28,6 @@ infra/compose/dev.hybrid.yml
 # generated print-render test artifacts
 packages/print-render/test/*.js
 packages/print-render/test/*.js.map
+
+# Production env reference (local only)
+docs/env-production.md
